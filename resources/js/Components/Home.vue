@@ -1,19 +1,28 @@
 <template>
-    <h1 class="m-3">Strona główna</h1>
-    <div class="grid-box">
-        <div class="flex">
-            <div class="p-20"><h1>Expense</h1></div>
-            <div class="p-20">
-                <h1>{{ totalExpenses }}</h1>
+    <div class="container flex">
+        <div>
+            <div class="flex">
+                <div class="p-20"><h1>Expense</h1></div>
+                <div class="p-20">
+                    <h1>{{ totalExpenses }}</h1>
+                </div>
+            </div>
+            <div v-for="item in expenses" class="flex">
+                <div class="p-20">{{ item.name }}</div>
+                <div class="p-20">
+                    {{ item.day }}. {{ item.month }}.
+                    {{ item.year }}
+                </div>
+                <div class="p-20">{{ item.price }} zł</div>
             </div>
         </div>
-        <div v-for="item in expenses" class="flex">
-            <div class="p-20">{{ item.name }}</div>
-            <div class="p-20">
-                {{ item.day }}. {{ item.month }}.
-                {{ item.year }}
-            </div>
-            <div class="p-20">{{ item.price }} zł</div>
+        <div>
+            <router-link to="/add-expense" class="m-1"
+            ><Button label="Add Expense" icon="pi pi-plus" size="small"
+        /></router-link>
+        <router-link to="/" class="m-1"
+            ><Button label="Add Income" icon="pi pi-plus" size="small"
+        /></router-link>
         </div>
     </div>
 </template>
@@ -35,10 +44,10 @@ const expensesArray: Array<number> = [];
 const expenses: Ref<Array<Expense>> = ref([]);
 const totalExpenses: Ref = ref();
 
-onMounted(async () => {
+onMounted(() => {
     const currentDate = new Date();
     const currentMonth: number = currentDate.getMonth() + 2;
-    await getExpensesByMonth(currentMonth);
+    getExpensesByMonth(currentMonth);
 });
 
 const getExpensesByMonth = async (currentMonth: number) => {
@@ -56,7 +65,14 @@ const expenseCounter = () => {
 };
 </script>
 <style scoped>
-.p-20 {
-    padding: 20px;
+.m-auto {
+    margin: auto;
 }
+.container {
+    margin: auto;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 </style>

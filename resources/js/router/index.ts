@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import Home from "@/Components/Home.vue"
 import Categories from "@/Components/Categories.vue"
+import AddExpense from "@/Components/AddExpense.vue";
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -12,6 +13,11 @@ const routes: Array<RouteRecordRaw> = [
         path: "/categories",
         component: Categories,
         name: "Categories",
+    },
+    {
+        path: "/add-expense",
+        component: AddExpense,
+        name: "AddExpense",
     },
 ];
 const router = createRouter({

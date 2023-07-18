@@ -13,7 +13,7 @@
                           >
                               <p>{{ item.name }}</p>
                               <button
-                                  @click=""
+                                  @click="" 
                                   class="btn-icon btn-icon-danger m-2"
                               >
                                   <i class="pi pi-ban"></i>
@@ -40,7 +40,7 @@
 import axios from "axios";
 import { onMounted, reactive, ref, Ref } from "vue";
 import { useRouter } from "vue-router";
-import { useCategories } from "@/../utils/useCompetitors";
+import { useCategories } from "@/../utils/useCategories";
 const router = useRouter();
 
 const { getCategories, categories } = useCategories();
