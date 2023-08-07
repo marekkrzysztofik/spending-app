@@ -1,39 +1,21 @@
 <template>
     <div class="input-grid">
         <div>
-            <InputText
-                :value="expenseForm.day"
-                type="number"
-                placeholder="Name of competitor"
-                class="m-3"
-            />
-            <InputText
-                :value="expenseForm.month"
-                type="number"
-                placeholder="Surname of competitor"
-                class="m-3"
-            />
+            <InputNumber v-model="expenseForm.price" placeholder="Price" class="m-3" />
+            <InputText type="number" placeholder="Description" class="m-3" />
         </div>
         <div>
-            <Dropdown
-                v-model="category"
-                :options="categories"
-                optionLabel="name"
-                placeholder="Select category"
-                class="m-3"
-            />
-            <Calendar v-model="date" dateFormat="yy/mm/dd" />
+            <Dropdown v-model="category" :options="categories" optionLabel="name" placeholder="Select category"
+                class="m-3" />
+            <Calendar v-model="date" dateFormat="yy/mm/dd" class="m-3" />
         </div>
-        <Button
-            @click="save"
-            label="Save"
-            class="p-button-rounded m-3 save-btn w-9"
-        />
-    </div> 
+        <Button @click="save" label="Save" class="p-button-rounded m-3 save-btn w-9" />
+    </div>
 </template>
 <script setup lang="ts">
 import { reactive, onMounted, ref, Ref } from "vue";
 import { useCategories } from "@/../utils/useCategories";
+import axios from 'axios'
 
 const { getCategories, categories } = useCategories();
 
@@ -49,14 +31,27 @@ interface expenseForm {
     category_id: number;
     price: number;
 }
-const save = () => {
+const expenseForm: expenseForm = reactive({
+    day: 0,
+    month: 0,
+    year: 0,
+    category_id: 0,
+    price: 0,
+});
+
+const save = async () => {
     expenseForm.category_id = category.value.id;
     // expenseForm.year = dateConverter(new Date(expenseForm.year));
     const data = dateConverter(new Date(date.value));
     expenseForm.year = parseInt(data.slice(0, 4));
     expenseForm.month = parseInt(data.slice(5, 7));
     expenseForm.day = parseInt(data.slice(8, 10));
-    console.log(date.value);
+    console.log(data, expenseForm);
+    await axios
+        .post("/api/createExpense", expenseForm)
+        .then(() => {
+            console.log("gitówa")
+        });
 };
 onMounted(() => {
     // newDate();
@@ -74,13 +69,7 @@ const dateConverter = (date: any) => {
     console.log(date.toDateString())
     return date.toISOString().split("T")[0];
 };
-const expenseForm: expenseForm = reactive({
-    day: 0,
-    month: 0,
-    year: 0,
-    category_id: 0,
-    price: 0,
-});
+
 </script>
 <style scoped>
 .input-grid {

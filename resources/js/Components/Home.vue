@@ -2,7 +2,9 @@
     <div class="container flex">
         <div>
             <div class="flex">
-                <div class="p-20"><h1>Expense</h1></div>
+                <div class="p-20">
+                    <h1>Expense</h1>
+                </div>
                 <div class="p-20">
                     <h1>{{ totalExpenses }}</h1>
                 </div>
@@ -17,12 +19,9 @@
             </div>
         </div>
         <div>
-            <router-link to="/add-expense" class="m-1"
-            ><Button label="Add Expense" icon="pi pi-plus" size="small"
-        /></router-link>
-        <router-link to="/" class="m-1"
-            ><Button label="Add Income" icon="pi pi-plus" size="small"
-        /></router-link>
+            <router-link to="/add-expense" class="m-1"><Button label="Add Expense" icon="pi pi-plus"
+                    size="small" /></router-link>
+            <router-link to="/" class="m-1"><Button label="Add Income" icon="pi pi-plus" size="small" /></router-link>
         </div>
     </div>
 </template>
@@ -46,7 +45,7 @@ const totalExpenses: Ref = ref();
 
 onMounted(() => {
     const currentDate = new Date();
-    const currentMonth: number = currentDate.getMonth() + 2;
+    const currentMonth: number = currentDate.getMonth() + 1;
     getExpensesByMonth(currentMonth);
 });
 
@@ -61,18 +60,19 @@ const expenseCounter = () => {
     expenses.value.forEach((el) => {
         expensesArray.push(el.price);
     });
-    totalExpenses.value = expensesArray.reduce((a, b) => a + b);
+    if (expensesArray.length > 0)
+        totalExpenses.value = expensesArray.reduce((a, b) => a + b);
 };
 </script>
 <style scoped>
 .m-auto {
     margin: auto;
 }
+
 .container {
     margin: auto;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
-
 </style>
