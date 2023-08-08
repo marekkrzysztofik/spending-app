@@ -21,7 +21,7 @@ class ExpenseRepository
   {
     // return $this->expense->where('month', '=', $month)->get();
     $joinedTables = DB::table('categories')
-      ->join('expenses', 'categories.id', '=', 'expenses.category_id')->where('month', '=', $month)->get();
+      ->join('expenses', 'categories.id', '=', 'expenses.category_id')->whereMonth('date', '=', $month)->get();
     return $joinedTables;
   }
 }

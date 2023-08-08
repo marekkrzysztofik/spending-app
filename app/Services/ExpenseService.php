@@ -21,9 +21,7 @@ class ExpenseService
   public function createExpense($data)
   {
     $expense = new Expense;
-    $expense->day = $data['day'];
-    $expense->month = $data['month'];
-    $expense->year = $data['year'];
+    $expense->date = $data['date'];
     $expense->time = $data['time'];
     $expense->category_id = $data['category_id'];
     $expense->price = $data['price'];

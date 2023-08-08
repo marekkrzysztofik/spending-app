@@ -12,8 +12,7 @@
             <div v-for="item in expenses" class="flex">
                 <div class="p-20">{{ item.name }}</div>
                 <div class="p-20">
-                    {{ item.day }}. {{ item.month }}.
-                    {{ item.year }}
+                    {{ item.date }}
                 </div>
                 <div class="p-20">{{ item.price }} zł</div>
             </div>
@@ -32,9 +31,7 @@ import { useRouter } from "vue-router";
 
 interface Expense {
     name: string;
-    day: number;
-    month: number;
-    year: number;
+    date: number;
     price: number;
     time: string;
 }
