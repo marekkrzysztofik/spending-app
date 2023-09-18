@@ -11,11 +11,18 @@
             </div>
             <div class="new-transaction">
                 <Button class="add-button m-auto" icon="pi pi-plus" unstyled />
-                <p class="m-1-auto">Add transaction</p>
+                <router-link to="/add-expense" class="m-1-auto">
+                    <p>Add transaction</p>
+                </router-link>
             </div>
         </nav>
-        <div class="m-0">
-            <router-view />
+        <div>
+            <div class="top-panel pl-4 bg-white">
+                <h2>Dashboard</h2>
+            </div>
+            <div class="m-4">
+                <router-view />
+            </div>
         </div>
     </div>
 </template>
@@ -42,9 +49,19 @@ a {
     color: black;
     text-decoration: none;
 }
+
+.top-panel {
+    display: flex;
+    align-items: center;
+    background-color: aquamarine;
+    height: 5rem;
+    width: 85vw;
+}
+
 .navbar {
     width: 15vw;
 }
+
 .new-transaction {
     margin-top: 1rem;
     display: flex;

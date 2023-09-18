@@ -1,8 +1,6 @@
 <template>
-    <div class="top-panel pl-4 bg-white">
-        <h2>Dashboard</h2>
-    </div>
-    <div class="m-4">
+    
+    
         <div>
             <h4>Welcome back, Marek!</h4>
         </div>
@@ -46,7 +44,7 @@
             </router-link>
             <router-link to="/" class="m-1"><Button label="Add Income" icon="pi pi-plus" size="small" /></router-link>
         </div>
-    </div>
+  
 </template>
 <script setup lang="ts">
 import axios from "axios";
@@ -86,13 +84,7 @@ const expenseCounter = () => {
 };
 </script>
 <style scoped>
-.top-panel {
-    display: flex;
-    align-items: center;
-    background-color: aquamarine;
-    height: 5rem;
-    width: 85vw;
-}
+
 
 .balance-box {
     margin: 1rem;
