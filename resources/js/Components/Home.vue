@@ -19,7 +19,7 @@
         </div>
         <div>
             <router-link to="/add-expense" class="m-1"><Button label="Add Expense" icon="pi pi-plus"
-                    size="small" /></router-link>
+                    size="small"/> </router-link>
             <router-link to="/" class="m-1"><Button label="Add Income" icon="pi pi-plus" size="small" /></router-link>
         </div>
     </div>
