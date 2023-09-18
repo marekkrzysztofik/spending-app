@@ -1,6 +1,30 @@
 <template>
-    <div class="container flex">
+    <div class="top-panel pl-4 bg-white">
+        <h2>Dashboard</h2>
+    </div>
+    <div class="m-4">
         <div>
+            <h4>Welcome back, Marek!</h4>
+        </div>
+        <div class="flex justify-content-center">
+            <div class="balance-box">
+                <h2>Total Balance</h2>
+                <h1>52 222 zł</h1>
+                <p>last month 49 858 zł</p>
+            </div>
+            <div class="balance-box">
+                <h2>Total Balance</h2>
+                <h1>52 222 zł</h1>
+                <p>last month 49 858 zł</p>
+            </div>
+            <div class="balance-box">
+                <h2>Total Balance</h2>
+                <h1>52 222 zł</h1>
+                <p>last month 49 858 zł</p>
+            </div>
+
+        </div>
+        <div class="">
             <div class="flex">
                 <div class="p-20">
                     <h1>Expense</h1>
@@ -18,8 +42,8 @@
             </div>
         </div>
         <div>
-            <router-link to="/add-expense" class="m-1"><Button label="Add Expense" icon="pi pi-plus"
-                    size="small"/> </router-link>
+            <router-link to="/add-expense" class="m-1"><Button label="Add Expense" icon="pi pi-plus" size="small" />
+            </router-link>
             <router-link to="/" class="m-1"><Button label="Add Income" icon="pi pi-plus" size="small" /></router-link>
         </div>
     </div>
@@ -62,14 +86,19 @@ const expenseCounter = () => {
 };
 </script>
 <style scoped>
-.m-auto {
-    margin: auto;
+.top-panel {
+    display: flex;
+    align-items: center;
+    background-color: aquamarine;
+    height: 5rem;
+    width: 85vw;
 }
 
-.container {
-    margin: auto;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+.balance-box {
+    margin: 1rem;
+    padding: 1rem;
+    width: 35%;
+    background-color: white;
+    border-radius: 10px;
 }
 </style>

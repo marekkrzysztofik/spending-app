@@ -1,20 +1,22 @@
 <template>
     <div class="flex">
-        <nav class="h-screen m-4">
+        <nav class="h-screen p-4 bg-white border-right-1 border-300 navbar">
             <router-link to="/">
                 <h1 class="primary-heading mb-3">Spending tracker</h1>
             </router-link>
-                <div class="sidemenu-item" v-for="(menuItem, index) in menuItems" :key="index">
-                    <router-link class="sidemenu-link" :to="menuItem.path">
-                        <i :class="menuItem.icon" /> {{ menuItem.label }}
-                    </router-link>
-                </div>
+            <div class="sidemenu-item" v-for="(menuItem, index) in menuItems" :key="index">
+                <router-link class="sidemenu-link" :to="menuItem.path">
+                    <i :class="menuItem.icon" /> {{ menuItem.label }}
+                </router-link>
+            </div>
             <div class="new-transaction">
-                <Button class="add-button" icon="pi pi-plus" unstyled/>
-               <p class="my-3">Add transaction</p>
+                <Button class="add-button m-auto" icon="pi pi-plus" unstyled />
+                <p class="m-1-auto">Add transaction</p>
             </div>
         </nav>
-        <router-view />
+        <div class="m-0">
+            <router-view />
+        </div>
     </div>
 </template>
 <script setup lang="ts">
@@ -40,17 +42,21 @@ a {
     color: black;
     text-decoration: none;
 }
+.navbar {
+    width: 15vw;
+}
 .new-transaction {
     margin-top: 1rem;
     display: flex;
     border-style: dashed;
-    padding: 1.5rem 0;
+    padding: 1.3rem 0;
     border-width: 2px;
     border-color: rgba(0, 119, 6, 0.3);
     flex-direction: column;
     justify-content: center;
     width: 100%;
 }
+
 .add-button {
     border: none;
     border-radius: 50%;
@@ -59,6 +65,7 @@ a {
     background-color: rgba(0, 119, 6, 0.7);
 
 }
+
 .nav-bar:last-child {
     align-items: flex-end;
 }
