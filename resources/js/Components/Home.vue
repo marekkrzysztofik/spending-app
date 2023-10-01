@@ -1,6 +1,4 @@
 <template>
-    
-    
         <div>
             <h4>Welcome back, Marek!</h4>
         </div>
@@ -65,7 +63,7 @@ const totalExpenses: Ref = ref();
 onMounted(() => {
     const currentDate = new Date();
     const currentMonth: number = currentDate.getMonth() + 1;
-    getExpensesByMonth(currentMonth);
+   // getExpensesByMonth(currentMonth);
 });
 
 const getExpensesByMonth = async (currentMonth: number) => {

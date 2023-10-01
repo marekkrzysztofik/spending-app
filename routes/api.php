@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\AuthController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -25,3 +26,7 @@ Route::post('/createCategory', [CategoryController::class, 'createCategory']);
 
 Route::get('getExpensesJoinedWithCategoriesByMonth/{month}', [ExpenseController::class, 'getExpensesJoinedWithCategoriesByMonth']);
 Route::post('/createExpense', [ExpenseController::class, 'createExpense']);
+
+
+Route::post('register', [AuthController::class, 'register']); 
+Route::post('login', [AuthController::class, 'login']);   

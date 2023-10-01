@@ -1,6 +1,6 @@
 <template>
     <div class="flex">
-        <nav class="h-screen p-4 bg-white border-right-1 border-300 navbar">
+        <nav class="h-screen p-4 bg-white border-right-1 border-400 navbar">
             <router-link to="/">
                 <h1 class="primary-heading mb-3">Spending tracker</h1>
             </router-link>
@@ -17,7 +17,7 @@
             </div>
         </nav>
         <div>
-            <div class="top-panel pl-4 bg-white">
+            <div class="top-panel pl-4 bg-white border-bottom-1 border-400">
                 <h2>Dashboard</h2>
             </div>
             <div class="m-4">
@@ -38,6 +38,7 @@ const menuItems = [
     { path: "/goals", label: "Goals", icon: 'pi pi-check-circle mr-2' },
     { path: "/goals", label: "Analytics", icon: 'pi pi-database mr-2' },
     { path: "/goals", label: "Settings", icon: 'pi pi-cog mr-2' },
+    { path: "/register", label: "Register", icon: 'pi pi-user mr-2' },
 ]
 </script>
 <style scoped>
