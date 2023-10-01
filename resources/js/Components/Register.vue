@@ -1,6 +1,5 @@
 <template>
   <h1>Create your account</h1>
-
   <div>
     <form class="flex flex-column w-max" @submit.prevent="submit">
       <div v-for="input in registerColumns">
@@ -38,20 +37,6 @@ const errors = ref([]);
 
 </script>
 <style>
-.loginp {
-  text-align: center;
-  line-height: 120%;
-  padding: 5%;
-  overflow: hidden;
-}
-
-.inp:hover {
-  background-color: azure;
-}
-
-.inp:focus {
-  background-color: azure;
-}
 
 .text-danger {
   color: red;

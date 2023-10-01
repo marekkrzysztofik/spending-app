@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BudgetController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -23,6 +24,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('getCategories', [CategoryController::class, 'getCategories']);
 Route::post('/createCategory', [CategoryController::class, 'createCategory']);
+
+Route::post('/createBudget', [BudgetController::class, 'createBudget']);
+Route::get('/getBudgetsByUserId/{id}', [BudgetController::class, 'getBudgetsByUserId']);
+
+
+
+
 
 Route::get('getExpensesJoinedWithCategoriesByMonth/{month}', [ExpenseController::class, 'getExpensesJoinedWithCategoriesByMonth']);
 Route::post('/createExpense', [ExpenseController::class, 'createExpense']);
