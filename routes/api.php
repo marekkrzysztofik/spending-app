@@ -4,7 +4,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BudgetController;
 /*
@@ -32,8 +32,8 @@ Route::get('/getBudgetsByUserId/{id}', [BudgetController::class, 'getBudgetsByUs
 
 
 
-Route::get('getExpensesJoinedWithCategoriesByMonth/{month}', [ExpenseController::class, 'getExpensesJoinedWithCategoriesByMonth']);
-Route::post('/createExpense', [ExpenseController::class, 'createExpense']);
+Route::get('getTransactionsJoinedWithCategoriesByMonth/{month}', [TransactionController::class, 'getTransactionsJoinedWithCategoriesByMonth']);
+Route::post('/createTransaction', [TransactionController::class, 'createTransaction']);
 
 
 Route::post('register', [AuthController::class, 'register']); 
