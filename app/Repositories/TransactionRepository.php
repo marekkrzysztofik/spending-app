@@ -9,7 +9,7 @@ class TransactionRepository
 {
   protected $transaction;
   public function __construct()
-  {
+  { 
     $this->transaction = new Transaction();
   }
 
@@ -17,10 +17,10 @@ class TransactionRepository
   {
     $transaction->save();
   }
-  public function getTransactionsJoinedWithCategoriesByMonth($month)
+  public function getTransactionsJoinedWithCategoriesByBudgetId($id)
   {
     $joinedTables = DB::table('categories')
-      ->join('transactions', 'categories.id', '=', 'transactions.category_id')->whereMonth('date', '=', $month)->get();
+      ->join('transactions', 'categories.id', '=', 'transactions.category_id')->where('budget_id', '=', $id)->get();
     return $joinedTables;
   }
 }

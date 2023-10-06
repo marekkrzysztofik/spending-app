@@ -30,14 +30,17 @@ const get = (id: any) => {
     console.log(budgets.value[id])
 }
 </script>
-<style>
+<style scoped>
 
 .sidemenu-item:hover {
     background-color: rgba(207, 207, 207);
+    color: black;
     cursor: pointer;
 }
 
 .sidemenu-item {
+    background-color: white;
+    color: rgb(95, 95, 95);
     margin: 0.2rem auto;
     padding: 1rem;
     border-radius: 10px;

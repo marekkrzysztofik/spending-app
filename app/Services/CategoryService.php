@@ -22,7 +22,7 @@ class CategoryService
   {
     $category = new Category;
     $category->name = $data['name'];
-    $category->user_id = $data['user_id'];
+    $category->budget_id = $data['budget_id'];
     $this->categoryRepository->save($category);
   }
 }

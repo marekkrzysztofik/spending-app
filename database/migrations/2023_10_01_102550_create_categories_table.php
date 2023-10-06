@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('budget_id');
             $table->foreign('budget_id')->references('id')->on('budgets')->onDelete('cascade');
-            $table->string('name');
+            $table->string('category_name');
+            $table->integer('category_limit');
             $table->timestamps();
         });
     }
