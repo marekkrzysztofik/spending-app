@@ -17,7 +17,7 @@
             </div>
         </nav>
         <div>
-            <div class="top-panel pl-4 bg-white border-bottom-1 border-400">
+            <div class="top-panel pl-4 bg-white border-bottom-1 border-400"> 
                 <h2>Dashboard</h2>
             </div>
             <div class="m-4">

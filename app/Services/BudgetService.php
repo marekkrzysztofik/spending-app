@@ -14,9 +14,9 @@ class BudgetService
   {
     $this->budgetRepository = $budgetRepository;
   }
-  public function getBudgetsByUserId($id)
+  public function getBudgetsByUserId($id, $month)
   {
-    return $this->budgetRepository->getBudgetsByUserId($id);
+    return $this->budgetRepository->getBudgetsByUserId($id, $month);
   }
   public function createBudget($data)
   {

@@ -34,12 +34,14 @@ import Dropdown from "primevue/dropdown";
 import SplitButton from 'primevue/splitbutton';
 import Calendar from 'primevue/calendar';
 import InputNumber from 'primevue/inputnumber';
+import Knob from 'primevue/knob';
 
 const app = createApp(App);
 app.use(router);
 app.use(PrimeVue);
 app.use(ToastService);
 app.use(ConfirmationService);
+app.component("Knob", Knob);
 app.component("InputNumber", InputNumber);
 app.component("Calendar", Calendar);
 app.component("PanelMenu", PanelMenu);

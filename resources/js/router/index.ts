@@ -3,6 +3,7 @@ import Home from "@/Components/Home.vue"
 import Categories from "@/Components/Categories.vue"
 import AddExpense from "@/Components/AddExpense.vue";
 import Register from "@/Components/Register.vue";
+import Budgets from '@/Modules/Budgets.vue'
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -24,6 +25,11 @@ const routes: Array<RouteRecordRaw> = [
         path: "/register",
         component: Register,
         name: "Register",
+    },
+    {
+        path: "/budgets",
+        component: Budgets,
+        name: "Budgets",
     },
 ];
 const router = createRouter({

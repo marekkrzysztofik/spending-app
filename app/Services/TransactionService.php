@@ -23,6 +23,7 @@ class TransactionService
     $transaction = new Transaction;
     $transaction->user_id = $data['user_id'];
     $transaction->category_id = $data['category_id'];
+    $transaction->budget_id = $data['budget_id'];
     $transaction->name = $data['name'];
     $transaction->amount = $data['amount'];
     $transaction->date = $data['date'];

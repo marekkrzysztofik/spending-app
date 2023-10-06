@@ -26,7 +26,7 @@ Route::get('getCategories', [CategoryController::class, 'getCategories']);
 Route::post('/createCategory', [CategoryController::class, 'createCategory']);
 
 Route::post('/createBudget', [BudgetController::class, 'createBudget']);
-Route::get('/getBudgetsByUserId/{id}', [BudgetController::class, 'getBudgetsByUserId']);
+Route::get('/getBudgetsByUserId/{id}/{month}', [BudgetController::class, 'getBudgetsByUserId']);
 
 
 

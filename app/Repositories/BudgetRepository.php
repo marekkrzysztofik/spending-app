@@ -11,11 +11,11 @@ class BudgetRepository
     {
         $this->budget = new Budget();
     }
-    public function getBudgetsByUserId($id)
+    public function getBudgetsByUserId($id, $month)
     {
-        return $this->budget->where('user_id', '=', $id)->get();
+        return $this->budget->where('user_id', '=', $id)->whereMonth('start_date', '=', $month)->get();
     }
-    public function save($budget)
+    public function save($budget) 
     {
         $budget->save();
     }

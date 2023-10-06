@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use Illuminate\Support\Facades\DB;
-use App\Models\Transaction;
+use App\Models\Transaction; 
 
 class TransactionRepository
 {

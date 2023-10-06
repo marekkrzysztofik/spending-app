@@ -20,8 +20,8 @@ class BudgetController extends Controller
     {
         $this->budgetService->createBudget($data);
     }
-    public function getBudgetsByUserId($id)
+    public function getBudgetsByUserId($id, $month)
   {
-    return $this->budgetService->getBudgetsByUserId($id);
+    return $this->budgetService->getBudgetsByUserId($id, $month);
   }
 }

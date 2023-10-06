@@ -48,12 +48,12 @@ const { getCategories, categories } = useCategories();
 
 interface Category {
   name: string;
-  user_id: number;
+  budget_id: number;
 }
 
 const categoryForm: Category = reactive({
   name: "",
-  user_id:1
+  budget_id:1
 });
 
 onMounted(async () => {
