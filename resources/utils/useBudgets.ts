@@ -3,6 +3,7 @@ import axios from "axios";
 
 export function useBudgets() {
     interface Budget {
+        id: number;
         name: string;
         description: string;
         start_date: Date;

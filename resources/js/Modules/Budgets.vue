@@ -10,34 +10,53 @@
 
             </div>
         </div>
-        <div class="flex m-3">
-            <h1></h1>
+        <div v-if="transactions.length" class="m-5 animation">
+            <h1>
+                Transaction History
+            </h1>
+            <DataTable :value="transactions" responsiveLayout="scroll" class="datatable w-max m-20-auto">
+                <Column v-for="column in transactionsColumns" :key="column.field" :field="column.field"
+                    :header="column.header"></Column>
+                <template #footer>
+                    In total there are
+                    competitors.
+                </template>
+            </DataTable>
         </div>
     </div>
 </template>
 <script setup lang="ts">
 import { useBudgets } from "@/../utils/useBudgets";
+import { useTransactionsWithCategories, transactionsColumns } from "@/../utils/useTransactionsWithCategories";
 import { onMounted, reactive, ref, Ref } from "vue";
 import { useRouter } from "vue-router";
 
 const { getBudgets, budgets } = useBudgets();
+const { getTransactionsWithCategories, transactions } = useTransactionsWithCategories();
 const value = ref(40)
 onMounted(async () => {
     getBudgets();
 });
 
-const get = (id: any) => {
-    console.log(budgets.value[id])
+const get = async (id: any) => {
+    const budgetID: number = budgets.value[id].id
+    await getTransactionsWithCategories(budgetID)
+    console.log(transactions.value)
 }
 </script>
 <style scoped>
-
 .sidemenu-item:hover {
     background-color: rgba(207, 207, 207);
     color: black;
     cursor: pointer;
 }
 
+.animation {
+    transition: all 0.7s ease;
+}
+.datatable {
+    
+}
 .sidemenu-item {
     background-color: white;
     color: rgb(95, 95, 95);

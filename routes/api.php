@@ -32,7 +32,7 @@ Route::get('/getBudgetsByUserId/{id}/{month}', [BudgetController::class, 'getBud
 
 
 
-Route::get('getTransactionsJoinedWithCategoriesByBudgetId/{id}', [TransactionController::class, 'getTransactionsJoinedWithCategoriesByBudgetId']);
+Route::get('getTransactionsByCategoryId/{id}', [TransactionController::class, 'getTransactionsByCategoryId']);
 Route::post('/createTransaction', [TransactionController::class, 'createTransaction']);
 
 

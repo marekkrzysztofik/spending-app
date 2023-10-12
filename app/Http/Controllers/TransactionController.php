@@ -18,9 +18,9 @@ class TransactionController extends Controller
     {
         $this->transactionService->createTransaction($data);
     }
-    public function getTransactionsJoinedWithCategoriesByBudgetId($id)
+    public function getTransactionsByCategoryId($id)
     {
-        return $this->transactionService->getTransactionsJoinedWithCategoriesByBudgetId($id);
+        return $this->transactionService->getTransactionsByCategoryId($id);
     }
 
 } 

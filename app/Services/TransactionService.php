@@ -14,9 +14,9 @@ class TransactionService
   {
     $this->transactionRepository = $transactionRepository;
   }
-  public function getTransactionsJoinedWithCategoriesByBudgetId($id)
+  public function getTransactionsByCategoryId($id)
   {
-    return $this->transactionRepository->getTransactionsJoinedWithCategoriesByBudgetId($id);
+    return $this->transactionRepository->getTransactionsByCategoryId($id);
   }
   public function createTransaction($data)
   {
