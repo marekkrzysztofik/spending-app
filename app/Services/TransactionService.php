@@ -22,10 +22,10 @@ class TransactionService
   {
     $transaction = new Transaction;
     $transaction->category_id = $data['category_id'];
-    $transaction->name = $data['name'];
+    $transaction->title = $data['title'];
     $transaction->amount = $data['amount'];
-    $transaction->date = $data['date'];
     $transaction->type = $data['type'];
+    $transaction->date = $data['date'];
     $this->transactionRepository->save($transaction);
   } 
 

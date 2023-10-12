@@ -21,8 +21,9 @@ class CategoryService
   public function createCategory($data)
   {
     $category = new Category;
-    $category->name = $data['name'];
     $category->budget_id = $data['budget_id'];
+    $category->category_name = $data['category_name'];
+    $category->category_limit = $data['category_limit'];
     $this->categoryRepository->save($category);
   }
 }
