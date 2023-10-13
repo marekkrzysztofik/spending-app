@@ -10,13 +10,13 @@
 
             </div>
         </div>
-        <div class="m-5 animation">
-            <DataTable :value="categories" responsiveLayout="scroll" class="datatable p-4" unstyled>
-                <template #header>
-                    {{ datatableHeader }}
-                </template>
-                <Column field="category_name" style="width: 26rem" />
-                <Column field="category_limit" header="Zaplanowane" style="text-align:right" />
+        <div v-if="transactions.length" class="m-5 animation">
+            <h1>
+                Transaction History
+            </h1>
+            <DataTable :value="transactions" responsiveLayout="scroll" class="datatable m-20-auto" unstyled>
+                <Column v-for="column in transactionsColumns" :key="column.field" :field="column.field"
+                    :header="column.header" :style="column.style"></Column>
                 <template #footer>
                     Razem x transakcji w tym miesiącu.
                 </template>
@@ -26,26 +26,24 @@
 </template>
 <script setup lang="ts">
 import { useBudgets } from "@/../utils/useBudgets";
-import { useCategoriesByBudgetId } from "@/../utils/useCategoriesByBudgetId";
+import { useTransactionsWithCategories, transactionsColumns } from "@/../utils/useTransactionsWithCategories";
 import { onMounted, reactive, ref, Ref } from "vue";
 import { useRouter } from "vue-router";
 
 const { getBudgets, budgets } = useBudgets();
-const { getCategoriesByBudgetId, categories } = useCategoriesByBudgetId();
+const { getTransactionsByCategoryId, transactions } = useTransactionsWithCategories();
 const value = ref(40)
 onMounted(async () => {
     getBudgets();
 });
-const datatableHeader: Ref = ref()
+
 const get = async (id: any) => {
     const budgetID: number = budgets.value[id].id
-    datatableHeader.value = budgets.value[id].name
-    await getCategoriesByBudgetId(budgetID)
-
+    await getTransactionsByCategoryId(budgetID)
+    console.log(transactions.value)
 }
-
 </script>
-<style scoped>
+<!-- <style scoped>
 .sidemenu-item:hover {
     background-color: rgba(207, 207, 207);
     color: black;
@@ -59,6 +57,7 @@ const get = async (id: any) => {
 .datatable {
     background-color: white;
     border-radius: 10px;
+    width: 30vw;
 }
 
 .sidemenu-item {
@@ -69,4 +68,4 @@ const get = async (id: any) => {
     border-radius: 10px;
     transition: color 0.2s ease;
 }
-</style>
+</style> -->

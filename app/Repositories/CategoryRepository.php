@@ -11,9 +11,9 @@ class CategoryRepository
     {
         $this->category = new Category();
     }
-    public function getCategories()
+    public function getCategoriesByBudgetId($id)
     {
-        return Category::all();
+      return $this->category->where('budget_id', '=', $id)->get();
     }
     public function save($category)
     {
@@ -22,6 +22,10 @@ class CategoryRepository
     public function update($student)
   {
     $student->update();
+  }
+  public function getCategories()
+  {
+      return Category::all();
   }
 }
  

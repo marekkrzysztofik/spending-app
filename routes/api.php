@@ -22,8 +22,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('getCategories', [CategoryController::class, 'getCategories']);
+Route::get('getCategoriesByBudgetId/{id}', [CategoryController::class, 'getCategoriesByBudgetId']);
 Route::post('/createCategory', [CategoryController::class, 'createCategory']);
+Route::get('/getCategories', [CategoryController::class, 'getCategories']);
+
 
 Route::post('/createBudget', [BudgetController::class, 'createBudget']);
 Route::get('/getBudgetsByUserId/{id}/{month}', [BudgetController::class, 'getBudgetsByUserId']);

@@ -15,22 +15,20 @@ interface Transaction {
 interface TransactionsColumn {
     field: string;
     header: string;
+    style: string;
 }
 export const transactionsColumns: TransactionsColumn[] = [
-    { field: 'id', header: 'ID' },
-  { field: 'category_name', header: 'Name' },
-  { field: 'category_limit', header: 'Style' },
-  { field: 'title', header: 'Competition' },
-  { field: 'amount', header: 'MinAge' },
-  { field: 'type', header: 'MaxAge' },
-  { field: 'date', header: 'Start Time' },
+    { field: 'id', header: 'ID', style:"min-width: 2rem; color: blue;" },
+  { field: 'title', header: 'Tytuł', style:"width: 10rem" },
+  { field: 'amount', header: 'Kwota', style:"width: 3.5rem" },
+  { field: 'date', header: 'Data transakcji', style:"width: 7.5rem" },
 ];
 export function useTransactionsWithCategories() {
 
     const transactions: Ref<Array<Transaction>> = ref([]);
-    async function getTransactionsWithCategories(id: number) {
-        const response = await axios.get(`/api/getTransactionsJoinedWithCategoriesByBudgetId/${id}`);
+    async function getTransactionsByCategoryId(id: number) {
+        const response = await axios.get(`/api/getTransactionsByCategoryId/${id}`);
         transactions.value = response.data;
     }
-    return { getTransactionsWithCategories, transactions };
+    return { getTransactionsByCategoryId, transactions };
 }

@@ -14,9 +14,9 @@ class CategoryService
   {
     $this->categoryRepository = $categoryRepository;
   }
-  public function getCategories()
+  public function getCategoriesByBudgetId($id)
   {
-    return $this->categoryRepository->getCategories();
+    return $this->categoryRepository->getCategoriesByBudgetId($id);
   }
   public function createCategory($data)
   {
@@ -25,5 +25,9 @@ class CategoryService
     $category->category_name = $data['category_name'];
     $category->category_limit = $data['category_limit'];
     $this->categoryRepository->save($category);
+  }
+  public function getCategories()
+  {
+    return $this->categoryRepository->getCategories();
   }
 }
