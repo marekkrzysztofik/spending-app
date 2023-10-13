@@ -5,7 +5,7 @@
             <InputText type="number" placeholder="Description" class="m-3" />
         </div>
         <div>
-            <Dropdown v-model="category" :options="categories" optionLabel="name" placeholder="Select category"
+            <Dropdown v-model="category" :options="categories" optionLabel="category_name" placeholder="Select category"
                 class="m-3" />
             <Calendar v-model="date" dateFormat="dd/mm/yy" class="m-3" />
         </div>
@@ -22,7 +22,7 @@ const { getCategories, categories } = useCategories();
 
 const category = ref({
     id: 0,
-    name: "",
+    category_name: "",
 });
 const date = ref(new Date());
 interface expenseForm {

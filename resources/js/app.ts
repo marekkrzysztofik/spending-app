@@ -35,12 +35,16 @@ import SplitButton from 'primevue/splitbutton';
 import Calendar from 'primevue/calendar';
 import InputNumber from 'primevue/inputnumber';
 import Knob from 'primevue/knob';
+import Categories from '@/Components/Categories.vue'
+import Slider from 'primevue/slider';
 
 const app = createApp(App);
 app.use(router);
 app.use(PrimeVue);
 app.use(ToastService);
 app.use(ConfirmationService);
+app.component("Slider", Slider);
+app.component("Categories", Categories);
 app.component("Knob", Knob);
 app.component("InputNumber", InputNumber);
 app.component("Calendar", Calendar);
