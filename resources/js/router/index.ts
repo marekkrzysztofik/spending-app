@@ -4,6 +4,7 @@ import Categories from "@/Components/Categories.vue"
 import AddExpense from "@/Components/AddExpense.vue";
 import Register from "@/Components/Register.vue";
 import Budgets from '@/Modules/Budgets.vue'
+import Category from "@/Components/Category.vue";
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -30,6 +31,12 @@ const routes: Array<RouteRecordRaw> = [
         path: "/budgets",
         component: Budgets,
         name: "Budgets",
+    },
+    {
+        path: "/category/:id",
+        component: Category,  
+        name: "Category",
+        props: true,
     },
 ];
 const router = createRouter({

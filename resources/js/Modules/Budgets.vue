@@ -10,22 +10,6 @@
 
             </div>
         </div>
-        <div class="m-5 animation">
-            <DataTable :value="categories" responsiveLayout="scroll" class="datatable p-4" unstyled>
-                <template #header>
-                    {{ datatableHeader }}
-                </template>
-                <Column field="category_name" style="width: 26rem" />
-                <Column field="category_limit" header="Zaplanowane" style="text-align:right" />
-                <template #footer>
-                    <p>Razem x transakcji w tym miesiącu.</p>
-                    <Button @click="showModal" icon="pi pi-plus" label="Add new item" />
-                </template>
-            </DataTable>
-            <Dialog v-model:visible="isModalOpen">
-                <Categories :isModalOpen="isModalOpen" @close-modal="closeModal" />
-            </Dialog>
-        </div>
     </div>
 </template>
 <script setup lang="ts">
@@ -34,30 +18,21 @@ import { useCategoriesByBudgetId } from "@/../utils/useCategoriesByBudgetId";
 import AddExpense from "@/Components/AddExpense.vue";
 import { onMounted, reactive, ref, Ref } from "vue";
 import { useRouter } from "vue-router";
-
+const router = useRouter();
 const { getBudgets, budgets } = useBudgets();
 const { getCategoriesByBudgetId, categories } = useCategoriesByBudgetId();
 const value = ref(40)
-const isModalOpen = ref(false);
-const datatableHeader: Ref = ref()
 
 onMounted(async () => {
     getBudgets();
 });
+const budgetID = ref();
 const get = async (id: any) => {
-    const budgetID: number = budgets.value[id].id
-    datatableHeader.value = budgets.value[id].name
-    await getCategoriesByBudgetId(budgetID)
-
+    budgetID.value = budgets.value[id].id
+    // datatableHeader.value = budgets.value[id].name
+    // await getCategoriesByBudgetId(budgetID.value)
+    router.push(`/category/${budgetID.value}`);
 }
-const showModal = () => {
-    isModalOpen.value = true;
-};
-
-const closeModal = () => {
-    isModalOpen.value = false;
-    
-};
 </script>
 <style scoped>
 .sidemenu-item:hover {
