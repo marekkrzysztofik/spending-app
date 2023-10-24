@@ -8,9 +8,11 @@ export function useCategoriesByBudgetId() {
         category_limit: number;
     }
     const categories: Ref<Array<Category>> = ref([]);
-    async function getCategoriesByBudgetId(id:number) {
+    
+    async function getCategoriesByBudgetId(id:any) {
         const response = await axios.get(`/api/getCategoriesByBudgetId/${id}`);
         categories.value = response.data;
     }
+
     return { getCategoriesByBudgetId, categories };
 }

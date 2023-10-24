@@ -7,31 +7,28 @@
                     <h3>{{ budget.name }}</h3>
                     <span>200 zł / {{ budget.amount }} zł</span>
                 </div>
-
             </div>
         </div>
+        <Category />
     </div>
 </template>
 <script setup lang="ts">
 import { useBudgets } from "@/../utils/useBudgets";
-import { useCategoriesByBudgetId } from "@/../utils/useCategoriesByBudgetId";
-import AddExpense from "@/Components/AddExpense.vue";
-import { onMounted, reactive, ref, Ref } from "vue";
+import { onMounted, ref, Ref } from "vue";
 import { useRouter } from "vue-router";
-const router = useRouter();
+import { budget } from "@/consts/budgetID"
+
 const { getBudgets, budgets } = useBudgets();
-const { getCategoriesByBudgetId, categories } = useCategoriesByBudgetId();
+
 const value = ref(40)
 
-onMounted(async () => {
+onMounted(() => {
     getBudgets();
+
 });
-const budgetID = ref();
-const get = async (id: any) => {
-    budgetID.value = budgets.value[id].id
-    // datatableHeader.value = budgets.value[id].name
-    // await getCategoriesByBudgetId(budgetID.value)
-    router.push(`/category/${budgetID.value}`);
+const get = (id: any) => {
+    budget.id = budgets.value[id].id
+    // router.push(`/category/${budgetID.value}`);
 }
 </script>
 <style scoped>

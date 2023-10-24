@@ -37,6 +37,7 @@ import InputNumber from 'primevue/inputnumber';
 import Knob from 'primevue/knob';
 import Categories from '@/Components/Categories.vue'
 import Slider from 'primevue/slider';
+import Category from '@/Components/Category.vue'
 
 const app = createApp(App);
 app.use(router);
@@ -45,6 +46,7 @@ app.use(ToastService);
 app.use(ConfirmationService);
 app.component("Slider", Slider);
 app.component("Categories", Categories);
+app.component("Category", Category);
 app.component("Knob", Knob);
 app.component("InputNumber", InputNumber);
 app.component("Calendar", Calendar);

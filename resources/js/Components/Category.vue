@@ -8,47 +8,27 @@
     </template>
   </DataTable>
   <Dialog v-model:visible="visible">
-    <div class="flex justify-content-center">
-      <div class="flex justify-content-center">
-        <form class="flex">
-          <div class="m-3 pad-20 br-radius-20 bg-white">
-            <h1>Dodaj nową kategorię</h1>
-            <div class="m-3 flex">
-              <div>
-                <h2>Nazwa kategori</h2>
-                <InputText v-model="categoryForm.category_name" type="text" placeholder="Nazwa" class="m-3" />
-              </div>
-              <div>
-                <h2>Limit kategori</h2>
-                <InputNumber v-model="categoryForm.category_limit" inputId="minmaxfraction" :maxFractionDigits="2"
-                  placeholder="Limit" class="m-3" />
-              </div>
-            </div>
-            <div>
-              <Button @click="submit" label="Save" class="m-3" />
-            </div>
-          </div>
-        </form>
+    <form class="flex">
+      <div>
+        <h2>Nazwa kategori</h2>
+        <InputText v-model="categoryForm.category_name" type="text" placeholder="Nazwa" class="m-1" />
       </div>
-    </div>
+      <div>
+        <h2>Limit kategori</h2>
+        <InputNumber v-model="categoryForm.category_limit" inputId="minmaxfraction" :maxFractionDigits="2"
+          placeholder="Limit" class="m-1" />
+      </div>
+    </form>
+    <Button @click="submit" label="Save" class="m-3" />
   </Dialog>
 </template>
 <script setup lang="ts">
 import axios from "axios";
-import { onMounted, reactive, ref, Ref, defineProps, defineEmits } from "vue";
+import { onMounted, reactive, ref, watch } from "vue";
 import { useCategoriesByBudgetId } from "@/../utils/useCategoriesByBudgetId";
 import { useRouter } from "vue-router";
-import { useCategories } from "@/../utils/useCategories";
-const router = useRouter();
-const props = defineProps({
-  id: {
-    type: Number,
-    default: "",
-  },
-});
-const { getCategoriesByBudgetId, categories } = useCategoriesByBudgetId();
-const value = ref()
-const visible = ref(false);
+import { budget } from "@/consts/budgetID";
+
 interface Category {
   category_name: string;
   budget_id: number;
@@ -59,17 +39,34 @@ const categoryForm: Category = reactive({
   budget_id: 1,
   category_limit: 0
 });
+const router = useRouter();
+const { getCategoriesByBudgetId, categories } = useCategoriesByBudgetId();
+const visible = ref(false);
 
-onMounted(async () => {
-  getCategoriesByBudgetId(props.id);
+watch(
+  () => budget.id,
+  (id) => {
+    getCategoriesByBudgetId(id)
+    categoryForm.budget_id = id
+  }
+)
+onMounted(() => {
+  getCategoriesByBudgetId(budget.id);
+  getCategoriesLimits()
 });
 const submit = () => {
   save(categoryForm);
 };
+const getCategoriesLimits = () => {
+  categories.value.forEach((category:Category) => {
+    budget.amounts.push(category.category_limit)
+  });
+  console.log(budget.amounts)
+}
 const save = async (data: Category) => {
-  await axios.post("/api/createCategory", data).then(() => {
+  await axios.post("/api/createOrUpdateCategory", data).then(() => {
     visible.value = false;
-    getCategoriesByBudgetId(props.id);
+    getCategoriesByBudgetId(budget.id);
   });
 };
 </script>

@@ -33,10 +33,9 @@ const routes: Array<RouteRecordRaw> = [
         name: "Budgets",
     },
     {
-        path: "/category/:id",
+        path: "/category",
         component: Category,  
         name: "Category",
-        props: true,
     },
 ];
 const router = createRouter({

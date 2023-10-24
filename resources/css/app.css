@@ -17,6 +17,9 @@ body {
 .p-column-title {
   color: aqua;
 }
-td {
-
+.datatable td {
+  background-color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 0.2rem;
 }
