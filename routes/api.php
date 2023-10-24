@@ -23,9 +23,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('getCategoriesByBudgetId/{id}', [CategoryController::class, 'getCategoriesByBudgetId']);
-Route::post('/createCategory', [CategoryController::class, 'createCategory']);
 Route::get('/getCategories', [CategoryController::class, 'getCategories']);
-
+Route::get('/getCategoryById/{id}', [CategoryController::class, 'getCategoryById']);
+Route::post('/createOrUpdateCategory', [CategoryController::class, 'createOrUpdateCategory']);
 
 Route::post('/createBudget', [BudgetController::class, 'createBudget']);
 Route::get('/getBudgetsByUserId/{id}/{month}', [BudgetController::class, 'getBudgetsByUserId']);

@@ -12,13 +12,14 @@
       <div class="flex justify-content-center">
         <form class="flex">
           <div class="m-3 pad-20 br-radius-20 bg-white">
+            <h1>Dodaj nową kategorię</h1>
             <div class="m-3 flex">
               <div>
                 <h2>Nazwa kategori</h2>
                 <InputText v-model="categoryForm.category_name" type="text" placeholder="Nazwa" class="m-3" />
               </div>
               <div>
-                <h2>Nazwa kategori</h2>
+                <h2>Limit kategori</h2>
                 <InputNumber v-model="categoryForm.category_limit" inputId="minmaxfraction" :maxFractionDigits="2"
                   placeholder="Limit" class="m-3" />
               </div>
@@ -27,7 +28,6 @@
               <Button @click="submit" label="Save" class="m-3" />
             </div>
           </div>
-
         </form>
       </div>
     </div>

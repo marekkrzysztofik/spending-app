@@ -24,4 +24,5 @@ class BudgetController extends Controller
   {
     return $this->budgetService->getBudgetsByUserId($id, $month);
   }
+  
 }

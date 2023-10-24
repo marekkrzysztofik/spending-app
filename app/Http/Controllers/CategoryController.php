@@ -18,6 +18,10 @@ class CategoryController extends Controller
     {
         $this->categoryService->createCategory($data);
     }
+    public function getCategoryById($id)
+    {
+        return $this->categoryService->getCategoryById($id);
+    }
     public function getCategoriesByBudgetId($id)
     {
         return $this->categoryService->getCategoriesByBudgetId($id);
@@ -25,5 +29,9 @@ class CategoryController extends Controller
     public function getCategories()
     {
         return $this->categoryService->getCategories();
+    }
+    public function createOrUpdateCategory(Request $data)
+    {
+        $this->categoryService->createOrUpdateCategory($data);
     }
 } 

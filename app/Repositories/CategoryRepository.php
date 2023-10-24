@@ -9,23 +9,27 @@ class CategoryRepository
     protected $category;
     public function __construct()
     {
-        $this->category = new Category();
+      $this->category = new Category();
     }
     public function getCategoriesByBudgetId($id)
     {
       return $this->category->where('budget_id', '=', $id)->get();
     }
+    public function getCategoryById($id)
+    {
+      return $this->category->find($id);
+    }
     public function save($category)
     {
-        $category->save();
+      $category->save();
     }
-    public function update($student)
-  {
-    $student->update();
-  }
+    public function update($category)
+    {
+      $category->update();
+    }
   public function getCategories()
   {
-      return Category::all();
+    return Category::all();
   }
 }
  
