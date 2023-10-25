@@ -39,7 +39,7 @@ const categoryForm: Category = reactive({
   budget_id: 1,
   category_limit: 0
 });
-const router = useRouter();
+
 const { getCategoriesByBudgetId, categories } = useCategoriesByBudgetId();
 const visible = ref(false);
 
