@@ -1,8 +1,7 @@
 <template>
     <div class=flex>
         <div class="flex flex-column">
-            <div @click="get(index)" v-for="(budget, index) in budgets" class="flex m-1 sidemenu-item">
-                <Knob v-model="value" :size="50" readonly />
+            <div @click="get(index)" v-for="(budget, index) in budgets" class="flex m-1 sidemenu-item" >
                 <div class="ml-2">
                     <h3>{{ budget.name }}</h3>
                     <span>{{ budget.categories_sum_category_limit }} / {{ budget.limit }} zł</span>
@@ -14,20 +13,18 @@
 </template> 
 <script setup lang="ts">
 import { useBudgets } from "@/../utils/useBudgets";
-import { onMounted, ref, Ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import { budget } from "@/consts/budgetID"
 
 const { getBudgets, budgets } = useBudgets();
-
 const value = ref(40)
 
 onMounted(() => {
-    getBudgets();
+    getBudgets(); 
 });
 const get = (id: any) => {
     budget.id = budgets.value[id].id
-    // router.push(`/category/${budgetID.value}`);
 }
 </script>
 <style scoped>

@@ -38,6 +38,7 @@ import Knob from 'primevue/knob';
 import Categories from '@/Components/Categories.vue'
 import Slider from 'primevue/slider';
 import Category from '@/Components/Category.vue'
+import Chart from 'primevue/chart';
 
 const app = createApp(App);
 app.use(router);
@@ -45,6 +46,7 @@ app.use(PrimeVue);
 app.use(ToastService);
 app.use(ConfirmationService);
 app.component("Slider", Slider);
+app.component("Chart", Chart);
 app.component("Categories", Categories);
 app.component("Category", Category);
 app.component("Knob", Knob);

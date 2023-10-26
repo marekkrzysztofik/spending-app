@@ -1,72 +1,68 @@
 <template>
-  <h1 class="m-3">Dodaj nową kategorię</h1>
-  <div class="flex justify-content-center">
-    <div class="flex justify-content-center">
-      <form class="flex">
-        <div class="m-3 pad-20 br-radius-20 bg-white">
-          <div class="m-3 flex">
-            <div>
-              <h2>Nazwa kategori</h2>
-              <InputText v-model="categoryForm.category_name" type="text" placeholder="Nazwa" class="m-3" />
-            </div>
-            <div>
-              <h2>Nazwa kategori</h2>
-              <InputNumber v-model="categoryForm.category_limit" inputId="minmaxfraction" :maxFractionDigits="2"
-                placeholder="Limit" class="m-3" />
-            </div>
-          </div>
-          <div>
-            <Button @click="submit" label="Save" class="m-3" />
-          </div>
-        </div>
-
-      </form>
+  <div class="grid">
+    <div @click="link(index)" v-for="(budget, index) in chartData" :key="index" class="m-1 item-box">
+      <div class="ml-2">
+        <h3>{{ budget.name }}</h3>
+        <Chart type="doughnut" :data="budget" class="chart-width" />
+        <span>{{ budget.sum }} / {{ budget.limit }} zł</span>
+      </div>
     </div>
   </div>
 </template>
 <script setup lang="ts">
 import axios from "axios";
-import { onMounted, reactive, ref, Ref, defineProps, defineEmits } from "vue";
-import { useRouter } from "vue-router";
 import { useCategories } from "@/../utils/useCategories";
+import { useBudgets } from "@/../utils/useBudgets";
+import { onMounted, ref, defineEmits } from "vue";
+import { useRouter } from "vue-router";
+import { budget } from "@/consts/budgetID"
+
 const router = useRouter();
-
-const { getCategories, categories } = useCategories();
-const value = ref()
-const { isModalOpen } = defineProps(['isModalOpen']);
-const emit = defineEmits(['close-modal']);
-interface Category {
-  category_name: string;
-  budget_id: number;
-  category_limit: number;
-}
-
-const categoryForm: Category = reactive({
-  category_name: "",
-  budget_id: 1,
-  category_limit: 0
-});
+const { getBudgets, budgets } = useBudgets();
+const chartData = ref()
+const options = ref()
 
 onMounted(async () => {
-  getCategories();
-});
-const submit = () => {
-  save(categoryForm);
-};
-const closeModalFromChild = () => {
-  emit('close-modal');
-};
-const save = async (data: Category) => {
-  await axios.post("/api/createCategory", data).then(() => {
-    closeModalFromChild()
+  await getBudgets();
+  chartData.value = budgets.value.map((item) => {
+    return {
+      name: item.name,
+      sum: item.categories_sum_category_limit,
+      limit: item.limit,
+      datasets:
+        [{
+          data: [parseInt(item.categories_sum_category_limit), item.limit],
+          backgroundColor: ['#E46651', '#41B883']
+        }],
+    };
   });
-};
-
-const capitilizeString = (str: string) => {
-  const firstLetter = str.charAt(0).toUpperCase();
-  const restOfString = str.slice(1).toLowerCase();
-  categoryForm.name = firstLetter + restOfString;
-};
-
+});
+const link = (id: any) => {
+  budget.id = budgets.value[id].id
+  router.push('/budgets')
+}
 </script>
-<style scoped></style>
+<style scoped>
+.chart-width {
+  width: 8rem;
+}
+
+.item-box {
+  padding: 1rem 3.5rem;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  background-color: white;
+  border-radius: 15px;
+}
+
+.grid {
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, 35vh);
+  grid-column-gap: 1rem;
+  grid-row-gap: 1rem;
+}
+</style>

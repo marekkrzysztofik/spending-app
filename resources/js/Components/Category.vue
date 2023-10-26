@@ -38,34 +38,21 @@
 import axios from "axios";
 import { onMounted, reactive, ref, watch, defineEmits } from "vue";
 import { useCategoriesByBudgetId } from "@/../utils/useCategoriesByBudgetId";
-import { useRouter } from "vue-router";
 import { budget } from "@/consts/budgetID";
-
-const emit = defineEmits(['refresh']);
-const refreshBudgets = () => {
-  emit('refresh');
-};
-
-const editingRows = ref([]);
-const participationsWithCompetitors = ref([]);
-const onRowEditSave = (event: any) => {
-  let { newData, index } = event;
-  save(newData)
-  refreshBudgets()
-};
 
 interface Category {
   category_name: string;
   budget_id: number;
   category_limit: number;
 }
+const { getCategoriesByBudgetId, categories } = useCategoriesByBudgetId();
+const emit = defineEmits(['refresh']);
+const editingRows = ref([]);
 const categoryForm: Category = reactive({
   category_name: "",
   budget_id: 1,
   category_limit: 0
 });
-
-const { getCategoriesByBudgetId, categories } = useCategoriesByBudgetId();
 const visible = ref(false);
 
 watch(
@@ -78,6 +65,14 @@ watch(
 onMounted(async () => {
   await getCategoriesByBudgetId(budget.id);
 });
+const onRowEditSave = (event: any) => {
+  let { newData, index } = event;
+  save(newData)
+  refreshBudgets()
+};
+const refreshBudgets = () => {
+  emit('refresh');
+};
 const submit = () => {
   save(categoryForm);
 };
@@ -94,9 +89,6 @@ const save = async (data: Category) => {
     refreshBudgets()
   });
 };
-
-
-
 </script>
 <style scoped></style>
  
