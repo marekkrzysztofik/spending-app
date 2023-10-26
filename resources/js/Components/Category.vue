@@ -36,16 +36,22 @@
 </template>
 <script setup lang="ts">
 import axios from "axios";
-import { onMounted, reactive, ref, watch } from "vue";
+import { onMounted, reactive, ref, watch, defineEmits } from "vue";
 import { useCategoriesByBudgetId } from "@/../utils/useCategoriesByBudgetId";
 import { useRouter } from "vue-router";
 import { budget } from "@/consts/budgetID";
+
+const emit = defineEmits(['refresh']);
+const refreshBudgets = () => {
+  emit('refresh');
+};
 
 const editingRows = ref([]);
 const participationsWithCompetitors = ref([]);
 const onRowEditSave = (event: any) => {
   let { newData, index } = event;
   save(newData)
+  refreshBudgets()
 };
 
 interface Category {
@@ -78,13 +84,19 @@ const submit = () => {
 const deleteCategory = (id: any) => {
   axios.delete(`/api/deleteCategory/${id}`).then(() => {
     getCategoriesByBudgetId(budget.id);
+    refreshBudgets()
   });
 };
 const save = async (data: Category) => {
   await axios.post("/api/createOrUpdateCategory", data).then(() => {
     visible.value = false;
     getCategoriesByBudgetId(budget.id);
+    refreshBudgets()
   });
 };
+
+
+
 </script>
 <style scoped></style>
+ 

@@ -1,15 +1,18 @@
 <?php
 
 namespace App\Repositories;
-
+use App\Http\Controllers\BudgetController;
 use App\Models\Category;
 
 class CategoryRepository
 {
     protected $category;
-    public function __construct()
+   private BudgetController $budgetController;
+
+    public function __construct(BudgetController $budgetController)
     {
       $this->category = new Category();
+      $this->budgetController = $budgetController;
     }
     public function getCategoriesByBudgetId($id)
     {

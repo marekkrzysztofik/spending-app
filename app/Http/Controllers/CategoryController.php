@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Services\CategoryService;
 
+
 class CategoryController extends Controller
 {
     protected $category;

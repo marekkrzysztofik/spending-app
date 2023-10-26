@@ -9,9 +9,9 @@
                 </div>
             </div>
         </div>
-        <Category />
+        <Category @refresh="getBudgets"/>
     </div>
-</template>
+</template> 
 <script setup lang="ts">
 import { useBudgets } from "@/../utils/useBudgets";
 import { onMounted, ref, Ref } from "vue";
@@ -20,12 +20,10 @@ import { budget } from "@/consts/budgetID"
 
 const { getBudgets, budgets } = useBudgets();
 
-
 const value = ref(40)
 
 onMounted(() => {
     getBudgets();
-
 });
 const get = (id: any) => {
     budget.id = budgets.value[id].id
