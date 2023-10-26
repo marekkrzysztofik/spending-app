@@ -33,7 +33,7 @@ class CategoryService
   public function updateCategory($data, $id)
   {
     $category = $this->categoryRepository->getCategoryById($id);
-    $category->category_name = $data['category_name'];
+    $category->category_limit = $data['category_limit'];
     $this->categoryRepository->update($category);
   }
   public function getCategories()
@@ -49,4 +49,8 @@ class CategoryService
             $this->createCategory($request);
         }
     }
+    public function deleteCategory($id)
+  {
+    $this->categoryRepository->delete($id); 
+  }
 }

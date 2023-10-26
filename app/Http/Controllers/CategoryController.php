@@ -34,4 +34,8 @@ class CategoryController extends Controller
     {
         $this->categoryService->createOrUpdateCategory($data);
     }
+    public function deleteCategory($id)
+    {
+      $this->categoryService->deleteCategory($id); 
+    }
 } 

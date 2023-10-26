@@ -13,7 +13,7 @@ class BudgetRepository
     }
     public function getBudgetsByUserId($id, $month)
     {
-        return $this->budget->where('user_id', '=', $id)->whereMonth('start_date', '=', $month)->get();
+        return $this->budget->where('user_id', '=', $id)->whereMonth('start_date', '=', $month)->withSum('categories', 'category_limit')->get();
     }
     public function save($budget) 
     {

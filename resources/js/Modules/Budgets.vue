@@ -5,7 +5,7 @@
                 <Knob v-model="value" :size="50" readonly />
                 <div class="ml-2">
                     <h3>{{ budget.name }}</h3>
-                    <span>200 zł / {{ budget.amount }} zł</span>
+                    <span>{{ budget.categories_sum_category_limit }} / {{ budget.limit }} zł</span>
                 </div>
             </div>
         </div>
@@ -19,6 +19,7 @@ import { useRouter } from "vue-router";
 import { budget } from "@/consts/budgetID"
 
 const { getBudgets, budgets } = useBudgets();
+
 
 const value = ref(40)
 

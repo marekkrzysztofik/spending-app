@@ -19,7 +19,8 @@ return new class extends Migration
             $table->string('description');
             $table->date('start_date');
             $table->date('end_date');
-            $table->integer('amount');
+            $table->integer('limit');
+            $table->integer('amount')->default(0);
             $table->timestamps();
         });
     }

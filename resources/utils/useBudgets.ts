@@ -9,7 +9,9 @@ export function useBudgets() {
         start_date: Date;
         end_date: Date;
         amount: number;
+        limit: number;
         type: string;
+        categories_sum_category_limit: number;
     }
     const budgets: Ref<Array<Budget>> = ref([]);
     async function getBudgets() {

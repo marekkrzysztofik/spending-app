@@ -26,8 +26,10 @@ Route::get('getCategoriesByBudgetId/{id}', [CategoryController::class, 'getCateg
 Route::get('/getCategories', [CategoryController::class, 'getCategories']);
 Route::get('/getCategoryById/{id}', [CategoryController::class, 'getCategoryById']);
 Route::post('/createOrUpdateCategory', [CategoryController::class, 'createOrUpdateCategory']);
+Route::delete('/deleteCategory/{id}', [CategoryController::class, 'deleteCategory']);
 
 Route::post('/createBudget', [BudgetController::class, 'createBudget']);
+Route::get('/calculateAmounts', [BudgetController::class, 'calculateAmounts']);
 Route::get('/getBudgetsByUserId/{id}/{month}', [BudgetController::class, 'getBudgetsByUserId']);
  
 

@@ -26,7 +26,7 @@ class BudgetService
     $budget->description = $data['description'];
     $budget->start_date = $data['start_date'];
     $budget->end_date = $data['end_date'];
-    $budget->amount = $data['amount'];
+    $budget->limit = $data['limit'];
     $this->budgetRepository->save($budget);
   }
 }

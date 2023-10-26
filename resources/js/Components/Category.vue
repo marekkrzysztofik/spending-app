@@ -1,7 +1,19 @@
 <template>
-  <DataTable :value="categories" responsiveLayout="scroll" class="datatable p-4" unstyled>
+  <DataTable :value="categories" responsiveLayout="scroll" editMode="row" dataKey="id" v-model:editingRows="editingRows"
+    @row-edit-save="onRowEditSave" class="datatable p-4" unstyled>
     <Column field="category_name" style="width: 26rem" />
-    <Column field="category_limit" header="Zaplanowane" style="text-align:right" />
+    <Column field="category_limit" header="Zaplanowane" style="text-align:right"> <template #editor="{ data, field }">
+        <InputText v-model="data[field]" unstyled />
+      </template>
+    </Column>
+    <Column :rowEditor="true" bodyStyle="text-align:center">
+    </Column>
+    <Column><template #body="event">
+        <button @click="deleteCategory(event.data.id)" class="btn-icon btn-icon-danger">
+          <i class="pi pi-ban"></i>
+        </button>
+      </template>
+    </Column>
     <template #footer>
       <p>Razem x transakcji w tym miesiącu.</p>
       <Button icon="pi pi-plus" label="New Category" @click="visible = true" />
@@ -29,6 +41,13 @@ import { useCategoriesByBudgetId } from "@/../utils/useCategoriesByBudgetId";
 import { useRouter } from "vue-router";
 import { budget } from "@/consts/budgetID";
 
+const editingRows = ref([]);
+const participationsWithCompetitors = ref([]);
+const onRowEditSave = (event: any) => {
+  let { newData, index } = event;
+  save(newData)
+};
+
 interface Category {
   category_name: string;
   budget_id: number;
@@ -50,19 +69,17 @@ watch(
     categoryForm.budget_id = id
   }
 )
-onMounted(() => {
-  getCategoriesByBudgetId(budget.id);
-  getCategoriesLimits()
+onMounted(async () => {
+  await getCategoriesByBudgetId(budget.id);
 });
 const submit = () => {
   save(categoryForm);
 };
-const getCategoriesLimits = () => {
-  categories.value.forEach((category:Category) => {
-    budget.amounts.push(category.category_limit)
+const deleteCategory = (id: any) => {
+  axios.delete(`/api/deleteCategory/${id}`).then(() => {
+    getCategoriesByBudgetId(budget.id);
   });
-  console.log(budget.amounts)
-}
+};
 const save = async (data: Category) => {
   await axios.post("/api/createOrUpdateCategory", data).then(() => {
     visible.value = false;

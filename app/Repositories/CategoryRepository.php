@@ -27,6 +27,11 @@ class CategoryRepository
     {
       $category->update();
     }
+    public function delete($id)
+  {
+    $category = $this->category->findOrFail($id);
+    $category->delete();
+  }
   public function getCategories()
   {
     return Category::all();
