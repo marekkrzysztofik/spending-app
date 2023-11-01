@@ -39,13 +39,14 @@ import Categories from '@/Components/Categories.vue'
 import Slider from 'primevue/slider';
 import Category from '@/Components/Category.vue'
 import Chart from 'primevue/chart';
+import ScrollPanel from 'primevue/scrollpanel';
 
 const app = createApp(App);
 app.use(router);
 app.use(PrimeVue);
 app.use(ToastService);
 app.use(ConfirmationService);
-app.component("Slider", Slider);
+app.component("ScrollPanel", ScrollPanel);
 app.component("Chart", Chart);
 app.component("Categories", Categories);
 app.component("Category", Category);
@@ -61,7 +62,6 @@ app.component("Checkbox", Checkbox);
 app.component("Toast", Toast);
 app.component("FileUpload", FileUpload);
 app.component("DataTable", DataTable);
-app.component("Card", Card);
 app.component("Column", Column);
 app.component("ColumnGroup", ColumnGroup);
 app.component("Row", Row);

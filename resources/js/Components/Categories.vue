@@ -1,13 +1,15 @@
 <template>
-  <div class="grid">
-    <div @click="link(index)" v-for="(budget, index) in chartData" :key="index" class="m-1 item-box">
-      <div class="ml-2">
-        <h3>{{ budget.name }}</h3>
-        <Chart type="doughnut" :data="budget" class="chart-width" />
-        <span>{{ budget.sum }} / {{ budget.limit }} zł</span>
+  <ScrollPanel style="width: 100%; height: 70vh">
+    <div class="grid">
+      <div @click="link(index)" v-for="(budget, index) in chartData" :key="index" class="m-1 item-box">
+        <div class="ml-2">
+          <h3>{{ budget.name }}</h3>
+          <Chart type="doughnut" :data="budget" class="chart-width" />
+          <span>{{ budget.sum }} / {{ budget.limit }} zł</span>
+        </div>
       </div>
     </div>
-  </div>
+  </ScrollPanel>
 </template>
 <script setup lang="ts">
 import axios from "axios";
@@ -31,7 +33,7 @@ onMounted(async () => {
       limit: item.limit,
       datasets:
         [{
-          data: [parseInt(item.categories_sum_category_limit), item.limit],
+          data: [item.categories_sum_category_limit, item.limit],
           backgroundColor: ['#E46651', '#41B883']
         }],
     };
