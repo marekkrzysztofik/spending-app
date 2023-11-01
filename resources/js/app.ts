@@ -40,12 +40,14 @@ import Slider from 'primevue/slider';
 import Category from '@/Components/Category.vue'
 import Chart from 'primevue/chart';
 import ScrollPanel from 'primevue/scrollpanel';
+import AddExpense from '@/Components/AddExpense.vue'
 
 const app = createApp(App);
 app.use(router);
 app.use(PrimeVue);
 app.use(ToastService);
 app.use(ConfirmationService);
+app.component("AddExpense", AddExpense);
 app.component("ScrollPanel", ScrollPanel);
 app.component("Chart", Chart);
 app.component("Categories", Categories);

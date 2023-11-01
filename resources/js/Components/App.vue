@@ -9,7 +9,7 @@
                     <i :class="menuItem.icon" /> {{ menuItem.label }}
                 </router-link>
             </div>
-            <div class="new-transaction">
+            <div @click="newTransaction" class="new-transaction">
                 <Button class="add-button m-auto" icon="pi pi-plus" unstyled />
                 <router-link to="/add-expense" class="m-1-auto">
                     <p>Add transaction</p>
@@ -25,11 +25,15 @@
             </div>
         </div>
     </div>
+    <Dialog v-model:visible="visible" modal>
+       <AddExpense @close-modal="visible=false"/>
+      </Dialog>
 </template>
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, reactive } from "vue";
 import { useRouter } from "vue-router";
 
+const visible = ref(false);
 const router = useRouter();
 const menuItems = [
     { path: "/", label: "Home", icon: 'pi pi-th-large mr-2' },
@@ -40,6 +44,9 @@ const menuItems = [
     { path: "/goals", label: "Settings", icon: 'pi pi-cog mr-2' },
     { path: "/register", label: "Register", icon: 'pi pi-user mr-2' },
 ]
+const newTransaction = () => {
+    visible.value=true;
+}
 </script>
 <style scoped>
 li {

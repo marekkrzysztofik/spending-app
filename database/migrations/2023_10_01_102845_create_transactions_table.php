@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->string('title');
             $table->integer('amount');
-            $table->string('type');
+            $table->integer('type');
             $table->date('date');
             $table->timestamps();
         });

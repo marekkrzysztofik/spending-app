@@ -1,7 +1,7 @@
 <template>
-  <DataTable :value="categories" responsiveLayout="scroll" editMode="row" dataKey="id" v-model:editingRows="editingRows"
-    @row-edit-save="onRowEditSave" class="datatable p-4" unstyled>
-    <Column field="category_name" style="width: 26rem" />
+  <DataTable v-if="categories.length" :value="categories" responsiveLayout="scroll" editMode="row" dataKey="id"
+    v-model:editingRows="editingRows" @row-edit-save="onRowEditSave" class="datatable p-4" unstyled>
+    <Column field="category_name" header="Nazwa kategori" style="width: 26rem" />
     <Column field="category_limit" header="Zaplanowane" style="text-align:right"> <template #editor="{ data, field }">
         <InputText v-model="data[field]" unstyled />
       </template>
@@ -16,10 +16,10 @@
     </Column>
     <template #footer>
       <p>Razem x transakcji w tym miesiącu.</p>
-      <Button icon="pi pi-plus" label="New Category" @click="visible = true" />
+      <Button class="" icon="pi pi-plus" label="New Category" @click="visible = true" />
     </template>
   </DataTable>
-  <Dialog v-model:visible="visible">
+  <Dialog v-model:visible="visible" modal>
     <form class="flex">
       <div>
         <h2>Nazwa kategori</h2>

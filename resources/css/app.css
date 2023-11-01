@@ -15,7 +15,7 @@ body {
 }
 
 .p-column-title {
-  color: aqua;
+  color: rgb(0, 0, 0);
 }
 .datatable td {
   background-color: white;

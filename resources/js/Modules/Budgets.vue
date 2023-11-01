@@ -1,14 +1,16 @@
 <template>
     <div class=flex>
-        <div class="flex flex-column">
-            <div @click="get(index)" v-for="(budget, index) in budgets" class="flex m-1 sidemenu-item" >
-                <div class="ml-2">
-                    <h3>{{ budget.name }}</h3>
-                    <span>{{ budget.categories_sum_category_limit }} / {{ budget.limit }} zł</span>
+        <ScrollPanel style="height: 520px">
+            <div class="flex flex-column">
+                <div @click="get(index)" v-for="(budget, index) in budgets" class="flex m-1 sidemenu-item">
+                    <div class="ml-2">
+                        <h3>{{ budget.name }}</h3>
+                        <span>{{ budget.categories_sum_category_limit }} / {{ budget.limit }} zł</span>
+                    </div>
                 </div>
             </div>
-        </div>
-        <Category @refresh="getBudgets"/>
+        </ScrollPanel>
+        <Category @refresh="getBudgets" /> 
     </div>
 </template> 
 <script setup lang="ts">
@@ -21,7 +23,7 @@ const { getBudgets, budgets } = useBudgets();
 const value = ref(40)
 
 onMounted(() => {
-    getBudgets(); 
+    getBudgets();
 });
 const get = (id: any) => {
     budget.id = budgets.value[id].id
