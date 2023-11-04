@@ -23,8 +23,8 @@ class TransactionRepository
       ->join('transactions', 'categories.id', '=', 'transactions.category_id')->where('budget_id', '=', $id)->get();
     return $joinedTables;
   }
-  public function getTransactionsByCategoryId($id)
+  public function getTransactionsByUserId($id)
   {
-    return $this->transaction->where('category_id', '=', $id)->get();
+    return $this->transaction->where('user_id', '=', $id)->get();
   }
 }

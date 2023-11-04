@@ -14,13 +14,14 @@ class TransactionService
   {
     $this->transactionRepository = $transactionRepository;
   }
-  public function getTransactionsByCategoryId($id)
+  public function getTransactionsByUserId($id)
   {
-    return $this->transactionRepository->getTransactionsByCategoryId($id);
+    return $this->transactionRepository->getTransactionsByUserId($id);
   }
   public function createTransaction($data)
   {
     $transaction = new Transaction;
+    $transaction->user_id = $data['user_id'];
     $transaction->category_id = $data['category_id'];
     $transaction->title = $data['title'];
     $transaction->amount = $data['amount'];

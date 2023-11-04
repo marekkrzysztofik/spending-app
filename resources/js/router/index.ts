@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import Home from "@/Components/Home.vue"
 import AddExpense from "@/Modules/Transactions/AddExpense.vue";
+import Transactions from "@/Modules/Transactions/Transactions.vue";
 import Register from "@/Modules/Auth/Register.vue";
 import Budgets from '@/Modules/Budgets/Budgets.vue'
 import Categories from "@/Modules/Categories/Categories.vue"
@@ -37,6 +38,11 @@ const routes: Array<RouteRecordRaw> = [
         path: "/add-new-budget",
         component: AddNewBudget,
         name: "AddNewBudget",
+    },
+    {
+        path: "/transactions",
+        component: Transactions,
+        name: "Transactions",
     },
     {
         path: "/category",

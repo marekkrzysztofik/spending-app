@@ -15,7 +15,7 @@
 </template> 
 <script setup lang="ts">
 import { useBudgets } from "@/../utils/useBudgets";
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue"; 
 import { useRouter } from "vue-router";
 import { budget } from "@/consts/budgetID"
 

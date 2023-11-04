@@ -53,7 +53,7 @@
   }
   const link = (id: any) => {
     budget.id = budgets.value[id].id
-    router.push('/budgets')
+    router.push('/categories')
   }
   
   </script>

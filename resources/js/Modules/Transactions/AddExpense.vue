@@ -33,8 +33,9 @@ const category = ref({
     id: 0,
     category_name: "",
 });
-const date = ref(new Date()); 
+const date = ref(new Date());
 interface expenseForm {
+    user_id: number;
     date: Date;
     category_id: number;
     title: string;
@@ -42,11 +43,15 @@ interface expenseForm {
     type: boolean;
 }
 const expenseForm: expenseForm = reactive({
+    user_id: 1,
     date: new Date(),
     title: '',
     category_id: 0,
     amount: 0,
     type: false
+});
+onMounted(() => {
+    getCategories();
 });
 const closeModal = () => {
     emit('close-modal');
@@ -62,9 +67,7 @@ const save = async () => {
             closeModal()
         });
 };
-onMounted(() => {
-    getCategories();
-});
+
 
 </script>
 <style scoped>
