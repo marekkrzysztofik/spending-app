@@ -27,7 +27,7 @@
       </div>
       <div>
         <h2>Limit kategori</h2>
-        <InputNumber v-model="categoryForm.category_limit" inputId="minmaxfraction" :maxFractionDigits="2"
+        <InputNumber v-model="categoryForm.category_limit" inputId="minmaxfraction" :maxFractionDigits="2" 
           placeholder="Limit" class="m-1" />
       </div>
     </form>

@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import Home from "@/Components/Home.vue"
-import Categories from "@/Components/Categories.vue"
-import AddExpense from "@/Components/AddExpense.vue";
-import Register from "@/Components/Register.vue";
-import Budgets from '@/Modules/Budgets.vue'
-import Category from "@/Components/Category.vue";
+import AddExpense from "@/Modules/Transactions/AddExpense.vue";
+import Register from "@/Modules/Auth/Register.vue";
+import Budgets from '@/Modules/Budgets/Budgets.vue'
+import Categories from "@/Modules/Categories/Categories.vue"
+import Category from "@/Modules/Categories/Category.vue";
 
 const routes: Array<RouteRecordRaw> = [
     {

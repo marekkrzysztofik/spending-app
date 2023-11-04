@@ -1,4 +1,3 @@
-import './bootstrap';
 
 import { createApp } from "vue";
 import router from "./router";
@@ -35,12 +34,12 @@ import SplitButton from 'primevue/splitbutton';
 import Calendar from 'primevue/calendar';
 import InputNumber from 'primevue/inputnumber';
 import Knob from 'primevue/knob';
-import Categories from '@/Components/Categories.vue'
+import Categories from "@/Modules/Categories/Categories.vue"
 import Slider from 'primevue/slider';
-import Category from '@/Components/Category.vue'
+import Category from "@/Modules/Categories/Category.vue";
 import Chart from 'primevue/chart';
 import ScrollPanel from 'primevue/scrollpanel';
-import AddExpense from '@/Components/AddExpense.vue'
+import AddExpense from "@/Modules/Transactions/AddExpense.vue";
 
 const app = createApp(App);
 app.use(router);

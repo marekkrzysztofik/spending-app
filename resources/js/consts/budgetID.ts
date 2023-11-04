@@ -5,4 +5,4 @@ interface Budget {
     amounts: Array<number>
     sum: number
 }
-export const budget: Budget = reactive({id:1, amounts:[], sum:0})
+export const budget: Budget = reactive({id:1, amounts:[], sum:0}) 
