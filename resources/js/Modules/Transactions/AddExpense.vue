@@ -33,7 +33,7 @@ const category = ref({
     id: 0,
     category_name: "",
 });
-const date = ref(new Date());
+const date = ref(new Date()); 
 interface expenseForm {
     date: Date;
     category_id: number;

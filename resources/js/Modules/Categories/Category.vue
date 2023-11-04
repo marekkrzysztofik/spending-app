@@ -19,7 +19,7 @@
       <Button class="" icon="pi pi-plus" label="New Category" @click="visible = true" />
     </template>
   </DataTable>
-  <Dialog v-model:visible="visible" modal>
+  <Dialog v-model:visible="visible" modal> 
     <form class="flex">
       <div>
         <h2>Nazwa kategori</h2>

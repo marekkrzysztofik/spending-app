@@ -1,19 +1,20 @@
 <template>
     <h1 v-if="!budgets.length">No budgets</h1>
-  
     <ScrollPanel style="width: 100%; height: 70vh">
       <div class="grid">
         <div class="m-1 item-box">
           <div class="ml-2">
             <h3>Add new budget</h3>
-            <Button class="m-2 w-10" icon="pi pi-plus" size="large"></Button>
+            <div @click="newBudget" class="new-budget">
+             <i class="pi pi-plus m-auto"/>
+          </div>
           </div>
         </div>
         <div @click="link(index)" v-for="(budget, index) in chartData" :key="index" class="m-1 item-box">
           <div class="ml-2">
             <h3>{{ budget.name }}</h3>
             <Chart type="doughnut" :data="budget" class="chart-width" />
-            <span>{{ budget.sum }} / {{ budget.limit }} zł</span>
+            <span>{{ budget.sum }} / {{ budget.limit }} zł</span> 
           </div>
         </div>
       </div>
@@ -47,6 +48,9 @@
       };
     });
   });
+  const newBudget = () => {
+    router.push('/add-new-budget')
+  }
   const link = (id: any) => {
     budget.id = budgets.value[id].id
     router.push('/budgets')
@@ -57,7 +61,15 @@
   .chart-width {
     width: 8rem;
   }
-  
+  .new-budget {
+    margin-top: 1rem;
+    display: flex;
+    padding: 1.3rem 0;
+    background-color: rgb(65,	184,	131)
+  }
+  .new-budget:hover {
+    background-color: rgba(65,	184,	131,0.6)
+  }
   .item-box {
     height: 28vh;
     display: flex;

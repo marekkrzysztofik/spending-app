@@ -10,7 +10,7 @@
                 </router-link>
             </div>
             <div @click="newTransaction" class="new-transaction">
-                <Button class="add-button m-auto" icon="pi pi-plus" unstyled />
+                <i class="pi pi-plus m-auto"/>
                 <router-link to="/add-expense" class="m-1-auto">
                     <p>Add transaction</p>
                 </router-link>
@@ -44,7 +44,7 @@ const menuItems = [
     { path: "/goals", label: "Settings", icon: 'pi pi-cog mr-2' },
     { path: "/register", label: "Register", icon: 'pi pi-user mr-2' },
 ]
-const newTransaction = () => {
+const newTransaction = () => { 
     visible.value=true;
 }
 </script>
@@ -80,16 +80,8 @@ a {
     flex-direction: column;
     justify-content: center;
     width: 100%;
-}
+} 
 
-.add-button {
-    border: none;
-    border-radius: 50%;
-    height: 3rem;
-    width: 3rem;
-    background-color: rgba(0, 119, 6, 0.7);
-
-}
 
 .nav-bar:last-child {
     align-items: flex-end;
