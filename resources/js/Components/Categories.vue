@@ -1,6 +1,14 @@
 <template>
+  <h1 v-if="!budgets.length">No budgets</h1>
+
   <ScrollPanel style="width: 100%; height: 70vh">
     <div class="grid">
+      <div class="m-1 item-box">
+        <div class="ml-2">
+          <h3>Add new budget</h3>
+          <Button class="m-2 w-10" icon="pi pi-plus" size="large"></Button>
+        </div>
+      </div>
       <div @click="link(index)" v-for="(budget, index) in chartData" :key="index" class="m-1 item-box">
         <div class="ml-2">
           <h3>{{ budget.name }}</h3>
@@ -43,6 +51,7 @@ const link = (id: any) => {
   budget.id = budgets.value[id].id
   router.push('/budgets')
 }
+
 </script>
 <style scoped>
 .chart-width {
@@ -50,8 +59,9 @@ const link = (id: any) => {
 }
 
 .item-box {
-  padding: 1rem 3.5rem;
+  height: 28vh;
   display: flex;
+  align-items: center;
   justify-content: center;
   text-align: center;
   background-color: white;
@@ -61,7 +71,6 @@ const link = (id: any) => {
 .grid {
   display: grid;
   align-items: center;
-  justify-items: center;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(2, 35vh);
   grid-column-gap: 1rem;
