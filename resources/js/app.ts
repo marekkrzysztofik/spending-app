@@ -41,12 +41,14 @@ import Chart from 'primevue/chart';
 import ScrollPanel from 'primevue/scrollpanel';
 import AddExpense from "@/Modules/Transactions/AddExpense.vue";
 import AddNewBudget from "@/Modules/Budgets/AddNewBudget.vue";
+import ShareBudget from "@/Modules/Budgets/ShareBudget.vue";
 
 const app = createApp(App);
 app.use(router);
 app.use(PrimeVue);
 app.use(ToastService);
 app.use(ConfirmationService);
+app.component("ShareBudget", ShareBudget);
 app.component("AddNewBudget", AddNewBudget);
 app.component("AddExpense", AddExpense);
 app.component("ScrollPanel", ScrollPanel);

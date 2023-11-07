@@ -7,6 +7,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BudgetController;
+use App\Http\Controllers\BudgetShareController; 
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -39,6 +40,10 @@ Route::get('/getBudgetsByUserId/{id}/{month}', [BudgetController::class, 'getBud
 Route::get('getTransactionsByUserId/{id}', [TransactionController::class, 'getTransactionsByUserId']);
 Route::post('/createTransaction', [TransactionController::class, 'createTransaction']);
 
-
+Route::get('getUsers', [AuthController::class, 'getUsers']); 
 Route::post('register', [AuthController::class, 'register']); 
 Route::post('login', [AuthController::class, 'login']);   
+
+
+Route::get('getSharedBudget/{id}', [BudgetShareController::class, 'getSharedBudget']);
+Route::post('shareBudget', [BudgetShareController::class, 'shareBudget']); 

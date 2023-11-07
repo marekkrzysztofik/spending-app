@@ -2,65 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use App\Models\BudgetShare;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class BudgetShareController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    protected $budgetShare;
+    public function __construct()
     {
-        //
+        $this->budgetShare = new BudgetShare();
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function shareBudget(Request $data)
     {
-        //
+      $share = new BudgetShare;
+      $share->user_id = $data['user_id'];
+      $share->budget_id = $data['budget_id'];
+      $share->type = $data['type'];
+      $share->save();
     }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function getSharedBudget($id)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(BudgetShare $budgetShare)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(BudgetShare $budgetShare)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, BudgetShare $budgetShare)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(BudgetShare $budgetShare)
-    {
-        //
+        $joinedTables = DB::table('budgets')
+      ->join('budget_shares', 'budgets.id', '=', 'budget_shares.budget_id')->where('budget_shares.user_id', '=', $id)->get();
+    return $joinedTables;
     }
 }

@@ -14,12 +14,14 @@
         </div>
         <button type="button" @click="save"></button>
     </form>
-</template>
+    <ShareBudget/>
+</template> 
 
 <script setup lang="ts">
 import axios from "axios";
 import { onMounted, reactive, ref, Ref, defineEmits } from "vue";
 import { useRouter } from "vue-router";
+import ShareBudget from "./ShareBudget.vue";
   
 const router = useRouter();
 

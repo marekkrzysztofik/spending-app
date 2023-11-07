@@ -61,7 +61,7 @@ class AuthController extends Controller
     
     public function getUsers()
     {
-        return User::all();
+        return User::all(); 
     }
    
 }
