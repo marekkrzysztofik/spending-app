@@ -30,8 +30,9 @@
       </Dialog>
 </template>
 <script setup lang="ts">
-import { ref, reactive } from "vue";
+import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
+import { usePrimeVue } from "primevue/config";
 
 const visible = ref(false);
 const router = useRouter();
@@ -44,8 +45,15 @@ const menuItems = [
     { path: "/goals", label: "Settings", icon: 'pi pi-cog mr-2' },
     { path: "/register", label: "Register", icon: 'pi pi-user mr-2' },
 ]
+onMounted(() => {
+    polishDateFormat();
+});
 const newTransaction = () => { 
     visible.value=true;
+}
+const polishDateFormat = () => {
+    const primevue = usePrimeVue();
+    primevue.config.locale.dateFormat = "dd/mm/yy";
 }
 </script>
 <style scoped>
