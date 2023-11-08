@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class TransactionService
 {
-  protected $transactionRepository;
+  protected $transactionRepository; 
 
   public function __construct(TransactionRepository $transactionRepository)
   {
@@ -17,6 +17,10 @@ class TransactionService
   public function getTransactionsByUserId($id)
   {
     return $this->transactionRepository->getTransactionsByUserId($id);
+  }
+  public function getTransactionsJoinedWithCategoriesAndBudgetsByUserId($id)
+  {
+    return $this->transactionRepository->getTransactionsJoinedWithCategoriesAndBudgetsByUserId($id);
   }
   public function createTransaction($data)
   {

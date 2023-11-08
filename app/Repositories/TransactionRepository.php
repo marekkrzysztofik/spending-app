@@ -14,13 +14,13 @@ class TransactionRepository
   }
 
   public function save($transaction)
-  {
+  { 
     $transaction->save();
   }
-  public function getTransactionsJoinedWithCategoriesByBudgetId($id)
+  public function getTransactionsJoinedWithCategoriesAndBudgetsByUserId($id)
   {
     $joinedTables = DB::table('categories')
-      ->join('transactions', 'categories.id', '=', 'transactions.category_id')->where('budget_id', '=', $id)->get();
+      ->join('transactions', 'categories.id', '=', 'transactions.category_id')->join('budgets', 'categories.budget_id', '=', 'budgets.id')->select('transactions.id','budgets.name','categories.category_name','transactions.title','transactions.date','transactions.amount')->where('budgets.user_id', '=', $id)->orderBy('transactions.id')->get();
     return $joinedTables;
   }
   public function getTransactionsByUserId($id)

@@ -12,7 +12,8 @@ interface Transaction {
     type: string;
     date: Date;
 }
-interface TransactionsColumn {
+
+interface TransactionsColumn { 
     field: string;
     header: string;
     style: string;

@@ -1,7 +1,20 @@
 <template>
-    <DataTable :value="transactions" v-model:filters="filters" responsiveLayout="scroll" editMode="row" dataKey="id"
+    <DataTable :value="transactions" paginator :rows="5" :rowsPerPageOptions="[5, 10, 20, 50]" v-model:filters="filters" responsiveLayout="scroll" editMode="row" dataKey="id"
         filterDisplay="row" class="datatable">
-        <Column field="category_id" header="ID Kategori" sortable />
+        <Column header="Nazwa budżetu" filterField="name" >
+            <template #body="{ data }">
+                <div class="flex align-items-center gap-2">
+                    <span>{{ data.name }}</span>
+                </div>
+            </template>
+            <template #filter="{ filterModel, filterCallback }">
+                <InputText v-model="filterModel.value" @input="filterCallback()" placeholder="Nazwa" class="p-column-filter"
+                    style="width: 8rem">
+
+                </InputText>
+            </template>
+        </Column>
+        <Column field="category_name" header="Nazwa Kategori" sortable />
         <Column header="Tytuł transakcji" filterField="title" style="min-width: 26rem">
             <template #body="{ data }">
                 <div class="flex align-items-center gap-2">
@@ -52,7 +65,7 @@
 </template>
 
 <script setup lang="ts">
-
+ 
 import { onMounted, ref, } from "vue";
 import { useTransactionsByUserId } from "@/../utils/useTransactionsByUserId";
 import { FilterMatchMode, FilterOperator } from 'primevue/api';
@@ -65,6 +78,7 @@ const filters = ref({
     date: { value: null, matchMode: FilterMatchMode.CONTAINS },
     title: { value: null, matchMode: FilterMatchMode.CONTAINS },
     amount: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    name: { value: null, matchMode: FilterMatchMode.CONTAINS },
 });
 const months = ref(['01-', '02-', '03-', '04-', '05-', '06-', '07-', '08-', '09-', '10-', '11-', '12-'
 ]);
