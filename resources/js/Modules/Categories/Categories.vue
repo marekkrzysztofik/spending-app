@@ -1,26 +1,24 @@
 <template>
   <div class=flex>
-      <ScrollPanel style="height: 520px">
-          <div class="flex flex-column">
-              <div @click="get(index)" v-for="(budget, index) in budgets" class="flex m-1 sidemenu-item"> 
-                  <div class="ml-2">
-                      <h3>{{ budget.name }}</h3>
-                      <span>{{ budget.categories_sum_category_limit }} / {{ budget.limit }} zł</span>
-                  </div>
-              </div>
+    <ScrollPanel style="height: 520px">
+      <div class="flex flex-column">
+        <div @click="get(index)" v-for="(budget, index) in budgets" class="flex m-1 sidemenu-item">
+          <div class="ml-2">
+            <h3>{{ budget.name }}</h3>
+            <span>{{ budget.categories_sum_category_limit }} / {{ budget.limit }} zł</span>
           </div>
-      </ScrollPanel>
-      <Category @refresh="getBudgets" />  
+        </div>
+      </div>
+    </ScrollPanel>
+    <Category @refresh="getBudgets" />
   </div>
 </template> 
 <script setup lang="ts">
 import { useBudgets } from "@/../utils/useBudgets";
-import { onMounted, ref, watch } from "vue"; 
-import { useRouter } from "vue-router";
+import { onMounted } from "vue";
 import { budget } from "@/consts/budgetID"
 
 const { getBudgets, budgets } = useBudgets();
-const value = ref(40)
 
 onMounted(() => {
   getBudgets();

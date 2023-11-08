@@ -14,8 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import axios from "axios";
-import { reactive, defineEmits } from "vue";
+import { defineEmits } from "vue";
 import { useSaveCategory } from "../../../utils/useSaveCategory";
 
 const { saveCategory, categoryForm } = useSaveCategory();
