@@ -44,7 +44,7 @@ const budgetForm: BudgetForm = reactive({
     start_date: '',
     end_date: '',
     limit: 0
-});
+}); 
 const transformDate = () => {
     dates.value.forEach((date: any, i: number) => {
         if(i==0) {
@@ -53,12 +53,15 @@ const transformDate = () => {
         else budgetForm.end_date = date.toLocaleDateString("af-ZA").replaceAll('/', '-')
     });
 }
+const currentDate = new Date();
+    const month = currentDate.getMonth()
 const save = async () => {
      transformDate()
     await axios
         .post("/api/createBudget", budgetForm)
         .then(() => {
             router.push('/budgets')
+            console.log(month)
         });
 };
 

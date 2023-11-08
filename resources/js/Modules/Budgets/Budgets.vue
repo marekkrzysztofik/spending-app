@@ -4,7 +4,7 @@
     <div class="grid">
       <div class="m-1 item-box">
         <div class="">
-          <h3>Add new budget</h3>
+          <h3>Add new budget</h3> 
           <div @click="newBudget" class="new-budget">
             <i class="pi pi-plus m-auto" />
           </div>

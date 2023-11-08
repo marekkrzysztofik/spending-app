@@ -7,6 +7,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BudgetController;
+use App\Http\Controllers\IncomeController;
 use App\Http\Controllers\BudgetShareController; 
 /*
 |--------------------------------------------------------------------------
@@ -29,16 +30,16 @@ Route::get('/getCategoryById/{id}', [CategoryController::class, 'getCategoryById
 Route::post('/createOrUpdateCategory', [CategoryController::class, 'createOrUpdateCategory']);
 Route::delete('/deleteCategory/{id}', [CategoryController::class, 'deleteCategory']);
 
+
 Route::post('/createBudget', [BudgetController::class, 'createBudget']);
 Route::get('/calculateAmounts', [BudgetController::class, 'calculateAmounts']);
 Route::get('/getBudgetsByUserId/{id}/{month}', [BudgetController::class, 'getBudgetsByUserId']);
  
 
-
-
 Route::get('getTransactionsJoinedWithCategoriesAndBudgetsByUserId/{id}', [TransactionController::class, 'getTransactionsJoinedWithCategoriesAndBudgetsByUserId']);
 Route::get('getTransactionsByUserId/{id}', [TransactionController::class, 'getTransactionsByUserId']);
 Route::post('/createTransaction', [TransactionController::class, 'createTransaction']);
+
 
 Route::get('getUsers', [AuthController::class, 'getUsers']); 
 Route::post('register', [AuthController::class, 'register']); 
@@ -47,3 +48,6 @@ Route::post('login', [AuthController::class, 'login']);
 
 Route::get('getSharedBudget/{id}', [BudgetShareController::class, 'getSharedBudget']);
 Route::post('shareBudget', [BudgetShareController::class, 'shareBudget']); 
+
+Route::get('getIncomesByUserId/{id}/{month}', [IncomeController::class, 'getIncomesByUserId']);
+Route::post('createIncome', [IncomeController::class, 'createIncome']); 

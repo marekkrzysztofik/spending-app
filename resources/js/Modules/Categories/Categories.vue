@@ -2,7 +2,7 @@
   <div class=flex>
       <ScrollPanel style="height: 520px">
           <div class="flex flex-column">
-              <div @click="get(index)" v-for="(budget, index) in budgets" class="flex m-1 sidemenu-item">
+              <div @click="get(index)" v-for="(budget, index) in budgets" class="flex m-1 sidemenu-item"> 
                   <div class="ml-2">
                       <h3>{{ budget.name }}</h3>
                       <span>{{ budget.categories_sum_category_limit }} / {{ budget.limit }} zł</span>
@@ -10,7 +10,7 @@
               </div>
           </div>
       </ScrollPanel>
-      <Category @refresh="getBudgets" /> 
+      <Category @refresh="getBudgets" />  
   </div>
 </template> 
 <script setup lang="ts">
