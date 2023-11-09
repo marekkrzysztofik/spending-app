@@ -1,8 +1,6 @@
-import { reactive, Ref } from "vue";
+import { reactive, ref ,Ref } from "vue";
 
 interface Budget {
-    id: number,
-    amounts: Array<number>
-    sum: number
+    id: number
 }
-export const budget: Budget = reactive({id:1, amounts:[], sum:0}) 
+export const budget: Budget = reactive({id:1}) 

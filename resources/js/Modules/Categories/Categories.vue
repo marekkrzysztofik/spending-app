@@ -5,7 +5,7 @@
         <div @click="get(index)" v-for="(budget, index) in budgets" class="flex m-1 sidemenu-item">
           <div class="ml-2">
             <h3>{{ budget.name }}</h3>
-            <span>{{ budget.categories_sum_category_limit }} / {{ budget.limit }} zł</span>
+            <span>{{ budget.categories_sum_category_limit | 0 }} / {{ budget.limit }} zł</span>
           </div>
         </div>
       </div>
@@ -23,7 +23,7 @@ const { getBudgets, budgets } = useBudgets();
 onMounted(() => {
   getBudgets();
 });
-const get = (id: any) => {
+const get = (id: number) => {
   budget.id = budgets.value[id].id
 }
 </script>

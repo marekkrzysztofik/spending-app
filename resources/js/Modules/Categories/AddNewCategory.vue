@@ -11,7 +11,7 @@
         </div>
     </form>
     <Button @click="submit" label="Save" class="m-3" />
-</template>
+</template> 
 
 <script setup lang="ts">
 import { defineEmits } from "vue";
