@@ -1,12 +1,12 @@
 <template>
-  <h1 v-if="!budgets.length">No budgets</h1>
+  <h1 v-if="!sharedBudgets.length">No budgets</h1>
   <ScrollPanel style="width: 100%; height: 70vh">
     <div class="grid">
       <div class="m-1 item-box">
-        <div class="">
-          <h3>Add new budget</h3>
+        <div class="ml-2">
+          <h3>Share a budget</h3>
           <div @click="visible = true" class="new-budget">
-            <i class="pi pi-plus m-auto" />
+            <i class="pi pi-link m-auto" />
           </div>
         </div>
       </div>
@@ -20,27 +20,27 @@
     </div>
   </ScrollPanel>
   <Dialog v-model:visible="visible" modal>
-    <AddNewBudget @close-modal="closeModal" />
+    <ShareBudget @close-modal="closeModal" />
   </Dialog>
 </template>
 <script setup lang="ts">
-import { useBudgets } from "@/../utils/useBudgets";
-import { onMounted, ref } from "vue";
+import { useSharedBudgets } from "../../../utils/useSharedBudgets";
+import { onMounted, ref, defineEmits } from "vue";
 import { useRouter } from "vue-router";
 import { budget } from "@/consts/budgetID"
-import AddNewBudget from "./AddNewBudget.vue";
+import ShareBudget from "./ShareBudget.vue";
 
 const router = useRouter();
-const { getBudgets, budgets } = useBudgets();
+const { getSharedBudgets, sharedBudgets } = useSharedBudgets();
 const chartData = ref()
 const visible = ref(false)
 
 onMounted(async () => {
-  await getBudgets();
-  prepareDataForCharts();
+  await getSharedBudgets();
+  prepareDataForCharts()
 });
 const prepareDataForCharts = () => {
-  chartData.value = budgets.value.map((item) => {
+  chartData.value = sharedBudgets.value.map((item) => {
     return {
       name: item.name,
       sum: item.categories_sum_category_limit,
@@ -53,14 +53,13 @@ const prepareDataForCharts = () => {
     };
   });
 }
-
 const closeModal = async () => {
- await getBudgets();
+ await getSharedBudgets();
   prepareDataForCharts()
   visible.value = false
 }
 const link = (id: any) => {
-  budget.id = budgets.value[id].id
+  // budget.id = budgets.value[id].id
   router.push('/categories')
 }
 

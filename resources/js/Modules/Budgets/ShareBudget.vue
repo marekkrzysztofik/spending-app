@@ -8,7 +8,6 @@
         <Column field="name"></Column>
         <Column field="surname"></Column>
     </DataTable>
-
     <button type="button" @click="save"></button>
 </template>
 <script setup lang="ts">
@@ -21,18 +20,28 @@ import { useBudgets } from "@/../utils/useBudgets";
 const { getBudgets, budgets } = useBudgets();
 const { getUsers, users } = useUsers();
 const selectedUsers = ref()
+const emit = defineEmits(['close-modal']);
 
+const closeModal = () => {
+    emit('close-modal');
+};
 onMounted(() => {
     getUsers();
     getBudgets()
 });
+const router = useRouter()
 const shareForm = reactive({
     user_id: 0,
-    budget_id: 0
+    budget_id: 0,
+    type: 'read'
 })
-const save = () => {
+const save = async () => {
     shareForm.user_id = selectedUsers.value.id
-    //  shareForm.budget_id = 
-    console.log(shareForm)
+    await axios
+        .post("/api/shareBudget", shareForm)
+        .then(() => {
+            closeModal()
+        });
 }
+
 </script> 

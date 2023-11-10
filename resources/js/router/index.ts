@@ -7,6 +7,7 @@ import Budgets from '@/Modules/Budgets/Budgets.vue'
 import Categories from "@/Modules/Categories/Categories.vue"
 import Category from "@/Modules/Categories/Category.vue";
 import AddNewBudget from "@/Modules/Budgets/AddNewBudget.vue";
+import Shared from "@/Modules/Budgets/Shared.vue";
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -33,6 +34,11 @@ const routes: Array<RouteRecordRaw> = [
         path: "/budgets",
         component: Budgets,
         name: "Budgets",
+    },
+    {
+        path: "/shared",
+        component: Shared,
+        name: "Shared",
     },
     {
         path: "/add-new-budget",
