@@ -57,7 +57,7 @@ const month = currentDate.getMonth()
 const save = async () => {
     transformDate()
     await axios
-        .post("/api/createBudget", budgetForm)
+        .post("/api/budgets", budgetForm)
         .then(() => {
             closeModal()
         });

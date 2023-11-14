@@ -16,7 +16,7 @@
 <script setup lang="ts">
 import { defineEmits } from "vue";
 import { useSaveCategory } from "../../../utils/useSaveCategory";
-
+ 
 const { saveCategory, categoryForm } = useSaveCategory();
 const emit = defineEmits(['close-modal']);
 

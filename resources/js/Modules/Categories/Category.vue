@@ -4,6 +4,7 @@
     <DataTable v-if="categories.length" :value="categories" responsiveLayout="scroll" editMode="row" dataKey="id"
       v-model:editingRows="editingRows" @row-edit-save="onRowEditSave" class="datatable p-4" unstyled>
       <Column field="category_name" header="Nazwa kategori" style="width: 26rem" />
+      <Column field="transactions_sum_amount" header="Wydane" />
       <Column field="category_limit" header="Zaplanowane" style="text-align:right"> <template #editor="{ data, field }">
           <InputText v-model="data[field]" unstyled />
         </template>
@@ -50,8 +51,8 @@ const visible = ref(false);
 watch(
   () => budget.id,
   (id) => {
+    //categoryForm.budget_id = id
     getCategoriesByBudgetId(id)
-    categoryForm.budget_id = id
   }
 )
 onMounted(async () => {

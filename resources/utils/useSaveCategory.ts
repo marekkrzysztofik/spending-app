@@ -1,5 +1,6 @@
 import { reactive } from "vue";
 import axios from "axios";
+import { budget } from "@/consts/budgetID";
 
 export function useSaveCategory() {
     interface Category {
@@ -13,8 +14,9 @@ export function useSaveCategory() {
         category_limit: 0
     });
     async function saveCategory(data: Category) {
+        categoryForm.budget_id = budget.id
         await axios.post("/api/createOrUpdateCategory", data)
     }
     return { categoryForm, saveCategory };
 }
- 
+  

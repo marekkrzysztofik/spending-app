@@ -16,6 +16,11 @@
           <Chart type="doughnut" :data="budget" class="chart-width" />
           <span>{{ budget.sum }} / {{ budget.limit }} zł</span>
         </div>
+        <div class="ml-2">
+          <h3>{{ budget.name }}</h3>
+          <Chart type="doughnut" :data="budget" class="chart-width" />
+          <span>{{ budget.sum }} / {{ budget.limit }} zł</span>
+        </div>
       </div>
     </div>
   </ScrollPanel>
@@ -67,7 +72,7 @@ const link = (id: any) => {
 </script>
 <style scoped>
 .chart-width {
-  width: 8rem;
+  width: 6rem;
 }
 
 .new-budget {

@@ -16,4 +16,8 @@ class Budget extends Model
     {
         return $this->hasMany(BudgetShare::class);
     }
-}
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
+} 

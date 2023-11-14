@@ -11,9 +11,9 @@ class BudgetRepository
     {
         $this->budget = new Budget();
     }
-    public function getBudgetsByUserId($id, $month)
+    public function getBudgetsByUserId($id, $month) 
     {
-        return $this->budget->where('user_id', '=', $id)->whereMonth('start_date', '=', $month)->withSum('categories', 'category_limit')->get();
+        return $this->budget->where('user_id', '=', $id)->whereMonth('start_date', '=', $month)->withSum('categories', 'category_limit')->withSum('transactions', 'amount')->get();
     }
     public function save($budget) 
     {
@@ -21,5 +21,5 @@ class BudgetRepository
     }
     
     
-}
+} 
   

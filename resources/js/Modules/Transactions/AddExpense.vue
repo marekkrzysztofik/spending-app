@@ -29,13 +29,10 @@ import axios from 'axios'
 
 const { getCategories, categories } = useCategories();
 const emit = defineEmits(['close-modal']);
-const category = ref({
-    id: 0,
-    category_name: "",
-});
+const category = ref();
 const date = ref(new Date());
 interface expenseForm {
-    user_id: number;
+    budget_id: number;
     date: Date;
     category_id: number;
     title: string;
@@ -43,7 +40,7 @@ interface expenseForm {
     type: boolean;
 }
 const expenseForm: expenseForm = reactive({
-    user_id: 1,
+    budget_id: 1,
     date: new Date(),
     title: '',
     category_id: 0,
@@ -58,6 +55,7 @@ const closeModal = () => {
 };
 const save = async () => {
     expenseForm.category_id = category.value.id;
+    expenseForm.budget_id = category.value.budget_id;
     const data = date.value.toLocaleDateString("af-ZA").replaceAll('/', '-')
     expenseForm.date = data
     console.log(expenseForm)

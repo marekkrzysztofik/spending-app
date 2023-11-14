@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('category_name');
             $table->integer('category_limit');
             $table->timestamps();
-        });
+        }); 
     }
 
     /**

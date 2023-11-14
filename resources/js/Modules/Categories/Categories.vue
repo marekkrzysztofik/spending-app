@@ -9,7 +9,7 @@
           </div>
         </div>
       </div>
-    </ScrollPanel>
+    </ScrollPanel> 
     <Category @refresh="getBudgets" />
   </div>
 </template> 
@@ -23,8 +23,8 @@ const { getBudgets, budgets } = useBudgets();
 onMounted(() => {
   getBudgets();
 });
-const get = (id: number) => {
-  budget.id = budgets.value[id].id
+const get = (budgetId: number) => {
+  budget.id = budgets.value[budgetId].id
 }
 </script>
 <style scoped>

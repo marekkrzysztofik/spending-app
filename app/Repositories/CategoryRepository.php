@@ -9,14 +9,14 @@ class CategoryRepository
     protected $category;
    private BudgetController $budgetController;
 
-    public function __construct(BudgetController $budgetController)
+    public function __construct(BudgetController $budgetController) 
     {
       $this->category = new Category();
       $this->budgetController = $budgetController;
     }
     public function getCategoriesByBudgetId($id)
     {
-      return $this->category->where('budget_id', '=', $id)->get();
+      return $this->category->where('budget_id', '=', $id)->withSum('transactions', 'amount')->get();
     }
     public function getCategoryById($id)
     {
@@ -26,7 +26,7 @@ class CategoryRepository
     {
       $category->save();
     }
-    public function update($category)
+    public function update($category) 
     {
       $category->update();
     }

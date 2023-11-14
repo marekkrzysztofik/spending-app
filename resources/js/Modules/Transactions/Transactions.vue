@@ -44,7 +44,7 @@
             <Column header="Kwota" filterField="amount" style="text-align:right">
                 <template #body="{ data }">
                     <div class="flex align-items-center gap-2">
-                        <span>{{ data.amount }}</span>
+                        <span>{{ data.amount }}</span> 
                     </div>
                 </template>
                 <template #filter="{ filterModel, filterCallback }">
