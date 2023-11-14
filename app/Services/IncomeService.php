@@ -16,7 +16,7 @@ class IncomeService
   }
   public function getIncomesByUserId($id, $month)
   {
-    return $this->incomeRepository->getIncomes($id, $month);
+    return $this->incomeRepository->getIncomesByUserId($id, $month);
   }
   public function createIncome($data)
   {

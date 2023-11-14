@@ -15,7 +15,7 @@
           <h3>{{ budget.name }}</h3>
           <Chart type="doughnut" :data="budget" class="chart-width" />
           <span>{{ budget.sum }} / {{ budget.limit }} zł</span>
-        </div>
+        </div> 
       </div>
     </div>
   </ScrollPanel>

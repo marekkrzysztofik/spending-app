@@ -14,11 +14,11 @@ class TransactionService
   {
     $this->transactionRepository = $transactionRepository;
   }
-  public function getTransactionsByUserId($id)
+  public function getTransactionsByUserId($id, $month)
   {
-    return $this->transactionRepository->getTransactionsByUserId($id);
+    return $this->transactionRepository->getTransactionsByUserId($id, $month);
   }
-  public function getTransactionsJoinedWithCategoriesAndBudgetsByUserId($id)
+  public function getTransactionsJoinedWithCategoriesAndBudgetsByUserId($id) 
   {
     return $this->transactionRepository->getTransactionsJoinedWithCategoriesAndBudgetsByUserId($id);
   }

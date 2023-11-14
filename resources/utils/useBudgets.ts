@@ -14,7 +14,7 @@ export function useBudgets() {
         categories_sum_category_limit: number;
         transactions_sum_amount: number;
     }
-    const currentDate = new Date();
+    const currentDate = new Date(); 
     const month = currentDate.getMonth()+1
     const budgets: Ref<Array<Budget>> = ref([]);
     async function getBudgets() {
