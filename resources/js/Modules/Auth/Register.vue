@@ -37,7 +37,6 @@ const errors = ref([]);
 
 </script>
 <style>
-
 .text-danger {
   color: red;
   font-size: 16px;

@@ -1,4 +1,8 @@
 <template>
+    <div class="m-5">
+        <Checkbox v-model="income" :binary="true" class="mr-2" />
+        <span>Income</span>
+    </div>
     <div class="input-grid">
         <div>
             <h2>Tytuł </h2>
@@ -10,26 +14,28 @@
         </div>
         <div>
             <h2>Kategoria</h2>
-            <Dropdown v-model="category" :options="categories" optionLabel="category_name" placeholder="Select category"
-                class="m-3" />
+            <Dropdown v-if="!income" v-model="category" :options="categories" optionLabel="category_name"
+                placeholder="Select category" class="m-3" />
         </div>
         <div>
             <h2>Data</h2>
             <Calendar v-model="date" dateFormat="dd/mm/yy" class="m-3" />
         </div>
-        <Checkbox class="m-3" v-model="expenseForm.type" :binary="true" />
         <Button @click="save" label="Save" class="p-button-rounded m-3 save-btn w-9" />
     </div>
 </template>
 <script setup lang="ts">
-import { reactive, onMounted, ref, defineEmits } from "vue";
+import { reactive, onMounted, ref, defineEmits, Ref } from "vue";
 import { useCategories } from "@/../utils/useCategories";
+import { useForm } from 'vee-validate';
 
 import axios from 'axios'
 
+const { defineInputBinds, errors, handleSubmit } = useForm();
 const { getCategories, categories } = useCategories();
 const emit = defineEmits(['close-modal']);
 const category = ref();
+const income: Ref<boolean> = ref(false);
 const date = ref(new Date());
 interface expenseForm {
     budget_id: number;

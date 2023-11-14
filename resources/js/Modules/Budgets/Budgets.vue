@@ -16,11 +16,6 @@
           <Chart type="doughnut" :data="budget" class="chart-width" />
           <span>{{ budget.sum }} / {{ budget.limit }} zł</span>
         </div>
-        <div class="ml-2">
-          <h3>{{ budget.name }}</h3>
-          <Chart type="doughnut" :data="budget" class="chart-width" />
-          <span>{{ budget.sum }} / {{ budget.limit }} zł</span>
-        </div>
       </div>
     </div>
   </ScrollPanel>
@@ -50,9 +45,14 @@ const prepareDataForCharts = () => {
       name: item.name,
       sum: item.categories_sum_category_limit,
       limit: item.limit,
+      labels: ['A', 'B',],
       datasets:
         [{
           data: [item.categories_sum_category_limit, item.limit],
+          backgroundColor: ['#E46651', '#41B883']
+        },
+        {
+          data: [item.transactions_sum_amount, item.categories_sum_category_limit],
           backgroundColor: ['#E46651', '#41B883']
         }],
     };
@@ -60,7 +60,7 @@ const prepareDataForCharts = () => {
 }
 
 const closeModal = async () => {
- await getBudgets();
+  await getBudgets();
   prepareDataForCharts()
   visible.value = false
 }
@@ -72,7 +72,7 @@ const link = (id: any) => {
 </script>
 <style scoped>
 .chart-width {
-  width: 6rem;
+  width: 8rem;
 }
 
 .new-budget {

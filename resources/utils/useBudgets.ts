@@ -12,6 +12,7 @@ export function useBudgets() {
         limit: number;
         type: string;
         categories_sum_category_limit: number;
+        transactions_sum_amount: number;
     }
     const currentDate = new Date();
     const month = currentDate.getMonth()+1
