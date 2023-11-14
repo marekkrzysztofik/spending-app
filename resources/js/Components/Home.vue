@@ -4,8 +4,8 @@
     </div>
     <div class="flex justify-content-center">
         <div class="balance-box">
-            <h2>Total Balance</h2>
-            <h1>52 222 zł</h1>
+            <h2>Twój balans</h2>
+            <h1>{{ balance }} zł</h1>
             <p>last month 49 858 zł</p>
         </div>
         <div class="balance-box">
@@ -28,7 +28,7 @@
 </template>
 <script setup lang="ts">
 import axios from "axios";
-import { onMounted, reactive, ref, Ref } from "vue";
+import { onMounted, computed, ref, ComputedRef, Ref } from "vue";
 import { useRouter } from "vue-router";
 import { useBudgets } from "@/../utils/useBudgets";
 import { useIncomes } from "@/../utils/useIncomes";
@@ -43,28 +43,20 @@ const router = useRouter();
 onMounted(async () => {
     await getBudgets()
     await getIncomes()
-    expenseCounter()
-    incomesCounter()
+    incomeSum.value = counter(incomes, 'amount')
+    expenseSum.value = counter(budgets, 'transactions_sum_amount')
 });
-const incomesCounter = () => {
-    const incomesArray: Array<number> = []
-    incomes.value.forEach((el) => {
-        if (el.amount)
-            incomesArray.push(el.amount);
+const balance: ComputedRef<number> = computed(() => {
+    return incomeSum.value - expenseSum.value
+})
+const counter = (array: Ref<Array<any>>, prop: string) => {
+    const arr: Array<number> = []
+    array.value.forEach((el) => {
+        if (el[prop])
+            arr.push(el[prop]);
     });
-    if (incomesArray.length > 0)
-        incomeSum.value = incomesArray.reduce((a, b) => a + b);
-    incomeSum.value = separateThousands(incomeSum.value)
-};
-const expenseCounter = () => {
-    const expensesArray: Array<number> = []
-    budgets.value.forEach((el) => {
-        if (el.transactions_sum_amount)
-            expensesArray.push(el.transactions_sum_amount);
-    });
-    if (expensesArray.length > 0)
-        expenseSum.value = expensesArray.reduce((a, b) => a + b);
-    expenseSum.value = separateThousands(expenseSum.value)
+    if (arr.length > 0)
+        return arr.reduce((a, b) => a + b);
 };
 function separateThousands(number: number) {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
