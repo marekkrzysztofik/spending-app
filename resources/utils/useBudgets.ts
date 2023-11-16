@@ -1,20 +1,9 @@
 import { ref, Ref } from "vue";
 import axios from "axios";
+import { Budget } from "@/types/budget";
 
 export function useBudgets() {
-    interface Budget {
-        id: number;
-        name: string;
-        description: string;
-        start_date: Date;
-        end_date: Date;
-        amount: number;
-        limit: number;
-        type: string;
-        categories_sum_category_limit: number;
-        transactions_sum_amount: number;
-    }
-    const currentDate = new Date(); 
+   const currentDate = new Date(); 
     const month = currentDate.getMonth()+1
     const budgets: Ref<Array<Budget>> = ref([]);
     async function getBudgets() {
@@ -23,4 +12,4 @@ export function useBudgets() {
     }
     return { getBudgets, budgets };
 }
-  
+   

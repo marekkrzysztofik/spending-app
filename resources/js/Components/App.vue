@@ -30,7 +30,7 @@
     </Dialog>
 </template>
 <script setup lang="ts">
-import { ref, onMounted, computed, ComputedRef } from "vue";
+import { ref, onMounted, } from "vue";
 import { useRouter, useRoute, RouteRecordName } from "vue-router";
 import { usePrimeVue } from "primevue/config";
 
@@ -41,7 +41,6 @@ const menuItems = [
     { path: "/", label: "Home", icon: 'pi pi-th-large mr-2' },
     { path: "/budgets", label: "Budgets", icon: 'pi pi-dollar mr-2' },
     { path: "/categories", label: "Categories", icon: 'pi pi-th-large mr-2' },
-    { path: "/shared", label: "Shared", icon: 'pi pi-link mr-2' },
     { path: "/transactions", label: "Analytics", icon: 'pi pi-database mr-2' },
     { path: "/goals", label: "Settings", icon: 'pi pi-cog mr-2' },
     { path: "/register", label: "Register", icon: 'pi pi-user mr-2' },

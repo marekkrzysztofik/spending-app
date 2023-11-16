@@ -18,7 +18,8 @@ class BudgetShareController extends Controller
     public function shareBudget(Request $data)
     {
       $share = new BudgetShare;
-      $share->user_id = $data['user_id'];
+      $share->owner_user_id = $data['owner_user_id'];
+      $share->shared_user_id = $data['shared_user_id'];
       $share->budget_id = $data['budget_id'];
       $share->type = $data['type'];
       $share->save();
@@ -26,12 +27,13 @@ class BudgetShareController extends Controller
     public function getSharedBudget($id)
     {
         $joinedTables = DB::table('budgets')
-      ->join('budget_shares', 'budgets.id', '=', 'budget_shares.budget_id')->where('budget_shares.user_id', '=', $id)->get();
+      ->join('budget_shares', 'budgets.id', '=', 'budget_shares.budget_id')->where('budget_shares.shared_user_id', '=', $id)->get();
     return $joinedTables;
     }
-    public function getShared($id)
+    public function getBudgetYouShared($id)
     {
-      $budget = Budget::find($id);
-      
+      $joinedTables = DB::table('budgets')
+      ->join('budget_shares', 'budgets.id', '=', 'budget_shares.budget_id')->where('budget_shares.owner_user_id', '=', $id)->get();
+    return $joinedTables;
     }
 }

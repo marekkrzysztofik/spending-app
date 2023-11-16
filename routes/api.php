@@ -44,7 +44,7 @@ Route::get('getUsers', [AuthController::class, 'getUsers']);
 Route::post('register', [AuthController::class, 'register']); 
 Route::post('login', [AuthController::class, 'login']);   
 
-
+Route::get('getBudgetYouShared/{id}', [BudgetShareController::class, 'getBudgetYouShared']);
 Route::get('getSharedBudget/{id}', [BudgetShareController::class, 'getSharedBudget']);
 Route::post('shareBudget', [BudgetShareController::class, 'shareBudget']); 
 

@@ -31,12 +31,13 @@ onMounted(() => {
 });
 const router = useRouter()
 const shareForm = reactive({
-    user_id: 0,
+    shared_user_id:0,
+    owner_user_id:1,
     budget_id: 0,
     type: 'read'
 })
 const save = async () => {
-    shareForm.user_id = selectedUsers.value.id
+    shareForm.shared_user_id = selectedUsers.value.id
     await axios
         .post("/api/shareBudget", shareForm)
         .then(() => {

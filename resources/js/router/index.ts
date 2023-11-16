@@ -1,13 +1,9 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import Home from "@/Components/Home.vue"
-import AddExpense from "@/Modules/Transactions/AddExpense.vue";
 import Transactions from "@/Modules/Transactions/Transactions.vue";
 import Register from "@/Modules/Auth/Register.vue";
 import Budgets from '@/Modules/Budgets/Budgets.vue'
 import Categories from "@/Modules/Categories/Categories.vue"
-import Category from "@/Modules/Categories/Category.vue";
-import AddNewBudget from "@/Modules/Budgets/AddNewBudget.vue";
-import Shared from "@/Modules/Budgets/Shared.vue";
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -21,11 +17,6 @@ const routes: Array<RouteRecordRaw> = [
         name: "Categories",
     },
     {
-        path: "/add-expense",
-        component: AddExpense,
-        name: "AddExpense",
-    },
-    {
         path: "/register",
         component: Register,
         name: "Register",
@@ -36,24 +27,9 @@ const routes: Array<RouteRecordRaw> = [
         name: "Budgets",
     },
     {
-        path: "/shared",
-        component: Shared,
-        name: "Shared",
-    },
-    {
-        path: "/add-new-budget",
-        component: AddNewBudget,
-        name: "AddNewBudget",
-    },
-    {
         path: "/transactions",
         component: Transactions,
         name: "Transactions",
-    },
-    {
-        path: "/category",
-        component: Category,  
-        name: "Category",
     },
 ];
 const router = createRouter({

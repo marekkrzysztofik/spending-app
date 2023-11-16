@@ -1,57 +1,79 @@
 <template>
-  <h1 v-if="!budgets.length">Nowy miesiąc? Nowe budżety, nowy plan</h1>
+  <h1 v-if="!sharedBudgets.length">No budgets</h1>
+  <Button label="private" @click="selectComponent(0)"></Button>
+  <Button label="shared" @click="selectComponent(1)"></Button>
   <ScrollPanel style="width: 100%; height: 70vh">
     <div class="grid">
       <div class="m-1 item-box">
-        <div class="">
-          <h3>Add new budget</h3>
-          <div @click="visible = true" class="new-budget">
-            <i class="pi pi-plus m-auto" />
+        <div class="ml-2">
+          <h3>{{ selectedComponent.title }}</h3>
+          <div @click="visible = true" :class=selectedComponent.class>
+            <i :class=selectedComponent.icon />
           </div>
         </div>
       </div>
       <div @click="link(index)" v-for="(budget, index) in chartData" :key="index" class="m-1 item-box">
         <div class="ml-2">
           <h3>{{ budget.name }}</h3>
-          <span>{{ budget.sum }} / {{ budget.limit }} zł</span>
-          <div>
-            <button class="btn-icon btn-icon-success"><i class="pi pi-pencil" /></button>
-            <button class="btn-icon btn-icon-danger"><i class="pi pi-ban" /></button>
-          </div>
-
-        </div>
-        <div class="ml-2">
-
           <Chart type="doughnut" :data="budget" class="chart-width" />
-
-
+          <span>{{ budget.sum }} / {{ budget.limit }} zł</span>
         </div>
-
       </div>
     </div>
   </ScrollPanel>
   <Dialog v-model:visible="visible" modal>
-    <AddNewBudget @close-modal="closeModal" />
+    <component :is="selectedComponent.name" @close-modal="closeModal"></component>
   </Dialog>
 </template>
 <script setup lang="ts">
+import { useSharedBudgets } from "../../../utils/useSharedBudgets";
 import { useBudgets } from "@/../utils/useBudgets";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, Ref, reactive } from "vue";
 import { useRouter } from "vue-router";
+import { Budget } from "@/types/budget";
 import { budget } from "@/consts/budgetID"
+import ShareBudget from "./ShareBudget.vue";
 import AddNewBudget from "./AddNewBudget.vue";
 
 const router = useRouter();
 const { getBudgets, budgets } = useBudgets();
+const { getSharedBudgets, sharedBudgets } = useSharedBudgets();
 const chartData = ref()
 const visible = ref(false)
 
 onMounted(async () => {
+  await getSharedBudgets();
   await getBudgets();
-  prepareDataForCharts();
+  selectComponent(0)
 });
-const prepareDataForCharts = () => {
-  chartData.value = budgets.value.map((item) => {
+const selectedComponent = ref({
+  name: AddNewBudget,
+  title: 'Add new budget',
+  class: 'new-budget',
+  icon: 'pi pi-plus m-auto',
+  data: budgets
+})
+const components: Array<any> = [{
+  name: AddNewBudget,
+  title: 'Add new budget',
+  class: 'new-budget',
+  icon: 'pi pi-plus m-auto',
+  data: budgets
+},
+{
+  name: ShareBudget,
+  title: 'Share budget',
+  class: 'new-budget',
+  icon: 'pi pi-link m-auto',
+  data: sharedBudgets
+}
+]
+const selectComponent = (id: number) => {
+  selectedComponent.value = components[id]
+  prepareDataForCharts(components[id].data)
+}
+const prepareDataForCharts = (array: Ref<Array<Budget>>) => {
+  chartData.value = array.value.map((item) => {
     return {
       name: item.name,
       sum: item.categories_sum_category_limit,
@@ -69,14 +91,14 @@ const prepareDataForCharts = () => {
     };
   });
 }
-
 const closeModal = async () => {
+  await getSharedBudgets();
   await getBudgets();
-  prepareDataForCharts()
+  selectComponent(0)
   visible.value = false
 }
 const link = (id: any) => {
-  budget.id = budgets.value[id].id
+  // budget.id = budgets.value[id].id
   router.push('/categories')
 }
 
