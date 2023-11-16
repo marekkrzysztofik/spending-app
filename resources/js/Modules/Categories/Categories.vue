@@ -3,13 +3,17 @@
     <ScrollPanel style="height: 520px">
       <div class="flex flex-column">
         <div @click="get(index)" v-for="(budget, index) in budgets" class="flex m-1 sidemenu-item">
+          <div>
+            <button class="btn-icon btn-icon-success"><i class="pi pi-pencil" @click="disabled = false" /></button>
+            <button class="btn-icon btn-icon-danger"><i class="pi pi-ban" /></button>
+          </div>
           <div class="ml-2">
-            <h3>{{ budget.name }}</h3>
+            <InputText :value="budget.name" class="no-style-input" :disabled="disabled" unstyled />
             <span>{{ budget.categories_sum_category_limit | 0 }} / {{ budget.limit }} zł</span>
           </div>
         </div>
       </div>
-    </ScrollPanel> 
+    </ScrollPanel>
     <Category @refresh="getBudgets" />
   </div>
 </template> 
@@ -17,12 +21,14 @@
 import { useBudgets } from "@/../utils/useBudgets";
 import { onMounted } from "vue";
 import { budget } from "@/consts/budgetID"
+import { ref, Ref } from "vue";
 
 const { getBudgets, budgets } = useBudgets();
 
 onMounted(() => {
   getBudgets();
 });
+const disabled: Ref<boolean> = ref(true)
 const get = (budgetId: number) => {
   budget.id = budgets.value[budgetId].id
 }
@@ -44,6 +50,7 @@ const get = (budgetId: number) => {
 }
 
 .sidemenu-item {
+  align-items: center;
   background-color: white;
   color: rgb(95, 95, 95);
   margin: 0.2rem auto;

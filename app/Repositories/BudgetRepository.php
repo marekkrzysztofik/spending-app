@@ -19,7 +19,9 @@ class BudgetRepository
     {
         $budget->save();
     }
-     
-    
+    public function update($budget) 
+    {
+        $budget->update();
+    }
 } 
   

@@ -21,28 +21,12 @@ class BudgetController extends Controller
     {
       $this->budgetService->createBudget($data);
     }
-
-    // public function createBudget(Request $data)
-    // {
-    //     $this->budgetService->createBudget($data);
-    // }
     public function show($id,$month)
     {
       return $this->budgetService->getBudgetsByUserId($id, $month);
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    // public function edit($id)
-    // {
-    //     $product = Product::find($id);
-    // }
-  //   public function getBudgetsByUserId($id, $month)
-  // {
-  //   return $this->budgetService->getBudgetsByUserId($id, $month);
-  // }
+    public function update(Request $data, $id)
+    {
+      $this->budgetService->updateBudget($data, $id);
+    }
 }

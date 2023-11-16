@@ -29,4 +29,11 @@ class BudgetService
     $budget->limit = $data['limit'];
     $this->budgetRepository->save($budget); 
   }
+  public function updateBudget($data, $id)
+  {
+    $budget = Budget::find($id);
+    $budget->name = $data['name'];
+    $budget->limit = $data['limit'];
+    $this->budgetRepository->update($budget); 
+  }
 }

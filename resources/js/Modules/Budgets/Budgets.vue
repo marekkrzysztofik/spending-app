@@ -13,9 +13,20 @@
       <div @click="link(index)" v-for="(budget, index) in chartData" :key="index" class="m-1 item-box">
         <div class="ml-2">
           <h3>{{ budget.name }}</h3>
-          <Chart type="doughnut" :data="budget" class="chart-width" />
           <span>{{ budget.sum }} / {{ budget.limit }} zł</span>
-        </div> 
+          <div>
+            <button class="btn-icon btn-icon-success"><i class="pi pi-pencil" /></button>
+            <button class="btn-icon btn-icon-danger"><i class="pi pi-ban" /></button>
+          </div>
+
+        </div>
+        <div class="ml-2">
+
+          <Chart type="doughnut" :data="budget" class="chart-width" />
+
+
+        </div>
+
       </div>
     </div>
   </ScrollPanel>
