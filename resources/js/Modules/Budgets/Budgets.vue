@@ -1,5 +1,5 @@
 <template>
-  <h1 v-if="!budgets.length">No budgets</h1>
+  <h1 v-if="!budgets.length">Nowy miesiąc? Nowe budżety, nowy plan</h1>
   <ScrollPanel style="width: 100%; height: 70vh">
     <div class="grid">
       <div class="m-1 item-box">

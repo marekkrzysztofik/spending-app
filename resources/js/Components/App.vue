@@ -10,15 +10,15 @@
                 </router-link>
             </div>
             <div @click="newTransaction" class="new-transaction">
-                <i class="pi pi-plus m-auto"/>
+                <i class="pi pi-plus m-auto" />
                 <router-link to="/add-expense" class="m-1-auto">
                     <p>Add transaction</p>
                 </router-link>
             </div>
         </nav>
         <div>
-            <div class="top-panel pl-4 bg-white border-bottom-1 border-400"> 
-                <h2>Dashboard</h2>
+            <div class="top-panel pl-4 bg-white border-bottom-1 border-400">
+                <h2>{{ route.name }}</h2>
             </div>
             <div class="m-4">
                 <router-view />
@@ -26,16 +26,17 @@
         </div>
     </div>
     <Dialog v-model:visible="visible" modal>
-       <AddExpense @close-modal="visible=false"/>
-      </Dialog>
+        <AddExpense @close-modal="visible = false" />
+    </Dialog>
 </template>
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
-import { useRouter } from "vue-router";
+import { ref, onMounted, computed, ComputedRef } from "vue";
+import { useRouter, useRoute, RouteRecordName } from "vue-router";
 import { usePrimeVue } from "primevue/config";
 
 const visible = ref(false);
 const router = useRouter();
+const route = useRoute()
 const menuItems = [
     { path: "/", label: "Home", icon: 'pi pi-th-large mr-2' },
     { path: "/budgets", label: "Budgets", icon: 'pi pi-dollar mr-2' },
@@ -48,8 +49,8 @@ const menuItems = [
 onMounted(() => {
     polishDateFormat();
 });
-const newTransaction = () => { 
-    visible.value=true;
+const newTransaction = () => {
+    visible.value = true;
 }
 const polishDateFormat = () => {
     const primevue = usePrimeVue();
@@ -88,7 +89,7 @@ a {
     flex-direction: column;
     justify-content: center;
     width: 100%;
-} 
+}
 
 
 .nav-bar:last-child {
