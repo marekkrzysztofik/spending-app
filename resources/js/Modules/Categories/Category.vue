@@ -7,7 +7,7 @@
       <Column field="transactions_sum_amount" header="Wydane" />
       <Column field="category_limit" header="Zaplanowane" style="text-align:right"> <template #editor="{ data, field }">
           <InputText v-model="data[field]" unstyled />
-        </template>
+        </template> 
       </Column>
       <Column :rowEditor="true" bodyStyle="text-align:center">
       </Column>
@@ -44,7 +44,7 @@ import { useSaveCategory } from "../../../utils/useSaveCategory";
 const { getCategoriesByBudgetId, categories } = useCategoriesByBudgetId();
 const { saveCategory, categoryForm } = useSaveCategory();
 const emit = defineEmits(['refresh']);
-const editingRows = ref([]);
+const editingRows = ref([]); 
 const router = useRouter()
 const visible = ref(false);
 

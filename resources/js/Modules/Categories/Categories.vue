@@ -4,11 +4,10 @@
       <div class="flex flex-column">
         <div @click="get(index)" v-for="(budget, index) in budgets" class="flex m-1 sidemenu-item">
           <div>
-            <button class="btn-icon btn-icon-success"><i class="pi pi-pencil" @click="disabled = false" /></button>
-            <button class="btn-icon btn-icon-danger"><i class="pi pi-ban" /></button>
+            <button class="btn-icon btn-icon-info"><i class="pi pi-plus" /></button>
           </div>
           <div class="ml-2">
-            <InputText :value="budget.name" class="no-style-input" :disabled="disabled" unstyled />
+            <h3>{{ budget.name }}</h3>
             <span>{{ budget.categories_sum_category_limit | 0 }} / {{ budget.limit }} zł</span>
           </div>
         </div>
@@ -21,14 +20,11 @@
 import { useBudgets } from "@/../utils/useBudgets";
 import { onMounted } from "vue";
 import { budget } from "@/consts/budgetID"
-import { ref, Ref } from "vue";
 
 const { getBudgets, budgets } = useBudgets();
-
-onMounted(() => {
-  getBudgets();
+onMounted(async () => {
+  await getBudgets();
 });
-const disabled: Ref<boolean> = ref(true)
 const get = (budgetId: number) => {
   budget.id = budgets.value[budgetId].id
 }

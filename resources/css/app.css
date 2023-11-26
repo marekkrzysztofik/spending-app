@@ -27,7 +27,10 @@ body {
   color: #6a727a;
   cursor: pointer;
 }
-
+.btn-icon-info:hover {
+  background: #2196f3;
+  color: white;
+}
 .btn-icon-success:hover {
   background: rgb(47, 214, 111);
   color: white;
