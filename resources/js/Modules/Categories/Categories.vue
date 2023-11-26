@@ -4,7 +4,7 @@
       <div class="flex flex-column">
         <div @click="get(index)" v-for="(budget, index) in budgets" class="flex m-1 sidemenu-item">
           <div>
-            <button class="btn-icon btn-icon-info"><i class="pi pi-plus" /></button>
+            <button @click="visible = true" class="btn-icon btn-icon-success"><i class="pi pi-pencil" /></button>
           </div>
           <div class="ml-2">
             <h3>{{ budget.name }}</h3>
@@ -15,19 +15,31 @@
     </ScrollPanel>
     <Category @refresh="getBudgets" />
   </div>
+  <Dialog v-model:visible="visible" modal>
+    <EditBudget />
+  </Dialog>
 </template> 
 <script setup lang="ts">
 import { useBudgets } from "@/../utils/useBudgets";
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import { budget } from "@/consts/budgetID"
+import { useRouter } from "vue-router";
+import EditBudget from '@/Modules/Budgets/EditBudget.vue'
 
+const router = useRouter();
+const visible = ref(false)
 const { getBudgets, budgets } = useBudgets();
 onMounted(async () => {
   await getBudgets();
 });
-const get = (budgetId: number) => {
-  budget.id = budgets.value[budgetId].id
+const get = (arrayId: number) => {
+  budget.id = budgets.value[arrayId].id
 }
+// const editBudget = (arrayId: number) => {
+//   visible.value=true
+//   const budgetId = budgets.value[arrayId].id
+//  // router.push(`/budget/${budgetId}`);
+// }
 </script>
 <style scoped>
 .sidemenu-item:hover {

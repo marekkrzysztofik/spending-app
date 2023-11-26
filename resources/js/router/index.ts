@@ -4,6 +4,7 @@ import Transactions from "@/Modules/Transactions/Transactions.vue";
 import Register from "@/Modules/Auth/Register.vue";
 import Budgets from '@/Modules/Budgets/Budgets.vue'
 import Categories from "@/Modules/Categories/Categories.vue"
+import EditBudget from '@/Modules/Budgets/EditBudget.vue'
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -31,6 +32,12 @@ const routes: Array<RouteRecordRaw> = [
         component: Transactions,
         name: "Transactions",
     },
+    {
+        path: "/budget/:id",
+        component: EditBudget,
+        name: "EditBudget",
+        props: true,
+    }
 ];
 const router = createRouter({
     history: createWebHistory(),

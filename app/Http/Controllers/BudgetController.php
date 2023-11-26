@@ -29,4 +29,8 @@ class BudgetController extends Controller
     {
       $this->budgetService->updateBudget($data, $id);
     }
+    public function getBudgetById($id)
+    {
+      return $this->budgetService->getBudgetById($id);
+    }
 }
