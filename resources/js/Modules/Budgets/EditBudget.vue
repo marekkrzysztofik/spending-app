@@ -1,24 +1,20 @@
 <template>
     <div class="flex flex-column bg-dark-blue w-7 m-20-auto br-radius-15">
         <div class="m-auto">
-            <h2 class="center">Edit Budget</h2>
-            <div class="input-grid">
-                <div>
-                    <InputText v-model="budgetForm.name" type="text" placeholder="Name of competitor" class="m-3" />
-                    <InputText type="text" placeholder="Surname of competitor" class="m-3" />
+            <h2 class="center">Edytuj Budget</h2>
+            <div class="">
+                <div class="flex">
+                    <h4 class="m-auto">Nazwa</h4>
+                    <InputText v-model="budgetForm.name" type="text" class="m-3" />
                 </div>
-
-                <div>
-                    <p class="text-danger">
-
-                    </p>
+                <div class="flex">
+                    <h4 class="m-auto">Limit</h4>
+                    <InputText v-model="budgetForm.limit" type="number" class="m-3" />
                 </div>
-                <p>
-                    <Button label="Save" class="p-button-rounded m-3" />
-                </p>
+                <Button label="Save" class="p-button-rounded m-3" />
             </div>
         </div>
-    </div>
+    </div> 
 </template>
 <script setup lang="ts">
 import axios from 'axios'
