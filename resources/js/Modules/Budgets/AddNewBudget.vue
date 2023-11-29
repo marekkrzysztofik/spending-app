@@ -69,14 +69,3 @@ const save = async () => {
         });
 };
 </script>
-<style scoped>
-.input-grid {
-    margin: auto;
-    display: grid;
-    align-items: center;
-    grid-template-columns: repeat(2, 250px);
-    grid-template-rows: repeat(2, 1fr);
-    grid-column-gap: 0px;
-    grid-row-gap: 0px;
-}
-</style>

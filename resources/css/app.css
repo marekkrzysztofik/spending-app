@@ -28,7 +28,15 @@ input {
   padding: 0.8rem 0.3rem;
   transition: all 0.2s ease-in;
 }
-
+.input-grid {
+  margin: auto;
+  display: grid;
+  align-items: center;
+  grid-template-columns: repeat(2, 250px);
+  grid-template-rows: 1fr;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+}
 .input:focus {
   box-shadow: 0 0 0 0.2rem #a6d5fa;
 }
