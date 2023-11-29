@@ -23,9 +23,14 @@ class BudgetRepository
     {
         $budget->save();
     }
-    public function update($budget) 
+    public function update($budget)  
     {
         $budget->update();
+    }
+    public function delete($id)
+    {
+        $budget = $this->budget->findOrFail($id);
+        $budget->delete();
     }
 } 
   

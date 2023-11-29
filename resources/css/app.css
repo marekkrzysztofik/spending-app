@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Kanit&display=swap');
-
+h2 {
+  display: inline-block;
+}
 * {
   margin: 0;
   box-sizing: inherit;
@@ -19,7 +21,23 @@ input {
 .m-1-auto {
   margin: 1rem auto;
 }
+.input {
+  font-size: 0.9rem;
+  border: 0.1rem solid rgba(182, 187, 196, 0.3);
+  border-radius: 0.2rem;
+  padding: 0.8rem 0.3rem;
+  transition: all 0.2s ease-in;
+}
 
+.input:focus {
+  box-shadow: 0 0 0 0.2rem #a6d5fa;
+}
+
+.input:hover,
+.input:focus {
+
+  border-color: #2196F3;
+}
 .btn-icon {
   border: none;
   background: none;

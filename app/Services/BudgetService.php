@@ -22,6 +22,10 @@ class BudgetService
   {
     return $this->budgetRepository->getBudgetsByUserId($id, $month);
   }
+  public function deleteBudget($id)
+  {
+    return $this->budgetRepository->delete($id);
+  }
   public function createBudget($data)
   {
     $budget = new Budget;

@@ -55,20 +55,5 @@ const onSubmit = async () => {
     grid-row-gap: 0px;
 }
 
-.input {
-    border: 0.1rem solid rgba(182, 187, 196, 0.3);
-    border-radius: 0.2rem;
-    padding: 0.3rem;
-    transition: all 0.2s ease-in;
-}
 
-.input:focus {
-    box-shadow: 0 0 0 0.2rem #a6d5fa;
-}
-
-.input:hover,
-.input:focus {
-
-    border-color: #2196F3;
-}
 </style>
