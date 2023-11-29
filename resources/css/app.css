@@ -9,7 +9,9 @@ body {
   font-family: 'Kanit', sans-serif;
   background-color: rgba(128, 128, 128, 0.3);
 }
-
+input {
+  outline: none;
+}
 .p-20 {
   padding: 20px;
 }

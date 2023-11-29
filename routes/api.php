@@ -31,10 +31,9 @@ Route::post('/createOrUpdateCategory', [CategoryController::class, 'createOrUpda
 Route::delete('/deleteCategory/{id}', [CategoryController::class, 'deleteCategory']);
 
 
-// Route::post('/createBudget', [BudgetController::class, 'createBudget']); 
- Route::get('/budgets/{id}/{month}', [BudgetController::class, 'show']);
+
 Route::resource('budgets', BudgetController::class); 
-Route::get('/getBudgetById/{id}', [BudgetController::class, 'getBudgetById']);
+Route::get('/getBudgetsByUserId/{id}/{month}', [BudgetController::class, 'getBudgetsByUserId']); 
 
 Route::get('getTransactionsJoinedWithCategoriesAndBudgetsByUserId/{id}', [TransactionController::class, 'getTransactionsJoinedWithCategoriesAndBudgetsByUserId']);
 Route::get('getTransactionsByUserId/{id}/{month}', [TransactionController::class, 'getTransactionsByUserId']);

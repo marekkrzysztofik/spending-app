@@ -16,7 +16,7 @@
     <Category @refresh="getBudgets" />
   </div>
   <Dialog v-model:visible="visible" modal>
-    <EditBudget />
+    <EditBudget @refresh="closeModal" />
   </Dialog>
 </template> 
 <script setup lang="ts">
@@ -35,11 +35,10 @@ onMounted(async () => {
 const get = (arrayId: number) => {
   budget.id = budgets.value[arrayId].id
 }
-// const editBudget = (arrayId: number) => {
-//   visible.value=true
-//   const budgetId = budgets.value[arrayId].id
-//  // router.push(`/budget/${budgetId}`);
-// }
+const closeModal = () => {
+  getBudgets()
+  visible.value = false
+}
 </script>
 <style scoped>
 .sidemenu-item:hover {

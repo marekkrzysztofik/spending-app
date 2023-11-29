@@ -21,16 +21,17 @@ class BudgetController extends Controller
     {
       $this->budgetService->createBudget($data);
     }
-    public function show($id,$month)
+    public function show($id)
     {
-      return $this->budgetService->getBudgetsByUserId($id, $month);
+      return $this->budgetService->getBudgetById($id);
     }
     public function update(Request $data, $id)
     {
       $this->budgetService->updateBudget($data, $id);
     }
-    public function getBudgetById($id)
+    public function getBudgetsByUserId($id,$month)
     {
-      return $this->budgetService->getBudgetById($id);
+      return $this->budgetService->getBudgetsByUserId($id,$month);
     }
 }
+ 
