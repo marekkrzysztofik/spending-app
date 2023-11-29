@@ -3,38 +3,38 @@
         <Checkbox v-model="income" :binary="true" class="mr-2" />
         <span>Income</span>
     </div>
-    <div class="input-grid">
+    <form @submit.prevent="onSubmit" class="input-grid">
         <div>
             <h2>Tytuł </h2>
-            <InputText v-model="expenseForm.title" type="text" class="m-3" />
+            <input v-model="expenseForm.title" type="text" class="m-3 input" required />
         </div>
         <div>
             <h2>Kwota</h2>
-            <InputNumber v-model="expenseForm.amount" placeholder="Price" class="m-3" />
-        </div>
-        <div>
-            <h2>Kategoria</h2>
-            <Dropdown v-if="!income" v-model="category" :options="categories" optionLabel="category_name"
-                placeholder="Select category" class="m-3" />
+            <input v-model="expenseForm.amount" placeholder="Price" class="m-3 input" required />
         </div>
         <div>
             <h2>Data</h2>
             <Calendar v-model="date" dateFormat="dd/mm/yy" class="m-3" />
         </div>
-        <Button @click="save" label="Save" class="p-button-rounded m-3 save-btn w-9" />
-    </div>
+        <div>
+            <h2>Kategoria</h2>
+            <Dropdown v-model="category" :options="categories" optionLabel="category_name"
+                placeholder="Select category" class="m-3" />
+            <p v-if="errorMessage" class="p-error" id="date-error">{{ errorMessage || '&nbsp;' }}</p>
+        </div>
+        <Button type="submit" label="Save" class="p-button-rounded m-3 save-btn w-9" />
+    </form>
 </template>
 <script setup lang="ts">
 import { reactive, onMounted, ref, defineEmits, Ref } from "vue";
 import { useCategories } from "@/../utils/useCategories";
-import { useForm } from 'vee-validate';
 
 import axios from 'axios'
 
-const { defineInputBinds, errors, handleSubmit } = useForm();
 const { getCategories, categories } = useCategories();
 const emit = defineEmits(['close-modal']);
 const category = ref();
+const errorMessage: Ref<string> = ref('')
 const income: Ref<boolean> = ref(false);
 const date = ref(new Date());
 interface expenseForm {
@@ -59,6 +59,12 @@ onMounted(() => {
 const closeModal = () => {
     emit('close-modal');
 };
+const onSubmit = () => {
+    if (category.value || income.value && !category.value) {
+        save()
+    } else errorMessage.value = 'Wypełnij to pole'
+
+}
 const save = async () => {
     expenseForm.category_id = category.value.id;
     expenseForm.budget_id = category.value.budget_id;
