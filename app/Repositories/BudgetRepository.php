@@ -16,8 +16,14 @@ class BudgetRepository
         $budgets = Budget::with('categories')->get();
         $formattedBudgets = $budgets->map(function ($budget) {
             return [
-                'budgets' => $budget->budgets,
-                'categories' => $budget->categories->toArray(),
+                'name' => $budget['name'],
+                'categories' => $budget->categories->map(function ($category) {
+                    return [
+                        'id' => $category->id,
+                        'budget_id' => $category->budget_id,
+                        'category_name' => $category->category_name,
+                    ];
+                })->toArray(),
             ];
         });
         return $formattedBudgets;

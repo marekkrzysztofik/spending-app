@@ -17,9 +17,9 @@
             <Calendar v-model="date" dateFormat="dd/mm/yy" class="m-3" />
         </div>
         <div>
-            <h2>Kategoria</h2>
-            <Dropdown v-model="category" :options="categories" optionLabel="category_name"
-                placeholder="Select category" class="m-3" />
+            <h2 v-if="!income">Kategoria</h2>
+            <CascadeSelect v-if="!income" v-model="category" :options="categories" optionLabel="category_name" optionGroupLabel="name"
+            :optionGroupChildren="['categories']" class="m-3" style="minwidth: 14rem"/>
             <p v-if="errorMessage" class="p-error" id="date-error">{{ errorMessage || '&nbsp;' }}</p>
         </div>
         <Button type="submit" label="Save" class="p-button-rounded m-3 save-btn w-9" />
@@ -30,6 +30,7 @@ import { reactive, onMounted, ref, defineEmits, Ref } from "vue";
 import { useCategories } from "@/../utils/useCategories";
 
 import axios from 'axios'
+
 
 const { getCategories, categories } = useCategories();
 const emit = defineEmits(['close-modal']);
@@ -54,8 +55,13 @@ const expenseForm: expenseForm = reactive({
     type: false
 });
 onMounted(() => {
-    getCategories();
+   // getCategories();
+    getBudgetsWithCategories()
 });
+const getBudgetsWithCategories = async () => {
+    const response = await axios.get(`/api/budgets`)
+    categories.value = response.data;
+}
 const closeModal = () => {
     emit('close-modal');
 };
@@ -66,16 +72,17 @@ const onSubmit = () => {
 
 }
 const save = async () => {
-    expenseForm.category_id = category.value.id;
-    expenseForm.budget_id = category.value.budget_id;
-    const data = date.value.toLocaleDateString("af-ZA").replaceAll('/', '-')
-    expenseForm.date = data
-    console.log(expenseForm)
-    await axios
-        .post("/api/createTransaction", expenseForm)
-        .then(() => {
-            closeModal()
-        });
+    console.log(category.value)
+    // expenseForm.category_id = category.value.id;
+    // expenseForm.budget_id = category.value.budget_id;
+    // const data = date.value.toLocaleDateString("af-ZA").replaceAll('/', '-')
+    // expenseForm.date = data
+    // console.log(expenseForm)
+    // await axios
+    //     .post("/api/createTransaction", expenseForm)
+    //     .then(() => {
+    //         closeModal()
+    //     });
 };
 
 
