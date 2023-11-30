@@ -84,7 +84,7 @@ a {
     border-style: dashed;
     padding: 1.3rem 0;
     border-width: 2px;
-    border-color: rgba(0, 119, 6, 0.3);
+    border-color: var(--green);
     flex-direction: column;
     justify-content: center;
     width: 100%;

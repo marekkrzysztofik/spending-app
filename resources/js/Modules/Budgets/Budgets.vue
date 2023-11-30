@@ -112,7 +112,7 @@ const link = (id: any) => {
   margin-top: 1rem;
   display: flex;
   padding: 1.3rem 0;
-  background-color: rgb(65, 184, 131)
+  background-color: var(--green);
 }
 
 .new-budget:hover {

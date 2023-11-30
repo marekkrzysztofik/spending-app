@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Budget;
-  
+
 class BudgetRepository
 {
     protected $budget;
@@ -11,19 +11,30 @@ class BudgetRepository
     {
         $this->budget = new Budget();
     }
-    public function getBudgetsByUserId($id, $month) 
+    public function getBudgetsWithCategories()
     {
-        return $this->budget->where('user_id', '=', $id)->whereMonth('start_date', '=', $month)->withSum('categories', 'category_limit')->withSum('transactions', 'amount')->get();  
+        $budgets = Budget::with('categories')->get();
+        $formattedBudgets = $budgets->map(function ($budget) {
+            return [
+                'budgets' => $budget->budgets,
+                'categories' => $budget->categories->toArray(),
+            ];
+        });
+        return $formattedBudgets;
     }
-    public function getBudgetById($id) 
+    public function getBudgetsByUserId($id, $month)
     {
-        return $this->budget->find($id);  
+        return $this->budget->where('user_id', '=', $id)->whereMonth('start_date', '=', $month)->withSum('categories', 'category_limit')->withSum('transactions', 'amount')->get();
     }
-    public function save($budget) 
+    public function getBudgetById($id)
+    {
+        return $this->budget->find($id);
+    }
+    public function save($budget)
     {
         $budget->save();
     }
-    public function update($budget)  
+    public function update($budget)
     {
         $budget->update();
     }
@@ -32,5 +43,4 @@ class BudgetRepository
         $budget = $this->budget->findOrFail($id);
         $budget->delete();
     }
-} 
-  
+}

@@ -1,19 +1,27 @@
 @import url('https://fonts.googleapis.com/css2?family=Kanit&display=swap');
+
+:root {
+  --green: rgb(65, 184, 131);
+}
+
 h2 {
   display: inline-block;
 }
+
 * {
   margin: 0;
   box-sizing: inherit;
+  font-family: 'Kanit', sans-serif;
 }
 
 body {
-  font-family: 'Kanit', sans-serif;
   background-color: rgba(128, 128, 128, 0.3);
 }
+
 input {
   outline: none;
 }
+
 .p-20 {
   padding: 20px;
 }
@@ -21,6 +29,7 @@ input {
 .m-1-auto {
   margin: 1rem auto;
 }
+
 .input {
   font-size: 0.9rem;
   border: 0.1rem solid rgba(182, 187, 196, 0.3);
@@ -28,6 +37,7 @@ input {
   padding: 0.8rem 0.3rem;
   transition: all 0.2s ease-in;
 }
+
 .input-grid {
   margin: auto;
   display: grid;
@@ -37,6 +47,7 @@ input {
   grid-column-gap: 0px;
   grid-row-gap: 0px;
 }
+
 .input:focus {
   box-shadow: 0 0 0 0.2rem #a6d5fa;
 }
@@ -46,6 +57,7 @@ input {
 
   border-color: #2196F3;
 }
+
 .btn-icon {
   border: none;
   background: none;
@@ -55,10 +67,12 @@ input {
   color: #6a727a;
   cursor: pointer;
 }
+
 .btn-icon-info:hover {
   background: #2196f3;
   color: white;
 }
+
 .btn-icon-success:hover {
   background: rgb(47, 214, 111);
   color: white;

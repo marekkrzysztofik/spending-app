@@ -14,6 +14,10 @@ class BudgetService
   {
     $this->budgetRepository = $budgetRepository;
   }
+  public function getBudgetsWithCategories()
+  {
+    return $this->budgetRepository->getBudgetsWithCategories();
+  }
   public function getBudgetById($id)
   {
     return $this->budgetRepository->getBudgetById($id);
