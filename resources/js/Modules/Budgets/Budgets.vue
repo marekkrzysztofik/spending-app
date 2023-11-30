@@ -1,7 +1,7 @@
 <template>
   <h1 v-if="!sharedBudgets.length">No budgets</h1>
-  <Button label="private" @click="selectComponent(0)"></Button>
-  <Button label="shared" @click="selectComponent(1)"></Button>
+  <button @click="selectComponent(0)" class="button">Private</button>
+  <button @click="selectComponent(1)" class="button ml-3">Shared</button>
   <ScrollPanel style="width: 100%; height: 70vh">
     <div class="grid">
       <div class="m-1 item-box">
@@ -49,21 +49,21 @@ onMounted(async () => {
 const selectedComponent = ref({
   name: AddNewBudget,
   title: 'Add new budget',
-  class: 'new-budget',
+  class: 'new-budget button',
   icon: 'pi pi-plus m-auto',
   data: budgets
 })
 const components: Array<any> = [{
   name: AddNewBudget,
   title: 'Add new budget',
-  class: 'new-budget',
+  class: 'new-budget button',
   icon: 'pi pi-plus m-auto',
   data: budgets
 },
 {
   name: ShareBudget,
   title: 'Share budget',
-  class: 'new-budget',
+  class: 'new-budget button',
   icon: 'pi pi-link m-auto',
   data: sharedBudgets
 }

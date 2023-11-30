@@ -19,6 +19,7 @@
         <div>
             <div class="top-panel pl-4 bg-white border-bottom-1 border-400">
                 <h2>{{ route.name }}</h2>
+                <button class="button logout"><i class="pi pi-sign-out"></i></button>
             </div>
             <div class="m-4">
                 <router-view />
@@ -68,8 +69,8 @@ a {
 
 .top-panel {
     display: flex;
+    position: relative;
     align-items: center;
-    background-color: aquamarine;
     height: 5rem;
     width: 85vw;
 }
@@ -77,7 +78,6 @@ a {
 .navbar {
     width: 15vw;
 }
-
 .new-transaction {
     margin-top: 1rem;
     display: flex;
@@ -90,20 +90,13 @@ a {
     width: 100%;
 }
 
-
-.nav-bar:last-child {
-    align-items: flex-end;
-}
-
 .sidemenu-link {
     color: rgb(153, 153, 153);
     transition: color 0.2s ease;
 }
-
 .sidemenu-item:hover .sidemenu-link {
     color: black;
 }
-
 .sidemenu-item:hover {
     background-color: rgba(207, 207, 207);
 }

@@ -1,19 +1,16 @@
 <template>
-    <div class="flex flex-column w-7 m-20-auto br-radius-15">
+    <div class="flex flex-column m-20-auto br-radius-15">
         <form @submit.prevent="onSubmit" class="m-auto">
             <h2 class="center">Edytuj Budget</h2>
-            <div class="">
-                <div class="flex">
-                    <h4 class="m-auto">Nazwa</h4>
-                    <InputText v-model="budgetForm.name" type="text" class="m-3" required />
-                </div>
-                <div class="flex">
-                    <h4 class="m-auto">Limit</h4>
-                    <input v-model.number="budgetForm.limit" type="number" class="m-3 input" required />
-                </div>
-
-                <Button type="submit" label="Save" class="p-button-rounded m-3" />
+            <div class="flex">
+                <h4 class="m-auto">Nazwa</h4>
+                <input v-model="budgetForm.name" type="text" class="m-3 input" required />
             </div>
+            <div class="flex">
+                <h4 class="m-auto">Limit</h4>
+                <input v-model.number="budgetForm.limit" type="number" class="m-3 input" required />
+            </div>
+            <button type="submit" class="button m-3">Save</button>
         </form>
     </div>
 </template> 

@@ -14,7 +14,7 @@
             <Calendar v-model="dates" selectionMode="range" dateFormat="dd/mm/yy" :manualInput="false" placeholder="Data" />
             <p class="p-error" id="date-error">{{ errorMessage || '&nbsp;' }}</p>
         </div>
-        <Button class="w-min m-3" type="submit" label="save"></button>
+        <button class="w-min m-3 button" type="submit">Save</button>
     </form>
 </template> 
  

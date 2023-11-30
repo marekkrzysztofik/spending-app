@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Button class="ml-5" icon="pi pi-plus" label="New Category" @click="visible = true" />
+    <button class="ml-5 button" @click="visible = true" unstyled>New Category</button>
     <DataTable v-if="categories.length" :value="categories" responsiveLayout="scroll" editMode="row" dataKey="id"
       v-model:editingRows="editingRows" @row-edit-save="onRowEditSave" class="datatable p-4">
       <Column field="category_name" header="Nazwa kategori" style="width: 26rem" />
