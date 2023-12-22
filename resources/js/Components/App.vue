@@ -11,9 +11,7 @@
             </div>
             <div @click="newTransaction" class="new-transaction">
                 <i class="pi pi-plus m-auto" />
-                <router-link to="/add-expense" class="m-1-auto">
-                    <p>Add transaction</p>
-                </router-link>
+                <p class="m-1-auto">Add transaction</p>
             </div>
         </nav>
         <div>
@@ -43,7 +41,7 @@ const menuItems = [
     { path: "/budgets", label: "Budgets", icon: 'pi pi-dollar mr-2' },
     { path: "/categories", label: "Categories", icon: 'pi pi-th-large mr-2' },
     { path: "/transactions", label: "Analytics", icon: 'pi pi-database mr-2' },
-    { path: "/goals", label: "Settings", icon: 'pi pi-cog mr-2' },
+    { path: "/", label: "Settings", icon: 'pi pi-cog mr-2' },
     { path: "/register", label: "Register", icon: 'pi pi-user mr-2' },
 ]
 onMounted(() => {
@@ -78,6 +76,7 @@ a {
 .navbar {
     width: 15vw;
 }
+
 .new-transaction {
     margin-top: 1rem;
     display: flex;
@@ -94,9 +93,11 @@ a {
     color: rgb(153, 153, 153);
     transition: color 0.2s ease;
 }
+
 .sidemenu-item:hover .sidemenu-link {
     color: black;
 }
+
 .sidemenu-item:hover {
     background-color: rgba(207, 207, 207);
 }
@@ -107,5 +108,4 @@ a {
     padding: 0.65rem 1rem;
     border-radius: 10px;
     transition: color 0.2s ease;
-}
-</style>
+}</style>

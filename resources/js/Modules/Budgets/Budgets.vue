@@ -36,7 +36,7 @@ import ShareBudget from "./ShareBudget.vue";
 import AddNewBudget from "./AddNewBudget.vue";
 
 const router = useRouter();
-const { getBudgets, budgets } = useBudgets();
+const { getBudgets, budgets } = useBudgets(); 
 const { getSharedBudgets, sharedBudgets } = useSharedBudgets();
 const chartData = ref()
 const visible = ref(false)

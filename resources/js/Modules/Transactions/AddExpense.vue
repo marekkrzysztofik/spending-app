@@ -18,8 +18,8 @@
         </div>
         <div>
             <h2 v-if="!income">Kategoria</h2>
-            <CascadeSelect v-if="!income" v-model="category" :options="categories" optionLabel="category_name" optionGroupLabel="name"
-            :optionGroupChildren="['categories']" class="m-3" style="minwidth: 14rem"/>
+            <CascadeSelect v-if="!income" v-model="category" :options="categories" optionLabel="category_name"
+                optionGroupLabel="name" :optionGroupChildren="['categories']" class="m-3" style="minwidth: 14rem" />
             <p v-if="errorMessage" class="p-error" id="date-error">{{ errorMessage || '&nbsp;' }}</p>
         </div>
         <Button type="submit" label="Save" class="p-button-rounded m-3 save-btn w-9" />
@@ -55,12 +55,12 @@ const expenseForm: expenseForm = reactive({
     type: false
 });
 onMounted(() => {
-   // getCategories();
+    // getCategories();
     getBudgetsWithCategories()
 });
 const getBudgetsWithCategories = async () => {
     const response = await axios.get(`/api/budgets`)
-    categories.value = response.data;
+    categories.value = response.data.filter((item: any) => item.categories.length > 0);
 }
 const closeModal = () => {
     emit('close-modal');
@@ -73,16 +73,16 @@ const onSubmit = () => {
 }
 const save = async () => {
     console.log(category.value)
-    // expenseForm.category_id = category.value.id;
-    // expenseForm.budget_id = category.value.budget_id;
-    // const data = date.value.toLocaleDateString("af-ZA").replaceAll('/', '-')
-    // expenseForm.date = data
-    // console.log(expenseForm)
-    // await axios
-    //     .post("/api/createTransaction", expenseForm)
-    //     .then(() => {
-    //         closeModal()
-    //     });
+    expenseForm.category_id = category.value.id;
+    expenseForm.budget_id = category.value.budget_id;
+    const data = date.value.toLocaleDateString("af-ZA").replaceAll('/', '-')
+    expenseForm.date = data
+    console.log(expenseForm)
+    await axios
+        .post("/api/createTransaction", expenseForm)
+        .then(() => {
+            closeModal()
+        });
 };
 
 
