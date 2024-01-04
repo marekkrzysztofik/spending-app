@@ -1,7 +1,7 @@
 <template>
-  <h1 v-if="!sharedBudgets.length">No budgets</h1>
   <button @click="selectComponent(0)" class="button">Private</button>
   <button @click="selectComponent(1)" class="button ml-3">Shared</button>
+  <h1 v-if="!budgets.length">No budgets</h1>
   <ScrollPanel style="width: 100%; height: 70vh">
     <div class="grid">
       <div class="m-1 item-box">

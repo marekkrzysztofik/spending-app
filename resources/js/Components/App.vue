@@ -74,7 +74,7 @@ a {
 }
 
 .navbar {
-    width: 15vw;
+    min-width: 15vw;
 }
 
 .new-transaction {

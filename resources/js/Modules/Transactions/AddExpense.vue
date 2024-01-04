@@ -39,15 +39,14 @@ const errorMessage: Ref<string> = ref('')
 const income: Ref<boolean> = ref(false);
 const date = ref(new Date());
 interface expenseForm {
-    budget_id: number;
+    
     date: Date;
     category_id: number;
     title: string;
     amount: number;
     type: boolean;
 }
-const expenseForm: expenseForm = reactive({
-    budget_id: 1,
+const expenseForm: any = reactive({
     date: new Date(),
     title: '',
     category_id: 0,
@@ -72,17 +71,18 @@ const onSubmit = () => {
 
 }
 const save = async () => {
-    console.log(category.value)
     expenseForm.category_id = category.value.id;
     expenseForm.budget_id = category.value.budget_id;
     const data = date.value.toLocaleDateString("af-ZA").replaceAll('/', '-')
     expenseForm.date = data
     console.log(expenseForm)
-    await axios
+    if(income.value=false) {
+        await axios
         .post("/api/createTransaction", expenseForm)
         .then(() => {
             closeModal()
         });
+    }
 };
 
 

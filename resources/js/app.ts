@@ -8,7 +8,7 @@ import PrimeVue from "primevue/config";
 
 import "primevue/resources/primevue.min.css";
 import "primeflex/primeflex.css";
-import "primevue/resources/themes/saga-blue/theme.css"; //theme
+import "primevue/resources/themes/saga-green/theme.css"; //theme
 
 import "primeicons/primeicons.css"; //icons
 import Dialog from "primevue/dialog";
