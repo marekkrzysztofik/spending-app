@@ -4,10 +4,8 @@ import { Budget } from "@/types/budget";
 
 
 export function useBudgets() {
-    const currentDate = new Date();
-    const month = currentDate.getMonth() + 1
     const budgets: Ref<Array<Budget>> = ref([]);
-    async function getBudgets() {
+    async function getBudgets(month:any) {
         const response = await axios.get(`/api/getBudgetsByUserId/1/${month}`); 
         budgets.value = response.data;
     }

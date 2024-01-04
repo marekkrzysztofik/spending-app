@@ -1,7 +1,14 @@
 <template>
-  <button @click="selectComponent(0)" class="button">Private</button>
-  <button @click="selectComponent(1)" class="button ml-3">Shared</button>
-  <h1 v-if="!budgets.length">No budgets</h1>
+  <div class="flex justify-content-between option-bar">
+    <div>
+      <button @click="selectComponent(0)" class="button">Private</button>
+      <button @click="selectComponent(1)" class="button ml-3">Shared</button>
+    </div>
+    <h1 v-if="!budgets.length">No budgets</h1>
+    <div class="flex-end">
+      <Dropdown @change="changeDate" class="ml-3" v-model="selectedMonth" :options="months" />
+    </div>
+  </div>
   <ScrollPanel style="width: 100%; height: 70vh">
     <div class="grid">
       <div class="m-1 item-box">
@@ -36,23 +43,17 @@ import ShareBudget from "./ShareBudget.vue";
 import AddNewBudget from "./AddNewBudget.vue";
 
 const router = useRouter();
-const { getBudgets, budgets } = useBudgets(); 
+const currentDate = new Date();
+const currentMonth = ref(currentDate.getMonth() + 1)
+const { getBudgets, budgets } = useBudgets();
 const { getSharedBudgets, sharedBudgets } = useSharedBudgets();
 const chartData = ref()
 const visible = ref(false)
-
-onMounted(async () => {
-  await getSharedBudgets();
-  await getBudgets();
-  selectComponent(0)
-});
-const selectedComponent = ref({
-  name: AddNewBudget,
-  title: 'Add new budget',
-  class: 'new-budget button',
-  icon: 'pi pi-plus m-auto',
-  data: budgets
-})
+const months: Array<string> = ['January',
+  'February', "March", 'April', 'May', 'June',
+  'July', 'August', 'September',
+  'October', 'November', 'December']
+const selectedMonth = ref(months[currentDate.getMonth()])
 const components: Array<any> = [{
   name: AddNewBudget,
   title: 'Add new budget',
@@ -68,6 +69,17 @@ const components: Array<any> = [{
   data: sharedBudgets
 }
 ]
+const selectedComponent = ref(components[0])
+
+onMounted(async () => {
+  await getSharedBudgets();
+  await getBudgets(currentMonth);
+  selectComponent(0)
+});
+const changeDate = async () => {
+  await getBudgets(months.indexOf(selectedMonth.value) + 1)
+  selectComponent(0)
+}
 const selectComponent = (id: number) => {
   selectedComponent.value = components[id]
   prepareDataForCharts(components[id].data)
@@ -93,7 +105,7 @@ const prepareDataForCharts = (array: Ref<Array<Budget>>) => {
 }
 const closeModal = async () => {
   await getSharedBudgets();
-  await getBudgets();
+  await getBudgets(currentMonth);
   selectComponent(0)
   visible.value = false
 }
@@ -136,5 +148,9 @@ const link = (id: any) => {
   grid-template-rows: repeat(2, 35vh);
   grid-column-gap: 1rem;
   grid-row-gap: 1rem;
+}
+
+.option-bar {
+  width: 70vw;
 }
 </style>
