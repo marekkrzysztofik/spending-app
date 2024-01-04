@@ -33,9 +33,9 @@ class BudgetController extends Controller
   {
     $this->budgetService->updateBudget($data, $id);
   }
-  public function getBudgetsByUserId($id, $month)
+  public function getBudgetsByUserId($id, $month, $year)
   {
-    return $this->budgetService->getBudgetsByUserId($id, $month);
+    return $this->budgetService->getBudgetsByUserId($id, $month, $year);
   }
   public function destroy($id)
   {

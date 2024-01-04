@@ -6,7 +6,7 @@
     </div>
     <h1 v-if="!budgets.length">No budgets</h1>
     <div class="flex-end">
-      <Dropdown @change="changeDate" class="ml-3" v-model="selectedMonth" :options="months" />
+      <Calendar @date-select="changeDate" class="ml-3" v-model="selectedMonth" view="month" dateFormat="mm/yy" />
     </div>
   </div>
   <ScrollPanel style="width: 100%; height: 70vh">
@@ -44,7 +44,8 @@ import AddNewBudget from "./AddNewBudget.vue";
 
 const router = useRouter();
 const currentDate = new Date();
-const currentMonth = ref(currentDate.getMonth() + 1)
+const currentMonth = currentDate.getMonth() + 1
+const currentYear = currentDate.getFullYear()
 const { getBudgets, budgets } = useBudgets();
 const { getSharedBudgets, sharedBudgets } = useSharedBudgets();
 const chartData = ref()
@@ -53,7 +54,7 @@ const months: Array<string> = ['January',
   'February', "March", 'April', 'May', 'June',
   'July', 'August', 'September',
   'October', 'November', 'December']
-const selectedMonth = ref(months[currentDate.getMonth()])
+const selectedMonth = ref()
 const components: Array<any> = [{
   name: AddNewBudget,
   title: 'Add new budget',
@@ -73,12 +74,15 @@ const selectedComponent = ref(components[0])
 
 onMounted(async () => {
   await getSharedBudgets();
-  await getBudgets(currentMonth);
+  await getBudgets(currentMonth, currentYear);
   selectComponent(0)
 });
 const changeDate = async () => {
-  await getBudgets(months.indexOf(selectedMonth.value) + 1)
+  const month = selectedMonth.getMonth()
+  const year = selectedMonth.getFullYear()
+  await getBudgets(month, year)
   selectComponent(0)
+  console.log(selectedMonth)
 }
 const selectComponent = (id: number) => {
   selectedComponent.value = components[id]
@@ -105,7 +109,7 @@ const prepareDataForCharts = (array: Ref<Array<Budget>>) => {
 }
 const closeModal = async () => {
   await getSharedBudgets();
-  await getBudgets(currentMonth);
+  await getBudgets(currentMonth, currentYear);
   selectComponent(0)
   visible.value = false
 }

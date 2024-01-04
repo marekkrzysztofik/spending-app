@@ -28,9 +28,9 @@ class BudgetRepository
         });
         return $formattedBudgets;
     }
-    public function getBudgetsByUserId($id, $month)
+    public function getBudgetsByUserId($id, $month, $year)
     {
-        return $this->budget->where('user_id', '=', $id)->whereMonth('start_date', '=', $month)->withSum('categories', 'category_limit')->withSum('transactions', 'amount')->get();
+        return $this->budget->where('user_id', '=', $id)->whereMonth('start_date', '=', $month)->whereYear('start_date', '=', $year)->withSum('categories', 'category_limit')->withSum('transactions', 'amount')->get();
     }
     public function getBudgetById($id)
     {

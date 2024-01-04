@@ -22,9 +22,9 @@ class BudgetService
   {
     return $this->budgetRepository->getBudgetById($id);
   }
-  public function getBudgetsByUserId($id, $month)
+  public function getBudgetsByUserId($id, $month,$year)
   {
-    return $this->budgetRepository->getBudgetsByUserId($id, $month);
+    return $this->budgetRepository->getBudgetsByUserId($id, $month,$year);
   }
   public function deleteBudget($id)
   {
