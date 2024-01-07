@@ -6,7 +6,8 @@
     </div>
     <h1 v-if="!budgets.length">No budgets</h1>
     <div class="flex-end">
-      <Calendar @date-select="changeDate" class="ml-3" v-model="selectedMonth" view="month" dateFormat="mm/yy" />
+      <Calendar @date-select="changeDate" class="ml-3" v-model="selectedMonth" view="month" dateFormat="mm-yy"
+        placeholder="Wybierz miesiąc" />
     </div>
   </div>
   <ScrollPanel style="width: 100%; height: 70vh">
@@ -50,10 +51,6 @@ const { getBudgets, budgets } = useBudgets();
 const { getSharedBudgets, sharedBudgets } = useSharedBudgets();
 const chartData = ref()
 const visible = ref(false)
-const months: Array<string> = ['January',
-  'February', "March", 'April', 'May', 'June',
-  'July', 'August', 'September',
-  'October', 'November', 'December']
 const selectedMonth = ref()
 const components: Array<any> = [{
   name: AddNewBudget,
@@ -77,12 +74,15 @@ onMounted(async () => {
   await getBudgets(currentMonth, currentYear);
   selectComponent(0)
 });
+
 const changeDate = async () => {
-  const month = selectedMonth.getMonth()
-  const year = selectedMonth.getFullYear()
+  const date = selectedMonth.value.toLocaleDateString()
+  const month = parseInt(date.slice(3, 5));
+  const year = parseInt(date.slice(6, 10));
+  budget.month = month;
+  budget.year = year;
   await getBudgets(month, year)
   selectComponent(0)
-  console.log(selectedMonth)
 }
 const selectComponent = (id: number) => {
   selectedComponent.value = components[id]
@@ -114,7 +114,8 @@ const closeModal = async () => {
   visible.value = false
 }
 const link = (id: any) => {
-  // budget.id = budgets.value[id].id
+  budget.id = budgets.value[id].id
+
   router.push('/categories')
 }
 

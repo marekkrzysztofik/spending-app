@@ -30,13 +30,13 @@ const router = useRouter();
 const visible = ref(false)
 const { getBudgets, budgets } = useBudgets();
 onMounted(async () => {
-  await getBudgets();
+  await getBudgets(budget.month, budget.year);
 });
 const get = (arrayId: number) => {
   budget.id = budgets.value[arrayId].id
 }
 const closeModal = () => {
-  getBudgets()
+  getBudgets(budget.month, budget.year)
   visible.value = false
 }
 </script>
