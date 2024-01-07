@@ -14,7 +14,7 @@
       <Column><template #body="event">
           <button @click="deleteCategory(event.data.id)" class="btn-icon btn-icon-danger">
             <i class="pi pi-ban"></i>
-          </button>
+          </button> 
         </template>
       </Column>
       <Column><template #body="event">

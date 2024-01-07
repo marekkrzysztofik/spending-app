@@ -13,7 +13,10 @@
         </div>
       </div>
     </ScrollPanel>
-    <Category @refresh="getBudgets" />
+    <div class="">
+      <Category @refresh="getBudgets" />
+    </div>
+
   </div>
   <Dialog v-model:visible="visible" modal>
     <EditBudget @refresh="closeModal" />
@@ -25,12 +28,14 @@ import { onMounted, ref } from "vue";
 import { budget } from "@/consts/budgetID"
 import { useRouter } from "vue-router";
 import EditBudget from '@/Modules/Budgets/EditBudget.vue'
+import { currentMonth, currentYear } from "@/consts/currentDate";
 
 const router = useRouter();
 const visible = ref(false)
 const { getBudgets, budgets } = useBudgets();
 onMounted(async () => {
-  await getBudgets(budget.month, budget.year);
+  await getBudgets(currentMonth, currentYear);
+   budget.id = budgets.value[0].id
 });
 const get = (arrayId: number) => {
   budget.id = budgets.value[arrayId].id
@@ -45,6 +50,10 @@ const closeModal = () => {
   background-color: rgba(207, 207, 207);
   color: black;
   cursor: pointer;
+}
+
+.hidden {
+  display: none;
 }
 
 .animation {

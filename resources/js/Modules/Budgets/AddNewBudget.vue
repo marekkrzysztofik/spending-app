@@ -32,7 +32,7 @@ interface BudgetForm {
     limit: number;
 }
 const router = useRouter();
-const dates: Ref<Array<Date>> = ref([new Date()])
+const dates: Ref<Array<Date>> = ref([new Date(), addMonths(new Date(), 1)])
 const emit = defineEmits(['close-modal']);
 const errorMessage: Ref<string> = ref('')
 const budgetForm: BudgetForm = reactive({
@@ -43,7 +43,10 @@ const budgetForm: BudgetForm = reactive({
     end_date: '',
     limit: 0
 });
-
+function addMonths(date: Date, months: number) {
+    date.setMonth(date.getMonth() + months);
+    return date;
+}
 const closeModal = () => {
     emit('close-modal');
 };

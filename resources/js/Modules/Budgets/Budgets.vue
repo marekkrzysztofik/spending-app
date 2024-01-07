@@ -42,11 +42,10 @@ import { Budget } from "@/types/budget";
 import { budget } from "@/consts/budgetID"
 import ShareBudget from "./ShareBudget.vue";
 import AddNewBudget from "./AddNewBudget.vue";
+import { currentMonth, currentYear } from "@/consts/currentDate";
 
 const router = useRouter();
-const currentDate = new Date();
-const currentMonth = currentDate.getMonth() + 1
-const currentYear = currentDate.getFullYear()
+
 const { getBudgets, budgets } = useBudgets();
 const { getSharedBudgets, sharedBudgets } = useSharedBudgets();
 const chartData = ref()
