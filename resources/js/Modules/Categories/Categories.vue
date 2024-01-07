@@ -16,7 +16,7 @@
     <Calendar @date-select="changeDate(selectedMonth)" v-model="selectedMonth" class="month-picker" view="month"
       dateFormat="mm-yy" placeholder="Wybierz miesiąc" />
     <div class="">
-      <Category @refresh="getBudgets" />
+      <Category @refresh="getBudgets()" />
     </div>
   </div>
   <Dialog v-model:visible="visible" modal>
@@ -37,19 +37,20 @@ const visible = ref(false)
 const { getBudgets, budgets } = useBudgets();
 const { getMonth, getYear } = useDate()
 onMounted(async () => {
-  getBudgets(budget.month, budget.year);
+  await getBudgets();
   budget.id = budgets.value[0].id
 });
 const get = (arrayId: number) => {
   budget.id = budgets.value[arrayId].id
 }
-const closeModal = () => {
-  getBudgets(getMonth, getYear)
+const closeModal = async () => {
+  await getBudgets()
   visible.value = false
 }
 const changeDate = async (date: any) => {
   await getBudgets(getMonth(date), getYear(date));
   budget.id = budgets.value[0].id
+
 }
 </script>
 <style scoped>

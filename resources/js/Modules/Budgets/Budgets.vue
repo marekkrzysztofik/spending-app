@@ -108,7 +108,7 @@ const prepareDataForCharts = (array: Ref<Array<Budget>>) => {
 }
 const closeModal = async () => {
   await getSharedBudgets();
-  await getBudgets(getMonth(), getYear());
+  await getBudgets(budget.month, budget.year);
   selectComponent(0)
   visible.value = false
 }

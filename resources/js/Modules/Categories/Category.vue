@@ -65,8 +65,9 @@ const onRowEditSave = (event: any) => {
 };
 const refreshBudgets = () => {
   visible.value = false;
-  emit('refresh');
   getCategoriesByBudgetId(budget.id);
+  emit('refresh');
+  
 };
 const deleteCategory = (id: any) => {
   axios.delete(`/api/deleteCategory/${id}`).then(() => {
