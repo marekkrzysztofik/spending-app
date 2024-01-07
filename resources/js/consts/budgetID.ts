@@ -5,9 +5,9 @@ interface Budget {
     month: number
     year: number
 }
-const { getMonth, getYear} = useDate();
+const { getMonth, getYear } = useDate();
 
 export const budget: Budget = reactive({
     id: 1,
-    month: getMonth(new Date()), year:  getYear(new Date())
+    month: getMonth(), year: getYear()
 })  

@@ -1,6 +1,3 @@
-import { ref, Ref } from "vue";
-import axios from "axios";
-
 export function useDate() {
     function getMonth(date: any = new Date()) {
         const month = date.getMonth() + 1

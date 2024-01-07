@@ -13,10 +13,11 @@
         </div>
       </div>
     </ScrollPanel>
+    <Calendar @date-select="changeDate(selectedMonth)" v-model="selectedMonth" class="month-picker" view="month"
+      dateFormat="mm-yy" placeholder="Wybierz miesiąc" />
     <div class="">
       <Category @refresh="getBudgets" />
     </div>
-
   </div>
   <Dialog v-model:visible="visible" modal>
     <EditBudget @refresh="closeModal" />
@@ -30,13 +31,13 @@ import { useRouter } from "vue-router";
 import EditBudget from '@/Modules/Budgets/EditBudget.vue'
 import { useDate } from "@/../utils/useDate";
 
+const selectedMonth = ref()
 const router = useRouter();
 const visible = ref(false)
 const { getBudgets, budgets } = useBudgets();
 const { getMonth, getYear } = useDate()
 onMounted(async () => {
-   getBudgets(budget.month, budget.year);
-
+  getBudgets(budget.month, budget.year);
   budget.id = budgets.value[0].id
 });
 const get = (arrayId: number) => {
@@ -46,12 +47,21 @@ const closeModal = () => {
   getBudgets(getMonth, getYear)
   visible.value = false
 }
+const changeDate = async (date: any) => {
+  await getBudgets(getMonth(date), getYear(date));
+  budget.id = budgets.value[0].id
+}
 </script>
 <style scoped>
 .sidemenu-item:hover {
   background-color: rgba(207, 207, 207);
   color: black;
   cursor: pointer;
+}
+
+.month-picker {
+  position: absolute;
+  right: 20%;
 }
 
 .hidden {
