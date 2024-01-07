@@ -28,20 +28,22 @@ import { onMounted, ref } from "vue";
 import { budget } from "@/consts/budgetID"
 import { useRouter } from "vue-router";
 import EditBudget from '@/Modules/Budgets/EditBudget.vue'
-import { currentMonth, currentYear } from "@/consts/currentDate";
+import { useDate } from "@/../utils/useDate";
 
 const router = useRouter();
 const visible = ref(false)
 const { getBudgets, budgets } = useBudgets();
+const { getMonth, getYear } = useDate()
 onMounted(async () => {
-  await getBudgets(currentMonth, currentYear);
-   budget.id = budgets.value[0].id
+   getBudgets(budget.month, budget.year);
+
+  budget.id = budgets.value[0].id
 });
 const get = (arrayId: number) => {
   budget.id = budgets.value[arrayId].id
 }
 const closeModal = () => {
-  getBudgets(budget.month, budget.year)
+  getBudgets(getMonth, getYear)
   visible.value = false
 }
 </script>

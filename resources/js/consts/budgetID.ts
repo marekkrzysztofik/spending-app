@@ -1,10 +1,13 @@
-import { reactive, ref ,Ref } from "vue";
-
+import { reactive } from "vue";
+import { useDate } from "@/../utils/useDate";
 interface Budget {
     id: number
     month: number
-    year:number 
+    year: number
 }
-export const budget: Budget = reactive({id:1,
-month:1,year:2023
+const { getMonth, getYear} = useDate();
+
+export const budget: Budget = reactive({
+    id: 1,
+    month: getMonth(new Date()), year:  getYear(new Date())
 })  

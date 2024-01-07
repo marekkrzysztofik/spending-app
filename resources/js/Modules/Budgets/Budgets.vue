@@ -6,8 +6,8 @@
     </div>
     <h1 v-if="!budgets.length">No budgets</h1>
     <div class="flex-end">
-      <Calendar @date-select="changeDate" class="ml-3" v-model="selectedMonth" view="month" dateFormat="mm-yy"
-        placeholder="Wybierz miesiąc" />
+      <Calendar @date-select="changeDate(selectedMonth)" class="ml-3" v-model="selectedMonth" view="month"
+        dateFormat="mm-yy" placeholder="Wybierz miesiąc" />
     </div>
   </div>
   <ScrollPanel style="width: 100%; height: 70vh">
@@ -42,10 +42,11 @@ import { Budget } from "@/types/budget";
 import { budget } from "@/consts/budgetID"
 import ShareBudget from "./ShareBudget.vue";
 import AddNewBudget from "./AddNewBudget.vue";
-import { currentMonth, currentYear } from "@/consts/currentDate";
+import { useDate } from "../../../utils/useDate";
+
 
 const router = useRouter();
-
+const { getMonth, getYear } = useDate();
 const { getBudgets, budgets } = useBudgets();
 const { getSharedBudgets, sharedBudgets } = useSharedBudgets();
 const chartData = ref()
@@ -69,18 +70,17 @@ const components: Array<any> = [{
 const selectedComponent = ref(components[0])
 
 onMounted(async () => {
+  budget.month = getMonth();
+  budget.year = getYear();
   await getSharedBudgets();
-  await getBudgets(currentMonth, currentYear);
+  await getBudgets(getMonth(), getYear());
   selectComponent(0)
 });
 
-const changeDate = async () => {
-  const date = selectedMonth.value.toLocaleDateString()
-  const month = parseInt(date.slice(3, 5));
-  const year = parseInt(date.slice(6, 10));
-  budget.month = month;
-  budget.year = year;
-  await getBudgets(month, year)
+const changeDate = async (date: any) => {
+  budget.month = getMonth(date);
+  budget.year = getYear(date);
+  await getBudgets(getMonth(date), getYear(date))
   selectComponent(0)
 }
 const selectComponent = (id: number) => {
@@ -108,13 +108,12 @@ const prepareDataForCharts = (array: Ref<Array<Budget>>) => {
 }
 const closeModal = async () => {
   await getSharedBudgets();
-  await getBudgets(currentMonth, currentYear);
+  await getBudgets(getMonth(), getYear());
   selectComponent(0)
   visible.value = false
 }
 const link = (id: any) => {
   budget.id = budgets.value[id].id
-
   router.push('/categories')
 }
 
