@@ -1,6 +1,6 @@
 <template>
   <div>
-    <button class="ml-5 button" @click="visible = true" unstyled>New Category</button>
+    <button class="ml-5 button" @click="manageModal" unstyled>New Category</button>
     <DataTable v-if="categories.length" :value="categories" responsiveLayout="scroll" editMode="row" dataKey="id"
       v-model:editingRows="editingRows" @row-edit-save="onRowEditSave" class="datatable p-4">
       <Column field="category_name" header="Nazwa kategori" style="width: 26rem" />
@@ -14,7 +14,7 @@
       <Column><template #body="event">
           <button @click="deleteCategory(event.data.id)" class="btn-icon btn-icon-danger">
             <i class="pi pi-ban"></i>
-          </button> 
+          </button>
         </template>
       </Column>
       <Column><template #body="event">
@@ -58,6 +58,17 @@ watch(
 onMounted(async () => {
   await getCategoriesByBudgetId(budget.id);
 });
+const manageModal = () => {
+  const categoryDate = new Date(categories.value[0].created_at.slice(0, 10))
+  const currentMonth = new Date().getMonth()
+  const currentYear = new Date().getFullYear()
+  const newCategoryAvailibilityDate = new Date(currentYear, currentMonth)
+  if (categoryDate.getTime() < newCategoryAvailibilityDate.getTime()) {
+    alert("you cant")
+  } else {
+    visible.value = true
+  }
+}
 const onRowEditSave = (event: any) => {
   let { newData } = event;
   saveCategory(newData)
@@ -67,7 +78,7 @@ const refreshBudgets = () => {
   visible.value = false;
   getCategoriesByBudgetId(budget.id);
   emit('refresh');
-  
+
 };
 const deleteCategory = (id: any) => {
   axios.delete(`/api/deleteCategory/${id}`).then(() => {
