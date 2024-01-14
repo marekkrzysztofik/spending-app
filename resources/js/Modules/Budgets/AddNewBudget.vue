@@ -10,8 +10,8 @@
                 required class="input" />
         </div>
         <div class="m-auto p-3">
-            <h2 class="m-1">Zakres czasowy</h2>
-            <Calendar v-model="dates" selectionMode="range" dateFormat="dd/mm/yy" :manualInput="false" placeholder="Data" />
+            <h2 class="m-1">Miesiąc</h2>
+            <Calendar v-model="date" view="month" dateFormat="mm-yy" :manualInput="false" placeholder="Miesiąc" />
             <p class="p-error" id="date-error">{{ errorMessage || '&nbsp;' }}</p>
         </div>
         <button class="w-min m-3 button" type="submit">Save</button>
@@ -32,7 +32,7 @@ interface BudgetForm {
     limit: number;
 }
 const router = useRouter();
-const dates: Ref<Array<Date>> = ref([new Date(), addMonths(new Date(), 1)])
+const date: Ref<any> = ref()
 const emit = defineEmits(['close-modal']);
 const errorMessage: Ref<string> = ref('')
 const budgetForm: BudgetForm = reactive({
@@ -50,17 +50,14 @@ function addMonths(date: Date, months: number) {
 const closeModal = () => {
     emit('close-modal');
 };
-const transformDate = () => {
-    dates.value.forEach((date: Date, i: number) => {
-        if (i == 0) {
-            budgetForm.start_date = date.toLocaleDateString("af-ZA").replaceAll('/', '-')
-        }
-        else budgetForm.end_date = date.toLocaleDateString("af-ZA").replaceAll('/', '-')
-    });
+const transformDate = (date: Date) => {
+    const transformedDate = date.toLocaleDateString("af-ZA").replaceAll('/', '-')
+    return transformedDate
 }
 const onSubmit = () => {
-    if (dates.value) {
-        transformDate()
+    if (date.value) {
+        budgetForm.start_date = transformDate(date.value)
+        budgetForm.end_date = transformDate(addMonths(date.value, 1))
         save()
     } else errorMessage.value = 'Wypełnij to pole'
 }

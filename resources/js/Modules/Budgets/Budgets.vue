@@ -36,7 +36,7 @@
 <script setup lang="ts">
 import { useSharedBudgets } from "../../../utils/useSharedBudgets";
 import { useBudgets } from "@/../utils/useBudgets";
-import { onMounted, ref, Ref, reactive } from "vue";
+import { onMounted, ref, Ref, shallowRef } from "vue";
 import { useRouter } from "vue-router";
 import { Budget } from "@/types/budget";
 import { budget } from "@/consts/budgetID"
@@ -67,7 +67,7 @@ const components: Array<any> = [{
   data: sharedBudgets
 }
 ]
-const selectedComponent = ref(components[0])
+const selectedComponent = shallowRef(components[0])
 
 onMounted(async () => {
   budget.month = getMonth();
@@ -124,6 +124,7 @@ const link = (id: any) => {
 }
 
 .new-budget {
+  min-width: 9rem;
   margin-top: 1rem;
   display: flex;
   padding: 1.3rem 0;
