@@ -1,9 +1,6 @@
 <template>
-    <div class="m-5">
-        <Checkbox v-model="income" :binary="true" class="mr-2" />
-        <span>Income</span>
-    </div>
     <form @submit.prevent="onSubmit" class="input-grid">
+
         <div>
             <h2>Tytuł </h2>
             <input v-model="expenseForm.title" type="text" class="m-3 input" required />
@@ -22,39 +19,39 @@
                 optionGroupLabel="name" :optionGroupChildren="['categories']" class="m-3" style="minwidth: 14rem" />
             <p v-if="errorMessage" class="p-error" id="date-error">{{ errorMessage || '&nbsp;' }}</p>
         </div>
-        <Button type="submit" label="Save" class="p-button-rounded m-3 save-btn w-9" />
+        <div>
+            <h2>Przychód</h2>
+            <div>
+                <Checkbox v-model="income" :binary="true" class="m-3" />
+            </div>
+        </div>
+        <div>
+            <Button type="submit" label="Save" class="m-3 save-btn w-10" />
+        </div>
     </form>
 </template>
 <script setup lang="ts">
 import { reactive, onMounted, ref, defineEmits, Ref } from "vue";
 import { useCategories } from "@/../utils/useCategories";
-
 import axios from 'axios'
 
-
-const { getCategories, categories } = useCategories();
+interface expenseForm {
+    date: Date;
+    title: string;
+    amount: number;
+}
+const { categories } = useCategories();
 const emit = defineEmits(['close-modal']);
 const category = ref();
 const errorMessage: Ref<string> = ref('')
 const income: Ref<boolean> = ref(false);
 const date = ref(new Date());
-interface expenseForm {
-    
-    date: Date;
-    category_id: number;
-    title: string;
-    amount: number;
-    type: boolean;
-}
 const expenseForm: any = reactive({
     date: new Date(),
     title: '',
-    category_id: 0,
     amount: 0,
-    type: false
 });
 onMounted(() => {
-    // getCategories();
     getBudgetsWithCategories()
 });
 const getBudgetsWithCategories = async () => {
@@ -66,25 +63,27 @@ const closeModal = () => {
 };
 const onSubmit = () => {
     if (category.value || income.value && !category.value) {
-        save()
+        manageSave()
     } else errorMessage.value = 'Wypełnij to pole'
 
 }
-const save = async () => {
-    expenseForm.category_id = category.value.id;
-    expenseForm.budget_id = category.value.budget_id;
+const manageSave = async () => {
     const data = date.value.toLocaleDateString("af-ZA").replaceAll('/', '-')
     expenseForm.date = data
-    console.log(expenseForm)
-    if(income.value=false) {
-        await axios
-        .post("/api/createTransaction", expenseForm)
+    if (income.value) {
+        expenseForm.user_id = 1;
+        save('createIncome')
+    } else {
+        expenseForm.category_id = category.value.id;
+        expenseForm.budget_id = category.value.budget_id;
+        save('createTransaction')
+    }
+};
+const save = async (path: string) => {
+    await axios
+        .post(`/api/${path}`, expenseForm)
         .then(() => {
             closeModal()
         });
-    }
-};
-
-
+}
 </script>
-

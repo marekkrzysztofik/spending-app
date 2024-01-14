@@ -13,10 +13,12 @@ class BudgetRepository
     }
     public function getBudgetsWithCategories()
     {
-        $budgets = Budget::with('categories')->get();
+        $currentMonth = date('m');
+        $budgets = Budget::with('categories')->whereMonth('start_date', '=', $currentMonth)->get();
         $formattedBudgets = $budgets->map(function ($budget) {
             return [
                 'name' => $budget['name'],
+                'user_id' => $budget['user_id'],
                 'categories' => $budget->categories->map(function ($category) {
                     return [
                         'id' => $category->id,
