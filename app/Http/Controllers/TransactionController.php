@@ -26,5 +26,9 @@ class TransactionController extends Controller
     {
         return $this->transactionService->getTransactionsJoinedWithCategoriesAndBudgetsByUserId($id);
     }
+    public function getLastTransactionsByUserId($id)
+    {
+        return $this->transactionService->getLastTransactionsByUserId($id);
+    }
 }  
- 
+  

@@ -62,14 +62,18 @@ onMounted(async () => {
   await getCategoriesByBudgetId(budget.id);
 });
 const manageModal = () => {
-  const categoryDate = new Date(categories.value[0].created_at.slice(0, 10))
-  const currentMonth = new Date().getMonth()
-  const currentYear = new Date().getFullYear()
-  const newCategoryAvailibilityDate = new Date(currentYear, currentMonth)
-  if (categoryDate.getTime() < newCategoryAvailibilityDate.getTime()) {
-    toast.add({ severity: 'warn', summary: 'Uwaga!', detail: 'Nie możesz dodać kategori do archiwalnych budżetów', life: 5000 });
-  } else {
+  if (categories.value.length == 0) {
     visible.value = true
+  } else {
+    const categoryDate = new Date(categories.value[0].created_at.slice(0, 10))
+    const currentMonth = new Date().getMonth()
+    const currentYear = new Date().getFullYear()
+    const newCategoryAvailibilityDate = new Date(currentYear, currentMonth)
+    if (categoryDate.getTime() < newCategoryAvailibilityDate.getTime()) {
+      toast.add({ severity: 'warn', summary: 'Uwaga!', detail: 'Nie możesz dodać kategori do archiwalnych budżetów', life: 5000 });
+    } else {
+      visible.value = true
+    }
   }
 }
 const onRowEditSave = (event: any) => {

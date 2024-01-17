@@ -27,4 +27,8 @@ class TransactionRepository
   {
     return $this->transaction->where('user_id', '=', $id)->whereMonth('date', '=', $month)->get(); 
   }
+  public function getLastTransactionsByUserId($id)
+    {
+      return $this->transaction->where('user_id', '=', $id)->orderBy('id', 'desc')->take(10)->get();
+    }
 }

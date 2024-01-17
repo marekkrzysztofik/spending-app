@@ -5,9 +5,9 @@
             <h2>Tytuł </h2>
             <input v-model="expenseForm.title" type="text" class="m-3 input" required />
         </div>
-        <div>
+        <div> 
             <h2>Kwota</h2>
-            <input v-model="expenseForm.amount" placeholder="Price" class="m-3 input" required />
+            <input v-model.number="expenseForm.amount" placeholder="Price" class="m-3 input" required />
         </div>
         <div>
             <h2>Data</h2>
@@ -46,7 +46,7 @@ const category = ref();
 const errorMessage: Ref<string> = ref('')
 const income: Ref<boolean> = ref(false);
 const date = ref(new Date());
-const expenseForm: any = reactive({
+const expenseForm: any = reactive({ 
     date: new Date(),
     title: '',
     amount: 0,
@@ -70,8 +70,8 @@ const onSubmit = () => {
 const manageSave = async () => {
     const data = date.value.toLocaleDateString("af-ZA").replaceAll('/', '-')
     expenseForm.date = data
+    expenseForm.user_id = 1;
     if (income.value) {
-        expenseForm.user_id = 1;
         save('createIncome')
     } else {
         expenseForm.category_id = category.value.id;

@@ -34,9 +34,10 @@ Route::delete('/deleteCategory/{id}', [CategoryController::class, 'deleteCategor
 Route::resource('budgets', BudgetController::class);  
 Route::get('/getBudgetsByUserId/{id}/{month}/{year}', [BudgetController::class, 'getBudgetsByUserId']); 
 
-Route::get('getTransactionsJoinedWithCategoriesAndBudgetsByUserId/{id}', [TransactionController::class, 'getTransactionsJoinedWithCategoriesAndBudgetsByUserId']);
+Route::get('getTransactionsJoinedWithCategoriesAndBudgetsByUserId/{id}', [TransactionController::class,   'getTransactionsJoinedWithCategoriesAndBudgetsByUserId']);
 Route::get('getTransactionsByUserId/{id}/{month}', [TransactionController::class, 'getTransactionsByUserId']);
-Route::post('/createTransaction', [TransactionController::class, 'createTransaction']);
+Route::get('getLastTransactionsByUserId/{id}', [TransactionController::class, 'getLastTransactionsByUserId']);
+Route::post('/createTransaction', [TransactionController::class, 'createTransaction']);  
 
 
 Route::get('getUsers', [AuthController::class, 'getUsers']); 

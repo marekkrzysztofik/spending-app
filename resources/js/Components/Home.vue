@@ -19,40 +19,63 @@
             <p>last month 49 858 zł</p>
         </div>
     </div>
-    <div>
+    <div class="flex m-3">
         <Chart type="bar" :data="chartData" :options="chartOptions" class="chart-width" />
+        <div class="ml-8">
+            <h2>Ostatnie wydatki</h2>
+            <div v-for="item in lastTransactions">
+                <span>{{ item.title }}</span>
+                <span>-{{ item.amount }} zł</span>
+                <span>{{ item.date }} zł</span>
+            </div>
+        </div>
     </div>
 </template>
 <script setup lang="ts">
 import axios from "axios";
-import { onMounted, computed, ref, ComputedRef, Ref, reactive } from "vue";
+import { onMounted, computed, ref, ComputedRef, Ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useBudgets } from "@/../utils/useBudgets";
 import { useIncomes } from "@/../utils/useIncomes";
-import { budget } from "@/consts/budgetID";
+import { visible } from "@/consts/modalVisibility";
 
 const { getIncomes, incomes } = useIncomes();
 const { getBudgets, budgets } = useBudgets();
-
+const lastTransactions = ref()
 const expenseSum = ref()
 const incomeSum = ref()
 const router = useRouter();
 const labelArr: Array<any> = []
 const sumArr: Array<any> = []
 const limitArr: Array<any> = []
+watch(
+    () => visible.value,
+    () => {
+        getAlldata()
+    }
+)
 onMounted(async () => {
-    await getBudgets()
-    await getIncomes()
-    incomeSum.value = counter(incomes, 'amount')
-    expenseSum.value = counter(budgets, 'transactions_sum_amount')
-    prepareDataForCharts()
+    await getAlldata()
 });
 const chartData: any = ref();
 const chartOptions = ref({
     indexAxis: 'y',
     maintainAspectRatio: true,
-    aspectRatio: 2.5,
+    aspectRatio: 1.4,
 });
+const getAlldata = async () => {
+    await getBudgets()
+    await getIncomes()
+    await getLastTransactions()
+    incomeSum.value = counter(incomes, 'amount')
+    expenseSum.value = counter(budgets, 'transactions_sum_amount')
+    prepareDataForCharts()
+}
+const getLastTransactions = async () => {
+    const response = await axios.get(`/api/getLastTransactionsByUserId/1`);
+    lastTransactions.value = response.data;
+    console.log(lastTransactions.value)
+}
 const prepareDataForCharts = () => {
     budgets.value.forEach(budget => {
         labelArr.push(budget.name)
@@ -85,8 +108,9 @@ const counter = (array: Ref<Array<any>>, prop: string) => {
     const arr: Array<number> = []
     array.value.forEach((el) => {
         if (el[prop])
-            arr.push(el[prop]);
+            arr.push(parseInt(el[prop]));
     });
+    console.log(arr)
     if (arr.length > 0)
         return arr.reduce((a, b) => a + b);
     else if (arr.length == 0)
@@ -104,6 +128,5 @@ const counter = (array: Ref<Array<any>>, prop: string) => {
 
 .chart-width {
     width: 35vw;
-
 }
 </style>
