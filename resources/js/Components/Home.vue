@@ -18,15 +18,18 @@
             <h1>{{ incomeSum }} zł</h1>
             <p>last month 49 858 zł</p>
         </div>
-
+    </div>
+    <div>
+        <Chart type="bar" :data="chartData" :options="chartOptions" class="chart-width" />
     </div>
 </template>
 <script setup lang="ts">
 import axios from "axios";
-import { onMounted, computed, ref, ComputedRef, Ref } from "vue";
+import { onMounted, computed, ref, ComputedRef, Ref, reactive } from "vue";
 import { useRouter } from "vue-router";
 import { useBudgets } from "@/../utils/useBudgets";
 import { useIncomes } from "@/../utils/useIncomes";
+import { budget } from "@/consts/budgetID";
 
 const { getIncomes, incomes } = useIncomes();
 const { getBudgets, budgets } = useBudgets();
@@ -34,13 +37,47 @@ const { getBudgets, budgets } = useBudgets();
 const expenseSum = ref()
 const incomeSum = ref()
 const router = useRouter();
-
+const labelArr: Array<any> = []
+const sumArr: Array<any> = []
+const limitArr: Array<any> = []
 onMounted(async () => {
     await getBudgets()
     await getIncomes()
     incomeSum.value = counter(incomes, 'amount')
     expenseSum.value = counter(budgets, 'transactions_sum_amount')
+    prepareDataForCharts()
 });
+const chartData: any = ref();
+const chartOptions = ref({
+    indexAxis: 'y',
+    maintainAspectRatio: true,
+    aspectRatio: 2.5,
+});
+const prepareDataForCharts = () => {
+    budgets.value.forEach(budget => {
+        labelArr.push(budget.name)
+        sumArr.push(budget.transactions_sum_amount)
+        limitArr.push(budget.limit)
+    });
+    setDataChart()
+}
+const setDataChart = () => {
+    chartData.value = {
+        labels: labelArr,
+        datasets: [
+            {
+                label: 'My First dataset',
+                backgroundColor: ['#41B883'],
+                data: sumArr
+            },
+            {
+                label: 'My Second dataset',
+                backgroundColor: ['#E46651'],
+                data: limitArr
+            }
+        ]
+    }
+}
 const balance: ComputedRef<number> = computed(() => {
     return incomeSum.value - expenseSum.value
 })
@@ -63,5 +100,10 @@ const counter = (array: Ref<Array<any>>, prop: string) => {
     width: 35%;
     background-color: white;
     border-radius: 10px;
+}
+
+.chart-width {
+    width: 35vw;
+
 }
 </style>

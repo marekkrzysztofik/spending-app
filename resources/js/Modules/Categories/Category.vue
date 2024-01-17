@@ -1,4 +1,5 @@
 <template>
+  <Toast />
   <div>
     <button class="ml-5 button" @click="manageModal" unstyled>New Category</button>
     <DataTable v-if="categories.length" :value="categories" responsiveLayout="scroll" editMode="row" dataKey="id"
@@ -40,7 +41,9 @@ import { budget } from "@/consts/budgetID";
 import { category } from "@/consts/categoryID";
 import { useRouter } from "vue-router";
 import { useSaveCategory } from "../../../utils/useSaveCategory";
+import { useToast } from "primevue/usetoast";
 
+const toast = useToast();
 const { getCategoriesByBudgetId, categories } = useCategoriesByBudgetId();
 const { saveCategory, categoryForm } = useSaveCategory();
 const emit = defineEmits(['refresh']);
@@ -64,7 +67,7 @@ const manageModal = () => {
   const currentYear = new Date().getFullYear()
   const newCategoryAvailibilityDate = new Date(currentYear, currentMonth)
   if (categoryDate.getTime() < newCategoryAvailibilityDate.getTime()) {
-    alert("you cant")
+    toast.add({ severity: 'warn', summary: 'Uwaga!', detail: 'Nie możesz dodać kategori do archiwalnych budżetów', life: 5000 });
   } else {
     visible.value = true
   }
