@@ -1,32 +1,55 @@
 <template>
-    <div>
-        <h4>Welcome back, Marek!</h4>
-    </div>
-    <div class="flex justify-content-center">
-        <div class="balance-box">
-            <h2>Twój balans</h2>
-            <h1>{{ balance }} zł</h1>
-            <p>last month 49 858 zł</p>
+    <div class="flex flex-column justify-content-center m-2">
+        <div class="flex justify-content-center">
+            <div class="balance-box">
+                <h2>Twój balans</h2>
+                <h1>{{ balance }} zł</h1>
+                <p>last month 49 858 zł</p>
+            </div>
+            <div class="balance-box">
+                <h2>Twoje wydatki</h2>
+                <h1>{{ expenseSum }} zł</h1>
+                <p>last month 49 858 zł</p>
+            </div>
+            <div class="balance-box">
+                <h2>Twoje przychody</h2>
+                <h1>{{ incomeSum }} zł</h1>
+                <p>last month 49 858 zł</p>
+            </div>
         </div>
-        <div class="balance-box">
-            <h2>Twoje wydatki</h2>
-            <h1>{{ expenseSum }} zł</h1>
-            <p>last month 49 858 zł</p>
-        </div>
-        <div class="balance-box">
-            <h2>Twoje przychody</h2>
-            <h1>{{ incomeSum }} zł</h1>
-            <p>last month 49 858 zł</p>
-        </div>
-    </div>
-    <div class="flex m-3">
-        <Chart type="bar" :data="chartData" :options="chartOptions" class="chart-width" />
-        <div class="ml-8">
-            <h2>Ostatnie wydatki</h2>
-            <div v-for="item in lastTransactions">
-                <span>{{ item.title }}</span>
-                <span>-{{ item.amount }} zł</span>
-                <span>{{ item.date }} zł</span>
+        <div class="flex justify-content-center">
+            <div class="balance-box">
+                <Chart type="bar" :data="chartData" :options="chartOptions" />
+            </div>
+            <div class="balance-box">
+                <h2>Ostatnie wydatki</h2>
+                <table class="m-2">
+                    <tr>
+                        <th>Tytuł</th>
+                        <th>Kwota</th>
+                        <th>Data</th>
+                    </tr>
+                    <tr v-for="item in lastTransactions">
+                        <th class="table">{{ item.title }}</th>
+                        <th class="table">{{ item.amount }}</th>
+                        <th class="table">{{ item.date }}</th>
+                    </tr>
+                </table>
+            </div>
+            <div class="balance-box">
+                <h2>Ostatnie wydatki</h2>
+                <table class="m-2">
+                    <tr>
+                        <th>Tytuł</th>
+                        <th>Kwota</th>
+                        <th>Data</th>
+                    </tr>
+                    <tr v-for="item in lastTransactions">
+                        <th class="table">{{ item.title }}</th>
+                        <th class="table">{{ item.amount }}</th>
+                        <th class="table">{{ item.date }}</th>
+                    </tr>
+                </table>
             </div>
         </div>
     </div>
@@ -61,7 +84,7 @@ const chartData: any = ref();
 const chartOptions = ref({
     indexAxis: 'y',
     maintainAspectRatio: true,
-    aspectRatio: 1.4,
+    aspectRatio: 1,
 });
 const getAlldata = async () => {
     await getBudgets()
@@ -74,7 +97,6 @@ const getAlldata = async () => {
 const getLastTransactions = async () => {
     const response = await axios.get(`/api/getLastTransactionsByUserId/1`);
     lastTransactions.value = response.data;
-    console.log(lastTransactions.value)
 }
 const prepareDataForCharts = () => {
     budgets.value.forEach(budget => {
@@ -89,12 +111,12 @@ const setDataChart = () => {
         labels: labelArr,
         datasets: [
             {
-                label: 'My First dataset',
+                label: 'Wydane',
                 backgroundColor: ['#41B883'],
                 data: sumArr
             },
             {
-                label: 'My Second dataset',
+                label: 'Zaplanowane',
                 backgroundColor: ['#E46651'],
                 data: limitArr
             }
@@ -110,7 +132,6 @@ const counter = (array: Ref<Array<any>>, prop: string) => {
         if (el[prop])
             arr.push(parseInt(el[prop]));
     });
-    console.log(arr)
     if (arr.length > 0)
         return arr.reduce((a, b) => a + b);
     else if (arr.length == 0)
@@ -119,14 +140,28 @@ const counter = (array: Ref<Array<any>>, prop: string) => {
 </script>
 <style scoped>
 .balance-box {
-    margin: 1rem;
-    padding: 1rem;
+    margin: 1rem 0.5rem 0;
+    padding: 1.5rem 1rem;
     width: 35%;
     background-color: white;
     border-radius: 10px;
+    box-shadow: 0 1.5rem 2rem rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s;
+}
+.balance-box:hover {
+    transform: translateY(-0.5rem) scale(1.01);
+}
+
+.chart-box {
+    background-color: white;
+    padding: 2rem;
 }
 
 .chart-width {
-    width: 35vw;
+    width: 20vw;
+}
+
+.table {
+    width: 25%;
 }
 </style>

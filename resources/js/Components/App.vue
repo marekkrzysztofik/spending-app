@@ -19,7 +19,7 @@
                 <h2>{{ route.name }}</h2>
                 <button class="button logout"><i class="pi pi-sign-out"></i></button>
             </div>
-            <div class="m-4">
+            <div>
                 <router-view />
             </div>
         </div>
@@ -85,7 +85,6 @@ a {
     border-width: 2px;
     border-color: var(--green);
     flex-direction: column;
-    justify-content: center;
     width: 100%;
 }
 

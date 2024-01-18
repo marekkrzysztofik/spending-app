@@ -1,5 +1,5 @@
 <template>
-  <div class=flex>
+  <div class="flex m-3">
     <ScrollPanel style="height: 520px">
       <div class="flex flex-column">
         <div @click="get(index)" v-for="(budget, index) in budgets" class="flex m-1 sidemenu-item">

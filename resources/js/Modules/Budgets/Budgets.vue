@@ -1,37 +1,39 @@
 <template>
-  <div class="flex justify-content-between option-bar">
-    <div>
-      <button @click="selectComponent(0)" class="button">Private</button>
-      <button @click="selectComponent(1)" class="button ml-3">Shared</button>
+  <div class="m-4">
+    <div class="flex justify-content-between option-bar">
+      <div>
+        <button @click="selectComponent(0)" class="button">Private</button>
+        <button @click="selectComponent(1)" class="button ml-3">Shared</button>
+      </div>
+      <h1 v-if="!budgets.length">No budgets</h1>
+      <div class="flex-end">
+        <Calendar @date-select="changeDate(selectedMonth)" class="ml-3" v-model="selectedMonth" view="month"
+          dateFormat="mm-yy" placeholder="Wybierz miesiąc" />
+      </div>
     </div>
-    <h1 v-if="!budgets.length">No budgets</h1>
-    <div class="flex-end">
-      <Calendar @date-select="changeDate(selectedMonth)" class="ml-3" v-model="selectedMonth" view="month"
-        dateFormat="mm-yy" placeholder="Wybierz miesiąc" />
-    </div>
-  </div>
-  <ScrollPanel style="width: 100%; height: 70vh">
-    <div class="grid">
-      <div class="m-1 item-box">
-        <div class="ml-2">
-          <h3>{{ selectedComponent.title }}</h3>
-          <div @click="visible = true" :class=selectedComponent.class>
-            <i :class=selectedComponent.icon />
+    <ScrollPanel style="width: 100%; height: 70vh">
+      <div class="grid">
+        <div class="m-1 item-box">
+          <div class="ml-2">
+            <h3>{{ selectedComponent.title }}</h3>
+            <div @click="visible = true" :class=selectedComponent.class>
+              <i :class=selectedComponent.icon />
+            </div>
+          </div>
+        </div>
+        <div @click="link(index)" v-for="(budget, index) in chartData" :key="index" class="m-1 item-box">
+          <div class="ml-2">
+            <h3>{{ budget.name }}</h3>
+            <Chart type="doughnut" :data="budget" class="chart-width" />
+            <span>{{ budget.sum }} / {{ budget.limit }} zł</span>
           </div>
         </div>
       </div>
-      <div @click="link(index)" v-for="(budget, index) in chartData" :key="index" class="m-1 item-box">
-        <div class="ml-2">
-          <h3>{{ budget.name }}</h3>
-          <Chart type="doughnut" :data="budget" class="chart-width" />
-          <span>{{ budget.sum }} / {{ budget.limit }} zł</span>
-        </div>
-      </div>
-    </div>
-  </ScrollPanel>
-  <Dialog v-model:visible="visible" modal>
-    <component :is="selectedComponent.name" @close-modal="closeModal"></component>
-  </Dialog>
+    </ScrollPanel>
+    <Dialog v-model:visible="visible" modal>
+      <component :is="selectedComponent.name" @close-modal="closeModal"></component>
+    </Dialog>
+  </div>
 </template>
 <script setup lang="ts">
 import { useSharedBudgets } from "../../../utils/useSharedBudgets";
