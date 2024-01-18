@@ -145,8 +145,11 @@ const link = (id: any) => {
   text-align: center;
   background-color: white;
   border-radius: 15px;
+  transition: transform 0.3s;
 }
-
+.item-box:hover {
+  transform: translateY(-0.5rem) scale(1.01);
+}
 .grid {
   display: grid;
   align-items: center;

@@ -10,9 +10,7 @@
   box-sizing: inherit;
   font-family: 'Kanit', sans-serif;
 }
-th {
-  font-weight:lighter
-}
+
 body {
   background-color: rgba(128, 128, 128, 0.3);
 }

@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-column justify-content-center m-2">
-        <div class="flex justify-content-center">
+        <div class="flex justify-content-center container">
             <div class="balance-box">
                 <h2>Twój balans</h2>
                 <h1>{{ balance }} zł</h1>
@@ -17,22 +17,22 @@
                 <p>last month 49 858 zł</p>
             </div>
         </div>
-        <div class="flex justify-content-center">
+        <div class="flex justify-content-center container">
             <div class="balance-box">
                 <Chart type="bar" :data="chartData" :options="chartOptions" />
             </div>
-            <div class="balance-box">
+            <div class="balance-box flex flex-column justify-content-center">
                 <h2>Ostatnie wydatki</h2>
                 <table class="m-2">
                     <tr>
-                        <th>Tytuł</th>
-                        <th>Kwota</th>
-                        <th>Data</th>
+                        <th class="table">Tytuł</th>
+                        <th class="table">Kwota</th>
+                        <th class="table">Data</th>
                     </tr>
                     <tr v-for="item in lastTransactions">
-                        <th class="table">{{ item.title }}</th>
-                        <th class="table">{{ item.amount }}</th>
-                        <th class="table">{{ item.date }}</th>
+                        <td class="table"><span>{{ item.title }}</span></td>
+                        <td class="table">{{ item.amount }} zł</td>
+                        <td class="table">{{ item.date }}</td>
                     </tr>
                 </table>
             </div>
@@ -45,7 +45,7 @@
                         <th>Data</th>
                     </tr>
                     <tr v-for="item in lastTransactions">
-                        <th class="table">{{ item.title }}</th>
+                        <th class="table"><span>{{ item.title }}</span></th>
                         <th class="table">{{ item.amount }}</th>
                         <th class="table">{{ item.date }}</th>
                     </tr>
@@ -145,9 +145,9 @@ const counter = (array: Ref<Array<any>>, prop: string) => {
     width: 35%;
     background-color: white;
     border-radius: 10px;
-    box-shadow: 0 1.5rem 2rem rgba(0, 0, 0, 0.15);
     transition: transform 0.3s;
 }
+
 .balance-box:hover {
     transform: translateY(-0.5rem) scale(1.01);
 }
@@ -162,6 +162,30 @@ const counter = (array: Ref<Array<any>>, prop: string) => {
 }
 
 .table {
-    width: 25%;
+    width: 20%;
+    text-align: center;
+    max-width: 7rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
-</style>
+
+@media screen and (min-width: 1900px) {
+    .balance-box {
+        margin: 2rem 0.5rem 0;
+        padding: 2.5rem 1rem;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .balance-box {
+        width: 80%;
+        background-color: white;
+        border-radius: 10px;
+        transition: transform 0.3s;
+    }
+}</style>
