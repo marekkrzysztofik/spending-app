@@ -1,7 +1,7 @@
 <template>
-    <div class="w-11">
-        <DataTable :value="transactions" paginator :rows="5" :rowsPerPageOptions="[5, 10, 20, 50]" v-model:filters="filters"
-            responsiveLayout="scroll" editMode="row" dataKey="id" filterDisplay="row" class="datatable">
+    <div class="m-3">
+        <DataTable :value="transactions" paginator :rows="5" :rowsPerPageOptions="[5, 10]" v-model:filters="filters"
+            responsiveLayout="scroll" editMode="row" dataKey="id" filterDisplay="row" class="datatable" scrollable>
             <Column header="Nazwa budżetu" filterField="name">
                 <template #body="{ data }">
                     <div class="flex align-items-center gap-2">
@@ -44,7 +44,7 @@
             <Column header="Kwota" filterField="amount" style="text-align:right">
                 <template #body="{ data }">
                     <div class="flex align-items-center gap-2">
-                        <span>{{ data.amount }}</span> 
+                        <span>{{ data.amount }}</span>
                     </div>
                 </template>
                 <template #filter="{ filterModel, filterCallback }">
@@ -77,12 +77,10 @@
         </DataTable>
     </div>
 </template>
-
 <script setup lang="ts">
-
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref } from "vue";
 import { useTransactionsByUserId } from "@/../utils/useTransactionsByUserId";
-import { FilterMatchMode, FilterOperator } from 'primevue/api';
+import { FilterMatchMode } from 'primevue/api';
 import { category } from "@/consts/categoryID";
 
 const { getTransactionsByUserId, transactions } = useTransactionsByUserId();
