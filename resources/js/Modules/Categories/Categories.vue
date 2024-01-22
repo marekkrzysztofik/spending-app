@@ -2,7 +2,8 @@
   <div class="flex m-3">
     <ScrollPanel style="height: 520px">
       <div class="flex flex-column">
-        <div @click="get(index)" v-for="(budget, index) in budgets" class="flex m-1 sidemenu-item">
+        <div @click="get(index)" v-for="(budget, index) in budgetsWithClasses" class="flex m-1 sidemenu-item"
+          :class=budget.class>
           <div>
             <button @click="visible = true" class="btn-icon btn-icon-success"><i class="pi pi-pencil" /></button>
           </div>
@@ -36,12 +37,24 @@ const router = useRouter();
 const visible = ref(false)
 const { getBudgets, budgets } = useBudgets();
 const { getMonth, getYear } = useDate()
+const budgetsWithClasses = ref()
 onMounted(async () => {
   await getBudgets();
-  budget.id = budgets.value[0].id
+  addClassesToBudgets()
+  //budget.id = budgets.value[0].id
 });
 const get = (arrayId: number) => {
+  addClassesToBudgets()
   budget.id = budgets.value[arrayId].id
+  budgetsWithClasses.value[arrayId].class = 'active'
+  console.log(budgetsWithClasses.value)
+}
+const addClassesToBudgets = () => {
+  budgetsWithClasses.value = budgets.value.map(x => {
+    return {
+      ...x, class: ''
+    }
+  })
 }
 const closeModal = async () => {
   await getBudgets()
@@ -59,25 +72,18 @@ const changeDate = async (date: any) => {
   color: black;
   cursor: pointer;
 }
-
+.active {
+  background-color: rgba(207, 207, 207) !important;
+  color: black !important;
+}
 .month-picker {
   position: absolute;
   right: 20%;
 }
-
-.hidden {
-  display: none;
-}
-
-.animation {
-  transition: all 0.7s ease;
-}
-
 .datatable {
   background-color: white;
   border-radius: 10px;
 }
-
 .sidemenu-item {
   align-items: center;
   background-color: white;

@@ -8,6 +8,6 @@ interface Budget {
 const { getMonth, getYear } = useDate();
 
 export const budget: Budget = reactive({
-    id: 1,
+    id: 0,
     month: getMonth(), year: getYear()
 })  
