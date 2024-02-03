@@ -16,11 +16,11 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('name');
-            $table->string('description')->nullable();
+            $table->boolean('shared')->default(0);
             $table->date('start_date');
             $table->date('end_date');
             $table->integer('limit');
-            $table->timestamps(); 
+            $table->timestamps();  
         });
     }
 

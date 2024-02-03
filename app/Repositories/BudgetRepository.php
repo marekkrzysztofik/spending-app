@@ -7,7 +7,7 @@ use App\Models\Budget;
 class BudgetRepository
 {
     protected $budget;
-    public function __construct()
+    public function __construct() 
     {
         $this->budget = new Budget();
     }
@@ -17,19 +17,18 @@ class BudgetRepository
         $budgets = Budget::with('categories')->whereMonth('start_date', '=', $currentMonth)->get();
         $formattedBudgets = $budgets->map(function ($budget) {
             return [
+                'id' => $budget['id'],
                 'name' => $budget['name'],
                 'user_id' => $budget['user_id'],
+                'start_date' => $budget['start_date'],
                 'categories' => $budget->categories->map(function ($category) {
-                    return [
-                        'id' => $category->id,
-                        'budget_id' => $category->budget_id,
-                        'category_name' => $category->category_name,
-                    ];
+                    return $category->toArray();
                 })->toArray(),
             ];
         });
         return $formattedBudgets;
     }
+    
     public function getBudgetsByUserId($id, $month, $year)
     {
         return $this->budget->where('user_id', '=', $id)->whereMonth('start_date', '=', $month)->whereYear('start_date', '=', $year)->withSum('categories', 'category_limit')->withSum('transactions', 'amount')->get();

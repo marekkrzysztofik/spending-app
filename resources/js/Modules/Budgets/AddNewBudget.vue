@@ -14,6 +14,10 @@
             <Calendar v-model="date" view="month" dateFormat="mm-yy" :manualInput="false" placeholder="Miesiąc" />
             <p class="p-error" id="date-error">{{ errorMessage || '&nbsp;' }}</p>
         </div>
+        <div class="flex p-3 align-items-center">
+            <Checkbox v-model="budgetForm.shared" :binary="true" />
+            <h2 class="m-2">Udostępnij</h2>
+        </div>
         <button class="w-min m-3 button" type="submit">Save</button>
     </form>
 </template> 
@@ -26,19 +30,20 @@ import { useRouter } from "vue-router";
 interface BudgetForm {
     user_id: number;
     name: string;
-    description: string;
+    shared: boolean;
     start_date: string;
     end_date: string;
     limit: number;
 }
 const router = useRouter();
 const date: Ref<any> = ref()
+const shared: Ref<boolean> = ref(false)
 const emit = defineEmits(['close-modal']);
 const errorMessage: Ref<string> = ref('')
 const budgetForm: BudgetForm = reactive({
     user_id: 1,
     name: '',
-    description: 'ss',
+    shared: false,
     start_date: '',
     end_date: '',
     limit: 0

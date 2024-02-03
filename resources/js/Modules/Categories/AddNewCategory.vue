@@ -15,17 +15,22 @@
  
 <script setup lang="ts">
 import { defineEmits } from "vue";
-import { useSaveCategory } from "../../../utils/useSaveCategory";
+import { useSaveCategory } from "@/../utils/useSaveCategory";
 
+const props = defineProps({
+    id: {
+        type: Number,
+        default: 0,
+    },
+});
 const { saveCategory, categoryForm } = useSaveCategory();
-const emit = defineEmits(['close-modal']);
+const emit = defineEmits(['refresh']);
 
-const closeModal = () => {
-    emit('close-modal');
-};
-const onSubmit = () => {
-    saveCategory(categoryForm);
-    closeModal()
+const onSubmit = async () => {
+    console.log(props.id)
+    // await saveCategory(categoryForm, props.id).then(() => {
+    //     emit('refresh');
+    // });
 };
 </script>
 <style scoped></style>

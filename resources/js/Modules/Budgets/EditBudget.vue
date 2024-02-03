@@ -21,23 +21,29 @@ import { Budget } from "@/types/budget";
 import { budget } from "@/consts/budgetID";
 import { BudgetForm } from '@/types/budgetForm';
 
-
+const props = defineProps({
+    id: {
+        type: Number,
+        default: 0,
+    },
+});
 const emit = defineEmits(['refresh']);
 const budgetForm: Ref<BudgetForm> = ref({
     name: '',
     limit: 0
 })
-
 onMounted(async () => {
     getSingleBudget()
 });
 const getSingleBudget = async () => {
-    const response = await axios.get(`/api/budgets/${budget.id}`);
+    const response = await axios.get(`/api/budgets/${props.id}`);
     budgetForm.value = response.data;
 };
 const onSubmit = async () => {
-    await axios.patch(`/api/budgets/${budget.id}`, budgetForm.value)
-    emit('refresh')
+    await axios.patch(`/api/budgets/${props.id}`, budgetForm.value).then(() => {
+        emit('refresh');
+    });
 };
 </script>
 
+ 

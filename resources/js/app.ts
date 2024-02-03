@@ -35,12 +35,14 @@ import ScrollPanel from 'primevue/scrollpanel';
 import AddExpense from "@/Modules/Transactions/AddExpense.vue";
 import ShareBudget from "@/Modules/Budgets/ShareBudget.vue";
 import AddNewCategory from "@/Modules/Categories/AddNewCategory.vue";
+import RadioButton from 'primevue/radiobutton';
 
 const app = createApp(App);
 app.use(router);
 app.use(PrimeVue);
 app.use(ToastService);
 app.use(ConfirmationService);
+app.component("RadioButton", RadioButton);
 app.component("AddNewCategory", AddNewCategory);
 app.component("ShareBudget", ShareBudget);
 app.component("AddExpense", AddExpense);

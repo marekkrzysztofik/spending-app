@@ -36,7 +36,6 @@
   </div>
 </template>
 <script setup lang="ts">
-import { useSharedBudgets } from "../../../utils/useSharedBudgets";
 import { useBudgets } from "@/../utils/useBudgets";
 import { onMounted, ref, Ref, shallowRef } from "vue";
 import { useRouter } from "vue-router";
@@ -50,7 +49,6 @@ import { useDate } from "../../../utils/useDate";
 const router = useRouter();
 const { getMonth, getYear } = useDate();
 const { getBudgets, budgets } = useBudgets();
-const { getSharedBudgets, sharedBudgets } = useSharedBudgets();
 const chartData = ref()
 const visible = ref(false)
 const selectedMonth = ref()
@@ -66,7 +64,7 @@ const components: Array<any> = [{
   title: 'Share budget',
   class: 'new-budget button',
   icon: 'pi pi-link m-auto',
-  data: sharedBudgets
+  data: ''
 }
 ]
 const selectedComponent = shallowRef(components[0])
@@ -74,7 +72,6 @@ const selectedComponent = shallowRef(components[0])
 onMounted(async () => {
   budget.month = getMonth();
   budget.year = getYear();
-  await getSharedBudgets();
   await getBudgets(getMonth(), getYear());
   selectComponent(0)
 });
@@ -109,7 +106,6 @@ const prepareDataForCharts = (array: Ref<Array<Budget>>) => {
   });
 }
 const closeModal = async () => {
-  await getSharedBudgets();
   await getBudgets(budget.month, budget.year);
   selectComponent(0)
   visible.value = false
@@ -147,9 +143,11 @@ const link = (id: any) => {
   border-radius: 15px;
   transition: transform 0.3s;
 }
+
 .item-box:hover {
-  transform: translateY(-0.5rem) scale(1.01);
+  transform: translateY(-0.4rem) scale(1.01);
 }
+
 .grid {
   display: grid;
   align-items: center;

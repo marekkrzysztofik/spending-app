@@ -1,34 +1,65 @@
 <template>
   <ConfirmDialog />
-  <div class="flex m-3">
-    <ScrollPanel style="height: 520px; width:17%">
-      <div class="flex flex-column">
-        <div v-for="(budget, index) in budgetsWithClasses" class="flex m-1 sidemenu-item" :class=budget.class>
-          <div>
-            <button @click="visible = true" class="btn-icon btn-icon-success"><i class="pi pi-pencil" /></button>
-            <button @click="confirmDialog(index)" class="btn-icon btn-icon-danger"><i class="pi pi-ban" /></button>
-          </div>
-          <div @click="get(index)" class="ml-2">
+  <div class="flex flex-column m-4">
+    <Calendar @date-select="changeDate(selectedMonth)" v-model="selectedMonth" class="w-2" view="month" dateFormat="mm-yy"
+      placeholder="Wybierz miesiąc" />
+    <ScrollPanel style="height: 520px;" class="m-3">
+      <div v-for="(budget, index) in budgetsWithCategories" class="flex justify-content-between sidemenu-item"
+        :class=budget.class>
+        <div class="flex align-items-center ml-2">
+          <div class="">
             <h3>{{ budget.name }}</h3>
             <span>{{ budget.categories_sum_category_limit | 0 }} / {{ budget.limit }} zł</span>
+            <div class="flex">
+              <button @click="editBudgetVisible = true" class="btn-icon btn-icon-success"><i
+                  class="pi pi-pencil" /></button>
+              <button @click="confirmDialog(deleteBudget, budget.id)" class="btn-icon btn-icon-danger"><i
+                  class="pi pi-ban" /></button>
+            </div>
+          </div>
+          <div class="flex flex-column">
+            <DataTable :value="budget.categories" responsiveLayout="scroll" editMode="row" dataKey="id"
+              v-model:editingRows="editingRows" @row-edit-save="onRowEditSave" class="datatable p-4">
+              <Column field="category_name" header="Nazwa kategori" style="min-width: 15rem;max-width: 15rem;"
+                class="no-overflow" />
+              <Column field="" header="Wydane" />
+              <Column field="category_limit" header="Zaplanowane" style="text-align:right"> <template
+                  #editor="{ data, field }">
+                  <InputText v-model="data[field]" />
+                </template>
+              </Column>
+              <Column :rowEditor="true" bodyStyle="text-align:center">
+              </Column>
+              <Column><template #body="event">
+                  <button @click="confirmDialog(deleteCategory, event.data.id)" class="btn-icon btn-icon-danger">
+                    <i class="pi pi-ban"></i>
+                  </button>
+                </template>
+              </Column>
+              <Column><template #body="event">
+                  <button @click="getTransactions(event.data.category_name)" class="btn-icon btn-icon-danger">
+                    <i class="pi pi-plus"></i>
+                  </button>
+                </template>
+              </Column>
+            </DataTable>
+            <button class="ml-5 w-3 button" @click="manageModal(index, budget.start_date)" unstyled>New Category</button>
           </div>
         </div>
+        <Dialog v-model:visible="newCategoryVisible" modal>
+          <AddNewCategory @refresh="getBudgetsWithCategories(); newCategoryVisible = false" :id=budget.id />
+        </Dialog>
+        <Dialog v-model:visible="editBudgetVisible" modal>
+          <EditBudget @refresh="getBudgetsWithCategories(); editBudgetVisible = false" :id=budget.id />
+        </Dialog>
       </div>
     </ScrollPanel>
-    <Calendar @date-select="changeDate(selectedMonth)" v-model="selectedMonth" class="month-picker" view="month"
-      dateFormat="mm-yy" placeholder="Wybierz miesiąc" />
-    <div class="">
-      <Category @refresh="getBudgets()" />
-    </div>
   </div>
-  <Dialog v-model:visible="visible" modal>
-    <EditBudget @refresh="closeModal" />
-  </Dialog>
 </template> 
 <script setup lang="ts">
 import axios from "axios";
 import { useBudgets } from "@/../utils/useBudgets";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, Ref } from "vue";
 import { budget } from "@/consts/budgetID"
 import { useRouter } from "vue-router";
 import EditBudget from '@/Modules/Budgets/EditBudget.vue'
@@ -36,53 +67,74 @@ import { useDate } from "@/../utils/useDate";
 import { useConfirm } from "primevue/useconfirm";
 import ConfirmDialog from "primevue/confirmdialog";
 import { useToast } from "primevue/usetoast";
+import { useSaveCategory } from "../../../utils/useSaveCategory";
+import { category } from "@/consts/categoryID";
+import AddNewCategory from "./AddNewCategory.vue";
 
 const selectedMonth = ref()
 const router = useRouter();
-const visible = ref(false)
+const editBudgetVisible = ref(false)
+const newCategoryVisible = ref(false)
 const { getBudgets, budgets } = useBudgets();
 const { getMonth, getYear } = useDate()
-const budgetsWithClasses = ref()
 const confirm = useConfirm();
+
 const toast = useToast()
-onMounted(() => {
-  prepareData();
+const { saveCategory, categoryForm } = useSaveCategory();
+onMounted(async () => {
+  await getBudgetsWithCategories()
   //budget.id = budgets.value[0].id
 });
-const prepareData = async () => {
-  await getBudgets();
-  addClassesToBudgets()
-}
-const get = (arrayId: number) => {
-  addClassesToBudgets()
-  budget.id = budgets.value[arrayId].id
-  budgetsWithClasses.value[arrayId].class = 'active'
-  console.log(budgetsWithClasses.value)
-}
-const addClassesToBudgets = () => {
-  budgetsWithClasses.value = budgets.value.map(x => {
-    return {
-      ...x, class: ''
-    }
-  })
-}
-const closeModal = async () => {
-  await getBudgets()
-  visible.value = false
-}
-const deleteBudget = (id: any) => {
 
+const editingRows = ref([]);
+const onRowEditSave = (event: any) => {
+  let { newData } = event;
+  saveCategory(newData)
+  getBudgetsWithCategories()
+};
+const budgetsWithCategories = ref()
+const getBudgetsWithCategories = async () => {
+  const response = await axios.get(`/api/budgets`)
+  budgetsWithCategories.value = response.data
+  console.log(budgetsWithCategories.value)
+}
+const getTransactions = (name: string) => {
+  category.name = name
+  router.push('/transactions')
+}
+
+const deleteBudget = (id: any) => {
   axios.delete(`/api/budgets/${id}`).then(() => {
-    prepareData()
+    getBudgetsWithCategories()
   });
 }
+const deleteCategory = (id: any) => {
+  axios.delete(`/api/deleteCategory/${id}`).then(() => {
+    getBudgetsWithCategories()
+  });
+};
 const changeDate = async (date: any) => {
   await getBudgets(getMonth(date), getYear(date));
   budget.id = budgets.value[0].id
 
 }
-const confirmDialog = (arrayId: any) => {
-  const budgetId = budgetsWithClasses.value[arrayId].id
+const manageModal = (id: any, date: any) => {
+  console.log(id)
+  if (budgetsWithCategories.value[id].categories.length == 0) {
+    newCategoryVisible.value = true
+  } else {
+    const categoryDate = new Date(date)
+    const currentMonth = new Date().getMonth()
+    const currentYear = new Date().getFullYear()
+    const newCategoryAvailibilityDate = new Date(currentYear, currentMonth)
+    if (categoryDate.getTime() < newCategoryAvailibilityDate.getTime()) {
+      toast.add({ severity: 'warn', summary: 'Uwaga!', detail: 'Nie możesz dodać kategori do archiwalnych budżetów', life: 5000 });
+    } else {
+      newCategoryVisible.value = true
+    }
+  }
+}
+const confirmDialog = (callback: any, id: any) => {
   confirm.require({
     message: "Do you want to delete this competitor?",
     header: "Delete Confirmation",
@@ -95,7 +147,7 @@ const confirmDialog = (arrayId: any) => {
         detail: "Budget deleted",
         life: 3000,
       });
-      deleteBudget(budgetId);
+      callback(id);
     },
     reject: () => {
       toast.add({
@@ -131,6 +183,7 @@ const confirmDialog = (arrayId: any) => {
 }
 
 .sidemenu-item {
+  width: 100%;
   align-items: center;
   background-color: white;
   color: rgb(95, 95, 95);

@@ -19,7 +19,7 @@
                 <h2>{{ route.name }}</h2>
                 <button class="button logout"><i class="pi pi-sign-out"></i></button>
             </div>
-            <div>
+            <div class="">
                 <router-view />
             </div>
         </div>

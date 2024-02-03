@@ -13,10 +13,9 @@ export function useSaveCategory() {
         budget_id: 1,
         category_limit: 0
     });
-    async function saveCategory(data: Category) {
-        categoryForm.budget_id = budget.id
+    async function saveCategory(data: Category, id: number = 0) {
+        categoryForm.budget_id = id
         await axios.post("/api/createOrUpdateCategory", data)
     }
     return { categoryForm, saveCategory };
 }
-  

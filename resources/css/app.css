@@ -18,7 +18,11 @@ body {
 input {
   outline: none;
 }
-
+.no-overflow {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .p-20 {
   padding: 20px;
 }
