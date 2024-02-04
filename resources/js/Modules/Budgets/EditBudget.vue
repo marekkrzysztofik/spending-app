@@ -17,8 +17,6 @@
 <script setup lang="ts">
 import axios from 'axios'
 import { onMounted, ref, Ref, defineEmits } from "vue";
-import { Budget } from "@/types/budget";
-import { budget } from "@/consts/budgetID";
 import { BudgetForm } from '@/types/budgetForm';
 
 const props = defineProps({
@@ -46,4 +44,4 @@ const onSubmit = async () => {
 };
 </script>
 
- 
+  

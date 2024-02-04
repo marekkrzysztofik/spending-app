@@ -27,10 +27,9 @@ const { saveCategory, categoryForm } = useSaveCategory();
 const emit = defineEmits(['refresh']);
 
 const onSubmit = async () => {
-    console.log(props.id)
-    // await saveCategory(categoryForm, props.id).then(() => {
-    //     emit('refresh');
-    // });
+    await saveCategory(categoryForm, props.id).then(() => {
+        emit('refresh');
+    });
 };
 </script>
 <style scoped></style>

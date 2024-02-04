@@ -4,56 +4,55 @@
     <Calendar @date-select="changeDate(selectedMonth)" v-model="selectedMonth" class="w-2" view="month" dateFormat="mm-yy"
       placeholder="Wybierz miesiąc" />
     <ScrollPanel style="height: 520px;" class="m-3">
-      <div v-for="(budget, index) in budgetsWithCategories" class="flex justify-content-between sidemenu-item"
-        :class=budget.class>
-        <div class="flex align-items-center ml-2">
-          <div class="">
-            <h3>{{ budget.name }}</h3>
-            <span>{{ budget.categories_sum_category_limit | 0 }} / {{ budget.limit }} zł</span>
-            <div class="flex">
-              <button @click="editBudgetVisible = true" class="btn-icon btn-icon-success"><i
+      <div v-for="budget in budgetsWithCategories" class="sidemenu-item" :class=budget.class>
+        <div>
+          <h3>{{ budget.name }}</h3>
+          <span>{{ budget.categories_sum_category_limit | 0 }} / {{ budget.limit }} zł</span>
+        </div>
+        <div class="flex align-items-center justify-content-between">
+          <div class="flex flex-column align-items-center">
+            <div>
+              <button @click="manageBudgetId(budget.id); editBudgetVisible = true" class="btn-icon btn-icon-success"><i
                   class="pi pi-pencil" /></button>
               <button @click="confirmDialog(deleteBudget, budget.id)" class="btn-icon btn-icon-danger"><i
                   class="pi pi-ban" /></button>
             </div>
+            <button class="button" @click="manageBudgetId(budget.id); newCategoryVisible = true">New Category</button>
           </div>
-          <div class="flex flex-column">
-            <DataTable :value="budget.categories" responsiveLayout="scroll" editMode="row" dataKey="id"
-              v-model:editingRows="editingRows" @row-edit-save="onRowEditSave" class="datatable p-4">
-              <Column field="category_name" header="Nazwa kategori" style="min-width: 15rem;max-width: 15rem;"
-                class="no-overflow" />
-              <Column field="" header="Wydane" />
-              <Column field="category_limit" header="Zaplanowane" style="text-align:right"> <template
-                  #editor="{ data, field }">
-                  <InputText v-model="data[field]" />
-                </template>
-              </Column>
-              <Column :rowEditor="true" bodyStyle="text-align:center">
-              </Column>
-              <Column><template #body="event">
-                  <button @click="confirmDialog(deleteCategory, event.data.id)" class="btn-icon btn-icon-danger">
-                    <i class="pi pi-ban"></i>
-                  </button>
-                </template>
-              </Column>
-              <Column><template #body="event">
-                  <button @click="getTransactions(event.data.category_name)" class="btn-icon btn-icon-danger">
-                    <i class="pi pi-plus"></i>
-                  </button>
-                </template>
-              </Column>
-            </DataTable>
-            <button class="ml-5 w-3 button" @click="manageModal(index, budget.start_date)" unstyled>New Category</button>
-          </div>
+          <DataTable :value="budget.categories" responsiveLayout="scroll" editMode="row" dataKey="id"
+            v-model:editingRows="editingRows" @row-edit-save="onRowEditSave" class="datatable">
+            <Column field="category_name" header="Nazwa kategori" style="min-width: 15rem;max-width: 15rem;"
+              class="no-overflow" />
+            <Column field="" header="Wydane" />
+            <Column field="category_limit" header="Zaplanowane" style="text-align:right"> <template
+                #editor="{ data, field }">
+                <InputText v-model="data[field]" />
+              </template>
+            </Column>
+            <Column :rowEditor="true" bodyStyle="text-align:center">
+            </Column>
+            <Column><template #body="event">
+                <button @click="confirmDialog(deleteCategory, event.data.id)" class="btn-icon btn-icon-danger">
+                  <i class="pi pi-ban"></i>
+                </button>
+              </template>
+            </Column>
+            <Column><template #body="event">
+                <button @click="getTransactions(event.data.category_name)" class="btn-icon btn-icon-danger">
+                  <i class="pi pi-plus"></i>
+                </button>
+              </template>
+            </Column>
+          </DataTable>
         </div>
-        <Dialog v-model:visible="newCategoryVisible" modal>
-          <AddNewCategory @refresh="getBudgetsWithCategories(); newCategoryVisible = false" :id=budget.id />
-        </Dialog>
-        <Dialog v-model:visible="editBudgetVisible" modal>
-          <EditBudget @refresh="getBudgetsWithCategories(); editBudgetVisible = false" :id=budget.id />
-        </Dialog>
       </div>
     </ScrollPanel>
+    <Dialog v-model:visible="newCategoryVisible" modal>
+      <AddNewCategory @refresh="getBudgetsWithCategories(); newCategoryVisible = false" :id="currentBudgetId" />
+    </Dialog>
+    <Dialog v-model:visible="editBudgetVisible" modal>
+      <EditBudget @refresh="getBudgetsWithCategories(); editBudgetVisible = false;" :id="currentBudgetId" />
+    </Dialog>
   </div>
 </template> 
 <script setup lang="ts">
@@ -71,28 +70,29 @@ import { useSaveCategory } from "../../../utils/useSaveCategory";
 import { category } from "@/consts/categoryID";
 import AddNewCategory from "./AddNewCategory.vue";
 
-const selectedMonth = ref()
+const { getBudgets, budgets } = useBudgets();
+const { saveCategory } = useSaveCategory();
+const { getMonth, getYear } = useDate()
 const router = useRouter();
+const confirm = useConfirm();
+const toast = useToast()
+const selectedMonth = ref()
 const editBudgetVisible = ref(false)
 const newCategoryVisible = ref(false)
-const { getBudgets, budgets } = useBudgets();
-const { getMonth, getYear } = useDate()
-const confirm = useConfirm();
+const currentBudgetId: Ref<number> = ref(0)
+const budgetsWithCategories = ref()
+const editingRows = ref([]);
 
-const toast = useToast()
-const { saveCategory, categoryForm } = useSaveCategory();
 onMounted(async () => {
   await getBudgetsWithCategories()
-  //budget.id = budgets.value[0].id
 });
 
-const editingRows = ref([]);
 const onRowEditSave = (event: any) => {
   let { newData } = event;
   saveCategory(newData)
   getBudgetsWithCategories()
 };
-const budgetsWithCategories = ref()
+
 const getBudgetsWithCategories = async () => {
   const response = await axios.get(`/api/budgets`)
   budgetsWithCategories.value = response.data
@@ -118,12 +118,15 @@ const changeDate = async (date: any) => {
   budget.id = budgets.value[0].id
 
 }
-const manageModal = (id: any, date: any) => {
-  console.log(id)
+const manageBudgetId = (id: any) => {
+  currentBudgetId.value = id
+}
+const manageModal = (budget: any, id: any) => {
+  // newCategoryBudgetId.value = budget.id;
   if (budgetsWithCategories.value[id].categories.length == 0) {
     newCategoryVisible.value = true
   } else {
-    const categoryDate = new Date(date)
+    const categoryDate = new Date(budget.start_date)
     const currentMonth = new Date().getMonth()
     const currentYear = new Date().getFullYear()
     const newCategoryAvailibilityDate = new Date(currentYear, currentMonth)
