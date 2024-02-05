@@ -56,11 +56,10 @@
 </template>
 <script setup lang="ts">
 import axios from "axios";
-import { onMounted, computed, ref, ComputedRef, Ref, watch } from "vue";
+import { onMounted, computed, ref, ComputedRef, Ref } from "vue";
 import { useRouter } from "vue-router";
 import { useBudgets } from "@/../utils/useBudgets";
 import { useIncomes } from "@/../utils/useIncomes";
-import { visible } from "@/consts/modalVisibility";
 
 const { getIncomes, incomes } = useIncomes();
 const { getBudgets, budgets } = useBudgets();
@@ -71,12 +70,7 @@ const router = useRouter();
 const labelArr: Array<any> = []
 const sumArr: Array<any> = []
 const limitArr: Array<any> = []
-watch(
-    () => visible.value=false, 
-    () => {
-        getAlldata()
-    }
-)
+
 onMounted(async () => {
     await getAlldata()
 });

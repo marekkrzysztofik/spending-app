@@ -28,8 +28,9 @@ class BudgetRepository
             return [
                 'name' => $budget['name'],
                 'categories' => $budget->categories->map(function ($category) {
-                    return 
+                    return
                         [
+                            'id' => $category['id'],
                             'budget_id' => $category['budget_id'],
                             'category_name' => $category['category_name']
                         ];

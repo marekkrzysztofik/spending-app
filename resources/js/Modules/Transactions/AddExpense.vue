@@ -56,8 +56,8 @@ onMounted(() => {
 });
 const getBudgetsWithCategories = async () => {
     const response = await axios.get(`/api/getBudgetsWithCategories/1`)
-    console.log(response.data)
     categories.value = response.data.filter((item: any) => item.categories.length > 0);
+    console.log(categories.value)
 }
 const closeModal = () => {
     emit('close-modal');

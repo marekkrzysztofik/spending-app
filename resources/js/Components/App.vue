@@ -13,27 +13,28 @@
                 <i class="pi pi-plus m-auto" />
                 <p class="m-1-auto">Add transaction</p>
             </div>
-        </nav>  
+        </nav>
         <div>
             <div class="top-panel pl-4 bg-white border-bottom-1 border-400">
                 <h2>{{ route.name }}</h2>
                 <button class="button logout"><i class="pi pi-sign-out"></i></button>
             </div>
             <div class="">
-                <router-view />
+                <router-view :key="componentKey" />
             </div>
         </div>
     </div>
     <Dialog v-model:visible="visible" modal>
-        <AddExpense @close-modal="visible = false" />
+        <AddExpense @close-modal="visible = false; componentKey += 1" />
     </Dialog>
 </template>
 <script setup lang="ts">
 import { ref, onMounted, } from "vue";
 import { useRouter, useRoute, RouteRecordName } from "vue-router";
 import { usePrimeVue } from "primevue/config";
-import { visible } from '@/consts/modalVisibility'
 
+const visible = ref(false)
+const componentKey = ref(0)
 const router = useRouter();
 const route = useRoute()
 const menuItems = [
@@ -107,4 +108,5 @@ a {
     padding: 0.65rem 1rem;
     border-radius: 10px;
     transition: color 0.2s ease;
-}</style>
+}
+</style>
