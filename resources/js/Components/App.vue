@@ -13,7 +13,7 @@
                 <i class="pi pi-plus m-auto" />
                 <p class="m-1-auto">Add transaction</p>
             </div>
-        </nav> 
+        </nav>  
         <div>
             <div class="top-panel pl-4 bg-white border-bottom-1 border-400">
                 <h2>{{ route.name }}</h2>

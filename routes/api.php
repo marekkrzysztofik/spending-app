@@ -31,15 +31,20 @@ Route::post('/createOrUpdateCategory', [CategoryController::class, 'createOrUpda
 Route::delete('/deleteCategory/{id}', [CategoryController::class, 'deleteCategory']);
 
 
-Route::resource('budgets', BudgetController::class);  
+Route::resource('budgets', BudgetController::class); 
+Route::get('/getBudgetsWithCategories/{id}', [BudgetController::class, 'getBudgetsWithCategories']); 
+Route::get('/getBudgetsWithCategoriesWithTransactionsSum/{id}', [BudgetController::class, 'getBudgetsWithCategoriesWithTransactionsSum']); 
 Route::get('/getBudgetsByUserId/{id}/{month}/{year}', [BudgetController::class, 'getBudgetsByUserId']); 
+
+
+
 
 Route::get('getTransactionsJoinedWithCategoriesAndBudgetsByUserId/{id}', [TransactionController::class,   'getTransactionsJoinedWithCategoriesAndBudgetsByUserId']);
 Route::get('getTransactionsByUserId/{id}/{month}', [TransactionController::class, 'getTransactionsByUserId']);
 Route::get('getLastTransactionsByUserId/{id}', [TransactionController::class, 'getLastTransactionsByUserId']);
 Route::post('/createTransaction', [TransactionController::class, 'createTransaction']);  
 
-
+ 
 Route::get('getUsers', [AuthController::class, 'getUsers']); 
 Route::post('register', [AuthController::class, 'register']); 
 Route::post('login', [AuthController::class, 'login']);   

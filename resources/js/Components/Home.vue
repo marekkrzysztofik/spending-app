@@ -72,7 +72,7 @@ const labelArr: Array<any> = []
 const sumArr: Array<any> = []
 const limitArr: Array<any> = []
 watch(
-    () => visible.value,
+    () => visible.value=false, 
     () => {
         getAlldata()
     }

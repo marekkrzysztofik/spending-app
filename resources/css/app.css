@@ -31,7 +31,7 @@ input {
   margin: 1rem auto;
 }
 .inline {
-  display: inline-block;
+  display: inline-block; 
 }
 
 .input-grid {
@@ -101,12 +101,9 @@ input {
   border: none;
 }
 
-
-
-
 .button {
   display: inline-block;
-  padding: 0.75rem 1.25rem;
+  padding: 0.5rem 1.2rem;
   border-radius: 10rem;
   color: #fff;
   font-size: 1rem;

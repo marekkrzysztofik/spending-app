@@ -1,51 +1,56 @@
 <template>
   <ConfirmDialog />
-  <div class="flex flex-column m-4">
+  <div class="flex flex-column m-3">
     <Calendar @date-select="changeDate(selectedMonth)" v-model="selectedMonth" class="w-2" view="month" dateFormat="mm-yy"
       placeholder="Wybierz miesiąc" />
-    <ScrollPanel style="height: 520px;" class="m-3">
-      <div v-for="budget in budgetsWithCategories" class="sidemenu-item" :class=budget.class>
-        <div>
-          <h3>{{ budget.name }}</h3>
-          <span>{{ budget.categories_sum_category_limit | 0 }} / {{ budget.limit }} zł</span>
-        </div>
-        <div class="flex align-items-center justify-content-between">
-          <div class="flex flex-column align-items-center">
-            <div>
-              <button @click="manageBudgetId(budget.id); editBudgetVisible = true" class="btn-icon btn-icon-success"><i
-                  class="pi pi-pencil" /></button>
-              <button @click="confirmDialog(deleteBudget, budget.id)" class="btn-icon btn-icon-danger"><i
-                  class="pi pi-ban" /></button>
+    <ScrollPanel style="height: 520px;">
+      <div class="grid">
+        <div v-for="budget in budgetsWithCategories" class="sidemenu-item mt-3" :class=budget.class>
+          <div class="flex justify-content-between align-items-center">
+            <div class="flex align-items-center">
+              <h3>{{ budget.name }}</h3>
+              <span class="ml-2">{{ budget.categories_sum_category_limit | 0 }} / {{ budget.limit }} zł</span>
             </div>
-            <button class="button" @click="manageBudgetId(budget.id); newCategoryVisible = true">New Category</button>
+            <div class="flex align-items-center">
+              <button @click="manageBudgetId(budget.id); editBudgetVisible = true" class="button m-1"><i
+                  class="pi pi-pencil" /></button>
+              <button @click="confirmDialog(deleteBudget, budget.id)" class="button m-1"><i class="pi pi-ban" /></button>
+              <button class="button m-1" @click="manageBudgetId(budget.id); newCategoryVisible = true">New
+                Category</button>
+            </div>
           </div>
-          <DataTable :value="budget.categories" responsiveLayout="scroll" editMode="row" dataKey="id"
-            v-model:editingRows="editingRows" @row-edit-save="onRowEditSave" class="datatable">
-            <Column field="category_name" header="Nazwa kategori" style="min-width: 15rem;max-width: 15rem;"
-              class="no-overflow" />
-            <Column field="" header="Wydane" />
-            <Column field="category_limit" header="Zaplanowane" style="text-align:right"> <template
-                #editor="{ data, field }">
-                <InputText v-model="data[field]" />
-              </template>
-            </Column>
-            <Column :rowEditor="true" bodyStyle="text-align:center">
-            </Column>
-            <Column><template #body="event">
-                <button @click="confirmDialog(deleteCategory, event.data.id)" class="btn-icon btn-icon-danger">
-                  <i class="pi pi-ban"></i>
-                </button>
-              </template>
-            </Column>
-            <Column><template #body="event">
-                <button @click="getTransactions(event.data.category_name)" class="btn-icon btn-icon-danger">
-                  <i class="pi pi-plus"></i>
-                </button>
-              </template>
-            </Column>
-          </DataTable>
+          <div class="flex align-items-center justify-content-between">
+
+            <DataTable v-if="budget.categories.length > 0" :value="budget.categories" responsiveLayout="scroll"
+              size="small" editMode="row" dataKey="id" v-model:editingRows="editingRows" @row-edit-save="onRowEditSave"
+              class="datatable">
+              <Column field="category_name" header="Nazwa kategori" style="min-width: 10rem;max-width: 10rem;"
+                class="no-overflow" />
+              <Column field="transactions_sum" header="Wydane" />
+              <Column field="category_limit" header="Zaplanowane" style="text-align:right"> <template
+                  #editor="{ data, field }">
+                  <InputText v-model="data[field]" />
+                </template>
+              </Column>
+              <Column :rowEditor="true" bodyStyle="text-align:center">
+              </Column>
+              <Column><template #body="event">
+                  <button @click="confirmDialog(deleteCategory, event.data.id)" class="btn-icon btn-icon-danger">
+                    <i class="pi pi-ban"></i>
+                  </button>
+                </template>
+              </Column>
+              <Column><template #body="event">
+                  <button @click="getTransactions(event.data.category_name)" class="btn-icon btn-icon-danger">
+                    <i class="pi pi-plus"></i>
+                  </button>
+                </template>
+              </Column>
+            </DataTable>
+          </div>
         </div>
       </div>
+
     </ScrollPanel>
     <Dialog v-model:visible="newCategoryVisible" modal>
       <AddNewCategory @refresh="getBudgetsWithCategories(); newCategoryVisible = false" :id="currentBudgetId" />
@@ -94,7 +99,7 @@ const onRowEditSave = (event: any) => {
 };
 
 const getBudgetsWithCategories = async () => {
-  const response = await axios.get(`/api/budgets`)
+  const response = await axios.get(`/api/getBudgetsWithCategoriesWithTransactionsSum/1`)
   budgetsWithCategories.value = response.data
   console.log(budgetsWithCategories.value)
 }
@@ -170,6 +175,16 @@ const confirmDialog = (callback: any, id: any) => {
   cursor: pointer;
 }
 
+.grid {
+  margin: auto;
+  display: grid;
+  align-items: center;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 1fr;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+}
+
 .active {
   background-color: rgba(207, 207, 207) !important;
   color: black !important;
@@ -186,7 +201,7 @@ const confirmDialog = (callback: any, id: any) => {
 }
 
 .sidemenu-item {
-  width: 100%;
+  min-width: 96%;
   align-items: center;
   background-color: white;
   color: rgb(95, 95, 95);

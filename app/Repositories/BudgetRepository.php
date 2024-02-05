@@ -3,18 +3,44 @@
 namespace App\Repositories;
 
 use App\Models\Budget;
+use App\Models\Transaction;
 
 class BudgetRepository
 {
     protected $budget;
-    public function __construct() 
+    protected $transaction;
+    public function __construct()
     {
         $this->budget = new Budget();
+        $this->transaction = new Transaction();
     }
-    public function getBudgetsWithCategories()
+    protected function currentBudgetsWithCategories($id)
     {
         $currentMonth = date('m');
-        $budgets = Budget::with('categories')->whereMonth('start_date', '=', $currentMonth)->get();
+        $currentYear = date('Y');
+        $budgets = Budget::with('categories')->where('user_id', '=', $id)->whereMonth('start_date', '=', $currentMonth)->whereYear('start_date', '=', $currentYear)->get();
+        return $budgets;
+    }
+    public function getBudgetsWithCategories($id)
+    {
+        $budgets = $this->currentBudgetsWithCategories($id);
+        $formattedBudgets = $budgets->map(function ($budget) {
+            return [
+                'name' => $budget['name'],
+                'categories' => $budget->categories->map(function ($category) {
+                    return 
+                        [
+                            'budget_id' => $category['budget_id'],
+                            'category_name' => $category['category_name']
+                        ];
+                })->toArray(),
+            ];
+        });
+        return $formattedBudgets;
+    }
+    public function getBudgetsWithCategoriesWithTransactionsSum($id)
+    {
+        $budgets = $this->currentBudgetsWithCategories($id);
         $formattedBudgets = $budgets->map(function ($budget) {
             return [
                 'id' => $budget['id'],
@@ -22,13 +48,17 @@ class BudgetRepository
                 'user_id' => $budget['user_id'],
                 'start_date' => $budget['start_date'],
                 'categories' => $budget->categories->map(function ($category) {
-                    return $category->toArray();
+                    return array_merge(
+                        $category->toArray(),
+                        [
+                            'transactions_sum' => $category->transactions->sum('amount')
+                        ]
+                    );
                 })->toArray(),
             ];
         });
         return $formattedBudgets;
     }
-    
     public function getBudgetsByUserId($id, $month, $year)
     {
         return $this->budget->where('user_id', '=', $id)->whereMonth('start_date', '=', $month)->whereYear('start_date', '=', $year)->withSum('categories', 'category_limit')->withSum('transactions', 'amount')->get();

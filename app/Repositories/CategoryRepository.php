@@ -15,7 +15,7 @@ class CategoryRepository
       $this->budgetController = $budgetController;
     }
     public function getCategoriesByBudgetId($id)
-    {
+    { 
       return $this->category->where('budget_id', '=', $id)->withSum('transactions', 'amount')->get();
     }
     public function getCategoryById($id)
