@@ -28,18 +28,19 @@ class AuthController extends Controller
             return response()->json($response, 400);
         }
         $input = $request->all();
-        $input['password']= bcrypt($input['password']);
+        $input['password'] = bcrypt($input['password']);
 
-            $user = User::create($input);
-            $success['token'] = $user->createToken('MyApp')->plainTextToken;
-            $success['id'] = $user->id;
-            $success['name'] = $user->name;
-            
-            $response = [
-                'success' => true,
-                'data' => $success,
-                'message' => "User registered successfully"
-            ];
+        $user = User::create($input);
+        event(new \App\Events\UserCreated($user->id));
+        $success['token'] = $user->createToken('MyApp')->plainTextToken;
+        $success['id'] = $user->id;
+        $success['name'] = $user->name;
+        
+        $response = [
+            'success' => true,
+            'data' => $success,
+            'message' => "User registered successfully"
+        ];
         return response()->json($response, 200);
     }
     public function login(Request $request)
@@ -58,10 +59,9 @@ class AuthController extends Controller
         }
         return response()->json(['success' => false, 'message' => 'Invalid email or password'], 401);
     }
-    
+
     public function getUsers()
     {
-        return User::all(); 
+        return User::all();
     }
-   
 }

@@ -4,15 +4,18 @@ namespace App\Repositories;
 
 use App\Models\Budget;
 use App\Models\Transaction;
+use App\Models\Category;
 
 class BudgetRepository
 {
     protected $budget;
     protected $transaction;
+    protected $category;
     public function __construct()
     {
         $this->budget = new Budget();
         $this->transaction = new Transaction();
+        $this->category = new Category();
     }
     protected function currentBudgetsWithCategories($id)
     {
@@ -48,6 +51,8 @@ class BudgetRepository
                 'name' => $budget['name'],
                 'user_id' => $budget['user_id'],
                 'start_date' => $budget['start_date'],
+                'limit' => $budget['limit'],
+                'categories_sum' => $this->transaction->sum('amount'),
                 'categories' => $budget->categories->map(function ($category) {
                     return array_merge(
                         $category->toArray(),

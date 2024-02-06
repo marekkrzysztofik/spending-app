@@ -9,7 +9,7 @@
           <div class="flex justify-content-between align-items-center">
             <div class="flex align-items-center">
               <h3>{{ budget.name }}</h3>
-              <span class="ml-2">{{ budget.categories_sum_category_limit | 0 }} / {{ budget.limit }} zł</span>
+              <span class="ml-2">{{ budget.categories_sum | 0 }} / {{ budget.limit }} zł</span>
             </div>
             <div class="flex align-items-center">
               <button @click="manageBudgetId(budget.id); editBudgetVisible = true" class="button m-1"><i
@@ -21,15 +21,15 @@
           </div>
           <div class="flex align-items-center justify-content-between">
 
-            <DataTable v-if="budget.categories.length > 0" :value="budget.categories" responsiveLayout="scroll"
-              size="small" editMode="row" dataKey="id" v-model:editingRows="editingRows" @row-edit-save="onRowEditSave"
-              class="datatable">
+            <DataTable v-if="budget.categories.length > 0" :value="budget.categories" 
+              :scrollable="true" scrollHeight="12rem" size="small" editMode="row" dataKey="id"
+              v-model:editingRows="editingRows" @row-edit-save="onRowEditSave" class="datatable">
               <Column field="category_name" header="Nazwa kategori" style="min-width: 10rem;max-width: 10rem;"
                 class="no-overflow" />
               <Column field="transactions_sum" header="Wydane" />
-              <Column field="category_limit" header="Zaplanowane" style="text-align:right"> <template
+              <Column field="category_limit" header="Zaplanowane" style="text-align:right;"> <template
                   #editor="{ data, field }">
-                  <InputText v-model="data[field]" />
+                  <InputText v-model="data[field]" style=""/>
                 </template>
               </Column>
               <Column :rowEditor="true" bodyStyle="text-align:center">
@@ -75,7 +75,7 @@ import { useSaveCategory } from "../../../utils/useSaveCategory";
 import { category } from "@/consts/categoryID";
 import AddNewCategory from "./AddNewCategory.vue";
 
-const { getBudgets, budgets } = useBudgets();
+const { getBudgets, budgets } = useBudgets(); 
 const { saveCategory } = useSaveCategory();
 const { getMonth, getYear } = useDate()
 const router = useRouter();
@@ -99,7 +99,7 @@ const onRowEditSave = (event: any) => {
 };
 
 const getBudgetsWithCategories = async () => {
-  const response = await axios.get(`/api/getBudgetsWithCategoriesWithTransactionsSum/1`)
+  const response = await axios.get(`/api/getBudgetsWithCategoriesWithTransactionsSum/2`)
   budgetsWithCategories.value = response.data
   console.log(budgetsWithCategories.value)
 }
@@ -196,6 +196,7 @@ const confirmDialog = (callback: any, id: any) => {
 }
 
 .datatable {
+  margin: 0.5rem auto;
   background-color: white;
   border-radius: 10px;
 }

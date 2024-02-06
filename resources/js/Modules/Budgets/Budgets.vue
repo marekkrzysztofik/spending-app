@@ -2,8 +2,8 @@
   <div class="m-4">
     <div class="flex justify-content-between option-bar">
       <div>
-        <button @click="selectComponent(0)" class="button">Private</button>
-        <button @click="selectComponent(1)" class="button ml-3">Shared</button>
+        <button @click="selectComponent(2)" class="button">Private</button>
+        <button @click="selectComponent(1)" class="button ml-3">Common</button>
       </div>
       <h1 v-if="!budgets.length">No budgets</h1>
       <div class="flex-end">
@@ -15,9 +15,9 @@
       <div class="grid">
         <div class="m-1 item-box">
           <div class="ml-2">
-            <h3>{{ selectedComponent.title }}</h3>
-            <div @click="visible = true" :class=selectedComponent.class>
-              <i :class=selectedComponent.icon />
+            <h3>Add new budget</h3>
+            <div @click="visible = true" class='new-budget button'>
+              <i class="pi pi-plus m-auto" />
             </div>
           </div>
         </div>
@@ -31,7 +31,7 @@
       </div>
     </ScrollPanel>
     <Dialog v-model:visible="visible" modal>
-      <component :is="selectedComponent.name" @close-modal="closeModal"></component>
+      <AddNewBudget @close-modal="closeModal" />
     </Dialog>
   </div>
 </template>
@@ -41,7 +41,6 @@ import { onMounted, ref, Ref, shallowRef } from "vue";
 import { useRouter } from "vue-router";
 import { Budget } from "@/types/budget";
 import { budget } from "@/consts/budgetID"
-import ShareBudget from "./ShareBudget.vue";
 import AddNewBudget from "./AddNewBudget.vue";
 import { useDate } from "../../../utils/useDate";
 
@@ -52,40 +51,25 @@ const { getBudgets, budgets } = useBudgets();
 const chartData = ref()
 const visible = ref(false)
 const selectedMonth = ref()
-const components: Array<any> = [{
-  name: AddNewBudget,
-  title: 'Add new budget',
-  class: 'new-budget button',
-  icon: 'pi pi-plus m-auto',
-  data: budgets
-},
-{
-  name: ShareBudget,
-  title: 'Share budget',
-  class: 'new-budget button',
-  icon: 'pi pi-link m-auto',
-  data: ''
-}
-]
-const selectedComponent = shallowRef(components[0])
 
 onMounted(async () => {
   budget.month = getMonth();
   budget.year = getYear();
-  await getBudgets(getMonth(), getYear());
-  selectComponent(0)
+  await getBudgets(getMonth(), getYear(), 2);
+  prepareDataForCharts(budgets)
 });
 
 const changeDate = async (date: any) => {
   budget.month = getMonth(date);
   budget.year = getYear(date);
-  await getBudgets(getMonth(date), getYear(date))
-  selectComponent(0)
+  await getBudgets(getMonth(date), getYear(date), 2)
+  prepareDataForCharts(budgets)
 }
-const selectComponent = (id: number) => {
-  selectedComponent.value = components[id]
-  prepareDataForCharts(components[id].data)
+const selectComponent = async (id: number) => {
+  await getBudgets(getMonth(), getYear(), id);
+  prepareDataForCharts(budgets)
 }
+
 const prepareDataForCharts = (array: Ref<Array<Budget>>) => {
   chartData.value = array.value.map((item) => {
     return {
@@ -106,7 +90,7 @@ const prepareDataForCharts = (array: Ref<Array<Budget>>) => {
   });
 }
 const closeModal = async () => {
-  await getBudgets(budget.month, budget.year);
+  // await getBudgets(budget.month, budget.year);
   selectComponent(0)
   visible.value = false
 }

@@ -1,18 +1,18 @@
 <template>
-    <div class="flex flex-column justify-content-center m-2">
+    <div class="flex flex-column justify-content-center mx-2">
         <div class="flex justify-content-center container">
             <div class="balance-box">
-                <h2>Twój balans</h2>
+                <h2>Your balance</h2>
                 <h1>{{ balance }} zł</h1>
                 <p>last month 49 858 zł</p>
             </div>
             <div class="balance-box">
-                <h2>Twoje wydatki</h2>
+                <h2>Your Expenses</h2>
                 <h1>{{ expenseSum }} zł</h1>
                 <p>last month 49 858 zł</p>
             </div>
             <div class="balance-box">
-                <h2>Twoje przychody</h2>
+                <h2>Your Incomes</h2>
                 <h1>{{ incomeSum }} zł</h1>
                 <p>last month 49 858 zł</p>
             </div>
@@ -21,13 +21,13 @@
             <div class="balance-box">
                 <Chart type="bar" :data="chartData" :options="chartOptions" />
             </div>
-            <div class="balance-box flex flex-column justify-content-center">
-                <h2>Ostatnie wydatki</h2>
+            <div class="balance-box flex flex-column">
+                <h2>Last expenses</h2>
                 <table class="m-2">
                     <tr>
-                        <th class="table">Tytuł</th>
-                        <th class="table">Kwota</th>
-                        <th class="table">Data</th>
+                        <th class="table">Title</th>
+                        <th class="table">Amount</th>
+                        <th class="table">Date</th>
                     </tr>
                     <tr v-for="item in lastTransactions">
                         <td class="table"><span>{{ item.title }}</span></td>
@@ -36,18 +36,18 @@
                     </tr>
                 </table>
             </div>
-            <div class="balance-box">
-                <h2>Ostatnie wydatki</h2>
+            <div class="balance-box flex flex-column ">
+                <h2>Last expenses</h2>
                 <table class="m-2">
                     <tr>
-                        <th>Tytuł</th>
-                        <th>Kwota</th>
-                        <th>Data</th>
+                        <th class="table">Title</th>
+                        <th class="table">Amount</th>
+                        <th class="table">Date</th>
                     </tr>
                     <tr v-for="item in lastTransactions">
-                        <th class="table"><span>{{ item.title }}</span></th>
-                        <th class="table">{{ item.amount }}</th>
-                        <th class="table">{{ item.date }}</th>
+                        <td class="table"><span>{{ item.title }}</span></td>
+                        <td class="table">{{ item.amount }} zł</td>
+                        <td class="table">{{ item.date }}</td>
                     </tr>
                 </table>
             </div>
@@ -182,4 +182,5 @@ const counter = (array: Ref<Array<any>>, prop: string) => {
         border-radius: 10px;
         transition: transform 0.3s;
     }
-}</style>
+}
+</style>

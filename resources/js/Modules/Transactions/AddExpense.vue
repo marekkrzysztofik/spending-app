@@ -55,7 +55,7 @@ onMounted(() => {
     getBudgetsWithCategories()
 });
 const getBudgetsWithCategories = async () => {
-    const response = await axios.get(`/api/getBudgetsWithCategories/1`)
+    const response = await axios.get(`/api/getBudgetsWithCategories/2`)
     categories.value = response.data.filter((item: any) => item.categories.length > 0);
     console.log(categories.value)
 }
