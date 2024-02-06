@@ -8,5 +8,5 @@ export interface Budget {
     limit: number;
     type: string;
     categories_sum_category_limit: number;
-    transactions_sum_amount: number;
+    transactions_sum: number;
 }

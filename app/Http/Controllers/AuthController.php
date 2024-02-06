@@ -41,6 +41,8 @@ class AuthController extends Controller
             'data' => $success,
             'message' => "User registered successfully"
         ];
+        
+        //return view('welcome', compact('success'));
         return response()->json($response, 200);
     }
     public function login(Request $request)

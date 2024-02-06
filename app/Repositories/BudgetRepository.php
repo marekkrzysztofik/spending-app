@@ -65,9 +65,28 @@ class BudgetRepository
         });
         return $formattedBudgets;
     }
+    // public function getBudgetsByUserId($id, $month, $year)
+    // {
+    //     return $this->budget->where('user_id', '=', $id)->whereMonth('start_date', '=', $month)->whereYear('start_date', '=', $year)->withSum('categories', 'category_limit')->withSum('transactions', 'amount')->get(); 
+    // }
     public function getBudgetsByUserId($id, $month, $year)
     {
-        return $this->budget->where('user_id', '=', $id)->whereMonth('start_date', '=', $month)->whereYear('start_date', '=', $year)->withSum('categories', 'category_limit')->withSum('transactions', 'amount')->get();
+        $budgets = $this->budget->where('user_id', '=', $id)->whereMonth('start_date', '=', $month)->whereYear('start_date', '=', $year)->withSum('categories', 'category_limit')->withSum('transactions', 'amount')->get(); 
+        $formattedBudgets = $budgets->map(function ($budget) {
+            $transactionsSum = $budget['transactions_sum_amount'];
+            return [
+                'name' => $budget['name'],               
+                'limit' => $budget['limit'],
+                'transactions_sum' => $transactionsSum,
+                'labels' => ['Spent','Planned'],
+                'datasets' => [[
+                    'data'=> [$transactionsSum, $budget['limit']],
+                    'backgroundColor' => ['#E46651', '#41B883'],
+                ]
+                ],
+            ]; 
+        });
+        return $formattedBudgets;
     }
     public function getBudgetById($id)
     {

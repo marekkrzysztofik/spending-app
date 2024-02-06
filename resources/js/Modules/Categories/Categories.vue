@@ -119,7 +119,7 @@ const deleteCategory = (id: any) => {
   });
 };
 const changeDate = async (date: any) => {
-  await getBudgets(getMonth(date), getYear(date));
+  await getBudgets(getMonth(date), getYear(date),2);
   budget.id = budgets.value[0].id
 
 }

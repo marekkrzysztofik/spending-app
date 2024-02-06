@@ -21,11 +21,11 @@
             </div>
           </div>
         </div>
-        <div @click="link(index)" v-for="(budget, index) in chartData" :key="index" class="m-1 item-box">
+        <div @click="link(index)" v-for="(budget, index) in budgets" :key="index" class="m-1 item-box">
           <div class="ml-2">
             <h3>{{ budget.name }}</h3>
             <Chart type="doughnut" :data="budget" class="chart-width" />
-            <span>{{ budget.sum }} / {{ budget.limit }} zł</span>
+            <span>{{ budget.transactions_sum }} / {{ budget.limit }} zł</span>
           </div>
         </div>
       </div>
@@ -37,68 +37,53 @@
 </template>
 <script setup lang="ts">
 import { useBudgets } from "@/../utils/useBudgets";
-import { onMounted, ref, Ref, shallowRef } from "vue";
+import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
-import { Budget } from "@/types/budget";
 import { budget } from "@/consts/budgetID"
 import AddNewBudget from "./AddNewBudget.vue";
-import { useDate } from "../../../utils/useDate";
+import { useDate } from "@/../utils/useDate";
 
 
 const router = useRouter();
 const { getMonth, getYear } = useDate();
 const { getBudgets, budgets } = useBudgets();
-const chartData = ref()
 const visible = ref(false)
 const selectedMonth = ref()
 
 onMounted(async () => {
-  budget.month = getMonth();
-  budget.year = getYear();
-  await getBudgets(getMonth(), getYear(), 2);
-  prepareDataForCharts(budgets)
+  const id = localStorage.getItem('userID');
+  await getBudgets(getMonth(), getYear(), id);
 });
-
 const changeDate = async (date: any) => {
-  budget.month = getMonth(date);
-  budget.year = getYear(date);
   await getBudgets(getMonth(date), getYear(date), 2)
-  prepareDataForCharts(budgets)
 }
 const selectComponent = async (id: number) => {
   await getBudgets(getMonth(), getYear(), id);
-  prepareDataForCharts(budgets)
 }
-
-const prepareDataForCharts = (array: Ref<Array<Budget>>) => {
-  chartData.value = array.value.map((item) => {
-    return {
-      name: item.name,
-      sum: item.categories_sum_category_limit,
-      limit: item.limit,
-      labels: ['A', 'B',],
-      datasets:
-        [{
-          data: [item.categories_sum_category_limit, item.limit],
-          backgroundColor: ['#E46651', '#41B883']
-        },
-        {
-          data: [item.transactions_sum_amount, item.categories_sum_category_limit],
-          backgroundColor: ['#E46651', '#41B883']
-        }],
-    };
-  });
-}
-const closeModal = async () => {
-  // await getBudgets(budget.month, budget.year);
-  selectComponent(0)
+const closeModal = (id: number) => {
+  selectComponent(id)
   visible.value = false
 }
 const link = (id: any) => {
   budget.id = budgets.value[id].id
   router.push('/categories')
 }
-
+// const prepareDataForCharts = (array: Ref<Array<Budget>>) => {
+//   chartData.value = array.value.map((item) => {
+//     return {
+//       name: item.name,
+//       sum: item.categories_sum_category_limit,
+//       limit: item.limit,
+//       labels: ['A', 'B',],
+//       datasets:
+//         [
+//         {
+//           data: [item.transactions_sum_amount, item.categories_sum_category_limit],
+//           backgroundColor: ['#E46651', '#41B883']
+//         }],
+//     };
+//   });
+// }
 </script>
 <style scoped>
 .chart-width {

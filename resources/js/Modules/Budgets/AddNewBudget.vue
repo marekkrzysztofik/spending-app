@@ -15,7 +15,7 @@
             <p class="p-error" id="date-error">{{ errorMessage || '&nbsp;' }}</p>
         </div>
         <div class="flex p-3 align-items-center">
-            <Checkbox v-model="budgetForm.shared" :binary="true" />
+            <Checkbox v-model="shared" :binary="true" />
             <h2 class="m-2">Udostępnij</h2>
         </div>
         <button class="w-min m-3 button" type="submit">Save</button>
@@ -30,7 +30,6 @@ import { useRouter } from "vue-router";
 interface BudgetForm {
     user_id: number;
     name: string;
-    shared: boolean;
     start_date: string;
     end_date: string;
     limit: number;
@@ -41,9 +40,8 @@ const shared: Ref<boolean> = ref(false)
 const emit = defineEmits(['close-modal']);
 const errorMessage: Ref<string> = ref('')
 const budgetForm: BudgetForm = reactive({
-    user_id: 1,
+    user_id: 2,
     name: '',
-    shared: false,
     start_date: '',
     end_date: '',
     limit: 0
@@ -53,7 +51,7 @@ function addMonths(date: Date, months: number) {
     return date;
 }
 const closeModal = () => {
-    emit('close-modal');
+    emit('close-modal',budgetForm.user_id);
 };
 const transformDate = (date: Date) => {
     const transformedDate = date.toLocaleDateString("af-ZA").replaceAll('/', '-')
@@ -63,6 +61,9 @@ const onSubmit = () => {
     if (date.value) {
         budgetForm.start_date = transformDate(date.value)
         budgetForm.end_date = transformDate(addMonths(date.value, 1))
+        if (shared.value) {
+            budgetForm.user_id = 1
+        }
         save()
     } else errorMessage.value = 'Wypełnij to pole'
 }
