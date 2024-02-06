@@ -17,7 +17,7 @@
         <div>
             <div class="top-panel pl-4 bg-white border-bottom-1 border-400">
                 <h2>{{ route.name }}</h2>
-                <button class="button logout"><i class="pi pi-sign-out"></i></button>
+                <button @click="logout" class="button logout"><i class="pi pi-sign-out"></i></button>
             </div>
             <div class="">
                 <router-view :key="componentKey" />
@@ -49,6 +49,12 @@ const menuItems = [
 onMounted(() => {
     polishDateFormat();
 });
+const logout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("userID");
+    router.push("/");
+    location.reload();
+};
 const newTransaction = () => {
     visible.value = true;
 }
