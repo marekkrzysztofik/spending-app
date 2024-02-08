@@ -32,9 +32,10 @@ Route::delete('/deleteCategory/{id}', [CategoryController::class, 'deleteCategor
 
 
 Route::resource('budgets', BudgetController::class); 
-Route::get('/getBudgetsWithCategories/{id}', [BudgetController::class, 'getBudgetsWithCategories']); 
-Route::get('/getBudgetsWithCategoriesWithTransactionsSum/{id}', [BudgetController::class, 'getBudgetsWithCategoriesWithTransactionsSum']); 
-Route::get('/getBudgetsByUserId/{id}/{month}/{year}', [BudgetController::class, 'getBudgetsByUserId']); 
+Route::get('/getBudgetsForHomePage/{id}', [BudgetController::class, 'getBudgetsForHomePage']); 
+Route::get('/getDataForBudgetsComponent/{id}/{month}/{year}', [BudgetController::class, 'getDataForBudgetsComponent']); 
+Route::get('/getBudgetsForCategoriesComponent/{id}', [BudgetController::class, 'getBudgetsForCategoriesComponent']); 
+Route::get('/getDataForNewTransaction/{id}', [BudgetController::class, 'getDataForNewTransaction']); 
 
 
 
@@ -49,9 +50,6 @@ Route::get('getUsers', [AuthController::class, 'getUsers']);
 Route::post('register', [AuthController::class, 'register']); 
 Route::post('login', [AuthController::class, 'login']);   
 
-Route::get('getBudgetYouShared/{id}', [BudgetShareController::class, 'getBudgetYouShared']);
-Route::get('getSharedBudget/{id}', [BudgetShareController::class, 'getSharedBudget']);
-Route::post('shareBudget', [BudgetShareController::class, 'shareBudget']); 
 
 Route::get('getIncomesByUserId/{id}/{month}', [IncomeController::class, 'getIncomesByUserId']);
 Route::post('createIncome', [IncomeController::class, 'createIncome']); 

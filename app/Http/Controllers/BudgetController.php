@@ -11,18 +11,26 @@ class BudgetController extends Controller
 {
   protected $budget;
   private BudgetService $budgetService;
- 
+
   public function __construct(BudgetService $budgetService)
   {
     $this->budgetService = $budgetService;
   }
-  public function getBudgetsWithCategoriesWithTransactionsSum($id)
+  public function getBudgetsForHomePage($id)
   {
-    return $this->budgetService->getBudgetsWithCategoriesWithTransactionsSum($id);
+    return $this->budgetService->getBudgetsForHomePage($id);
   }
-  public function getBudgetsWithCategories($id)
+  public function getDataForBudgetsComponent($id, $month, $year)
   {
-    return $this->budgetService->getBudgetsWithCategories($id);
+    return $this->budgetService->getDataForBudgetsComponent($id, $month, $year);
+  }
+  public function getDataForNewTransaction($id)
+  {
+    return $this->budgetService->getDataForNewTransaction($id);
+  }
+  public function getBudgetsForCategoriesComponent($id)
+  {
+    return $this->budgetService->getBudgetsForCategoriesComponent($id);
   }
   public function store(Request $data)
   {
@@ -36,13 +44,8 @@ class BudgetController extends Controller
   {
     $this->budgetService->updateBudget($data, $id);
   }
-  public function getBudgetsByUserId($id, $month, $year)
-  {
-    return $this->budgetService->getBudgetsByUserId($id, $month, $year);
-  }
   public function destroy($id)
   {
     $this->budgetService->deleteBudget($id);
   }
 }
- 

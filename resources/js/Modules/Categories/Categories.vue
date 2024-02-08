@@ -1,17 +1,16 @@
 <template>
   <ConfirmDialog />
-  <div class="flex flex-column m-3">
-    <Calendar @date-select="changeDate(selectedMonth)" v-model="selectedMonth" class="w-2" view="month" dateFormat="mm-yy"
-      placeholder="Wybierz miesiąc" />
-    <ScrollPanel style="height: 520px;">
+  <div class="flex flex-column">
+
+    <ScrollPanel style="height: 80vh" class="p-3">
       <div class="grid">
-        <div v-for="budget in budgetsWithCategories" class="sidemenu-item mt-3" :class=budget.class>
-          <div class="flex justify-content-between align-items-center">
-            <div class="flex align-items-center">
+        <div v-for="budget in budgetsWithCategories" class="sidemenu-item" :class=budget.class>
+          <div class="flex align-items-center justify-content-between height m-3">
+            <div class="budget-label">
               <h3>{{ budget.name }}</h3>
               <span class="ml-2">{{ budget.categories_sum | 0 }} / {{ budget.limit }} zł</span>
             </div>
-            <div class="flex align-items-center">
+            <div class="flex">
               <button @click="manageBudgetId(budget.id); editBudgetVisible = true" class="button m-1"><i
                   class="pi pi-pencil" /></button>
               <button @click="confirmDialog(deleteBudget, budget.id)" class="button m-1"><i class="pi pi-ban" /></button>
@@ -19,17 +18,15 @@
                 Category</button>
             </div>
           </div>
-          <div class="flex align-items-center justify-content-between">
-
-            <DataTable v-if="budget.categories.length > 0" :value="budget.categories" 
-              :scrollable="true" scrollHeight="12rem" size="small" editMode="row" dataKey="id"
-              v-model:editingRows="editingRows" @row-edit-save="onRowEditSave" class="datatable">
-              <Column field="category_name" header="Nazwa kategori" style="min-width: 10rem;max-width: 10rem;"
+          <div class="p-1">
+            <DataTable :value="budget.categories" :scrollable="true" scrollHeight="12rem" size="small" editMode="row"
+              dataKey="id" v-model:editingRows="editingRows" @row-edit-save="onRowEditSave" class="datatable" >
+              <Column field="category_name" header="Nazwa kategori" style="width: 10rem;"
                 class="no-overflow" />
-              <Column field="transactions_sum" header="Wydane" />
-              <Column field="category_limit" header="Zaplanowane" style="text-align:right;"> <template
+              <Column field="transactions_sum" header="Wydane"/>
+              <Column field="category_limit" header="Zaplanowane"> <template
                   #editor="{ data, field }">
-                  <InputText v-model="data[field]" style=""/>
+                  <InputText v-model="data[field]" style="width:3rem;padding:0;" />
                 </template>
               </Column>
               <Column :rowEditor="true" bodyStyle="text-align:center">
@@ -74,8 +71,9 @@ import { useToast } from "primevue/usetoast";
 import { useSaveCategory } from "../../../utils/useSaveCategory";
 import { category } from "@/consts/categoryID";
 import AddNewCategory from "./AddNewCategory.vue";
+import { userID } from "@/../utils/userID";
 
-const { getBudgets, budgets } = useBudgets(); 
+const { getBudgets, budgets } = useBudgets();
 const { saveCategory } = useSaveCategory();
 const { getMonth, getYear } = useDate()
 const router = useRouter();
@@ -99,7 +97,7 @@ const onRowEditSave = (event: any) => {
 };
 
 const getBudgetsWithCategories = async () => {
-  const response = await axios.get(`/api/getBudgetsWithCategoriesWithTransactionsSum/2`)
+  const response = await axios.get(`/api/getBudgetsForCategoriesComponent/${userID}`)
   budgetsWithCategories.value = response.data
   console.log(budgetsWithCategories.value)
 }
@@ -119,7 +117,7 @@ const deleteCategory = (id: any) => {
   });
 };
 const changeDate = async (date: any) => {
-  await getBudgets(getMonth(date), getYear(date),2);
+  await getBudgets(getMonth(date), getYear(date), 2);
   budget.id = budgets.value[0].id
 
 }
@@ -170,21 +168,20 @@ const confirmDialog = (callback: any, id: any) => {
 </script>
 <style scoped>
 .sidemenu-item:hover {
-  background-color: rgba(207, 207, 207);
   color: black;
-  cursor: pointer;
 }
-
+.width {
+  width: 12rem;
+}
 .grid {
   margin: auto;
   display: grid;
   align-items: center;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, 41vw);
   grid-template-rows: 1fr;
   grid-column-gap: 0px;
   grid-row-gap: 0px;
 }
-
 .active {
   background-color: rgba(207, 207, 207) !important;
   color: black !important;
@@ -199,15 +196,15 @@ const confirmDialog = (callback: any, id: any) => {
   margin: 0.5rem auto;
   background-color: white;
   border-radius: 10px;
+  min-height: 12rem;
 }
 
 .sidemenu-item {
-  min-width: 96%;
+  width: 40vw;
   align-items: center;
   background-color: white;
   color: rgb(95, 95, 95);
   margin: 0.2rem auto;
-  padding: 1rem;
   border-radius: 10px;
   transition: color 0.2s ease;
 }

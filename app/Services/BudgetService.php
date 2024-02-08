@@ -14,21 +14,25 @@ class BudgetService
   {
     $this->budgetRepository = $budgetRepository;
   }
-  public function getBudgetsWithCategoriesWithTransactionsSum($id)
+  public function getBudgetsForCategoriesComponent($id)
   {
-    return $this->budgetRepository->getBudgetsWithCategoriesWithTransactionsSum($id);
+    return $this->budgetRepository->getBudgetsForCategoriesComponent($id);
   }
-  public function getBudgetsWithCategories($id)
+  public function getDataForNewTransaction($id)
   {
-    return $this->budgetRepository->getBudgetsWithCategories($id);
+    return $this->budgetRepository->getDataForNewTransaction($id);
   }
   public function getBudgetById($id)
   {
     return $this->budgetRepository->getBudgetById($id);
   }
-  public function getBudgetsByUserId($id, $month,$year)
+  public function getDataForBudgetsComponent($id, $month,$year)
   {
-    return $this->budgetRepository->getBudgetsByUserId($id, $month,$year);
+    return $this->budgetRepository->getDataForBudgetsComponent($id, $month,$year);
+  }
+  public function getBudgetsForHomePage($id)
+  {
+    return $this->budgetRepository->getBudgetsForHomePage($id);
   }
   public function deleteBudget($id)
   {

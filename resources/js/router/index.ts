@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import Home from "@/Components/Home.vue"
+import Welcome from "@/Components/Welcome.vue"
 import Transactions from "@/Modules/Transactions/Transactions.vue";
 import Register from "@/Modules/Auth/Register.vue";
 import Login from "@/Modules/Auth/Login.vue";
@@ -10,6 +11,14 @@ import EditBudget from '@/Modules/Budgets/EditBudget.vue'
 const routes: Array<RouteRecordRaw> = [
     {
         path: "/",
+        component: Welcome,
+        name: "Welcome",
+        meta: {
+            requiresAuth: false,
+        },
+    },
+    {
+        path: "/home",
         component: Home,
         name: "Home",
         meta: {
@@ -71,9 +80,9 @@ const router = createRouter({
     routes,
 });
 
-router.beforeEach((to,) => {
+router.beforeEach(to => {
     if (to.meta.requiresAuth && !localStorage.getItem("token")) {
-        return { name: "Login" };
+        return { name: "Welcome" };
     }
     if (to.meta.requiresAuth == false && localStorage.getItem("token")) {
         return { name: "Home" };

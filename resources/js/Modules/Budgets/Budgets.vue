@@ -42,6 +42,7 @@ import { useRouter } from "vue-router";
 import { budget } from "@/consts/budgetID"
 import AddNewBudget from "./AddNewBudget.vue";
 import { useDate } from "@/../utils/useDate";
+import { userID } from "@/../utils/userID";
 
 
 const router = useRouter();
@@ -51,8 +52,7 @@ const visible = ref(false)
 const selectedMonth = ref()
 
 onMounted(async () => {
-  const id = localStorage.getItem('userID');
-  await getBudgets(getMonth(), getYear(), id);
+  await getBudgets(getMonth(), getYear(), userID);
 });
 const changeDate = async (date: any) => {
   await getBudgets(getMonth(date), getYear(date), 2)

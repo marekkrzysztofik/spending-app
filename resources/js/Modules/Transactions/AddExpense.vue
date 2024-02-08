@@ -15,7 +15,7 @@
         </div>
         <div>
             <h2 v-if="!income">Kategoria</h2>
-            <CascadeSelect v-if="!income" v-model="category" :options="categories" optionLabel="category_name"
+            <CascadeSelect v-if="!income" v-model="category" :options="cascadeOptions" optionLabel="category_name"
                 optionGroupLabel="name" :optionGroupChildren="['categories']" class="m-3" style="minwidth: 14rem" />
             <p v-if="errorMessage" class="p-error" id="date-error">{{ errorMessage || '&nbsp;' }}</p>
         </div>
@@ -32,7 +32,6 @@
 </template>
 <script setup lang="ts">
 import { reactive, onMounted, ref, defineEmits, Ref } from "vue";
-import { useCategories } from "@/../utils/useCategories";
 import axios from 'axios'
 
 interface expenseForm {
@@ -40,9 +39,10 @@ interface expenseForm {
     title: string;
     amount: number;
 }
-const { categories } = useCategories();
+const userID= localStorage.getItem('userID')
 const emit = defineEmits(['close-modal']);
 const category = ref();
+const cascadeOptions = ref()
 const errorMessage: Ref<string> = ref('')
 const income: Ref<boolean> = ref(false);
 const date = ref(new Date());
@@ -55,9 +55,8 @@ onMounted(() => {
     getBudgetsWithCategories()
 });
 const getBudgetsWithCategories = async () => {
-    const response = await axios.get(`/api/getBudgetsWithCategories/2`)
-    categories.value = response.data.filter((item: any) => item.categories.length > 0);
-    console.log(categories.value)
+    const response = await axios.get(`/api/getDataForNewTransaction/${userID}`)
+    cascadeOptions.value = response.data.filter((item: any) => item.categories.length > 0);
 }
 const closeModal = () => {
     emit('close-modal');
@@ -71,7 +70,7 @@ const onSubmit = () => {
 const manageSave = async () => {
     const data = date.value.toLocaleDateString("af-ZA").replaceAll('/', '-')
     expenseForm.date = data
-    expenseForm.user_id = 1;
+    expenseForm.user_id = userID;
     if (income.value) {
         save('createIncome')
     } else {

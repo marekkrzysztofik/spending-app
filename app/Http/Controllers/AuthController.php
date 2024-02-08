@@ -16,14 +16,14 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'surname' => 'required',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users',
             'password' => 'required',
             'c_password' => 'required|same:password',
         ]);
         if ($validator->fails()) {
             $response = [
                 'success' => false,
-                'message' => $validator->errors()
+                'message' => $validator->errors()->first()
             ];
             return response()->json($response, 400);
         }
@@ -35,13 +35,13 @@ class AuthController extends Controller
         $success['token'] = $user->createToken('MyApp')->plainTextToken;
         $success['id'] = $user->id;
         $success['name'] = $user->name;
-        
+
         $response = [
             'success' => true,
             'data' => $success,
             'message' => "User registered successfully"
         ];
-        
+
         //return view('welcome', compact('success'));
         return response()->json($response, 200);
     }

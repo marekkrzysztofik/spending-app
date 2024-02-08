@@ -17,24 +17,32 @@
 import { ref } from 'vue';
 import axios from "axios";
 import { useRouter } from 'vue-router';
-import { registerColumns } from '@/consts/registerColumns.ts'
-
-const router = useRouter();
-
-const submit = (event: any) => {
-  const form = Object.fromEntries(new FormData(event.target));
-  register(form);
-};
-
-const register = async (data: any) => {
-  console.log(data)
-  await axios.post("/api/register", data).then(() => {
-    router.push("/");
-  });
-};
+import { Column } from '@/types/column';
 
 const errors = ref([]);
-
+const router = useRouter();
+const registerColumns: Column[] = [
+  { name: "name", type: "text", placeholder: "Name" },
+  { name: "surname", type: "text", placeholder: "Surname" },
+  { name: "email", type: "email", placeholder: "Email" },
+  { name: "password", type: "password", placeholder: "Password" },
+  { name: "c_password", type: "password", placeholder: "Confirm Password" }
+];
+const submit = (event: Event) => {
+  const target: HTMLFormElement = event.target as HTMLFormElement;
+  const form = Object.fromEntries(new FormData(target));
+  const columnData: Column = {
+        name: form.name as string,
+        placeholder: form.placeholder as string,
+        type: form.type as string,
+    };
+  register(columnData);
+};
+const register = async (data: Column) => {
+  await axios.post("/api/register", data).then(() => {
+    router.push("/login");
+  });
+};
 </script>
 <style>
 .text-danger {

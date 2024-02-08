@@ -58,18 +58,15 @@
 import axios from "axios";
 import { onMounted, computed, ref, ComputedRef, Ref } from "vue";
 import { useRouter } from "vue-router";
-import { useBudgets } from "@/../utils/useBudgets";
+import { userID } from "@/../utils/userID";
 import { useIncomes } from "@/../utils/useIncomes";
 
 const { getIncomes, incomes } = useIncomes();
-const { getBudgets, budgets } = useBudgets();
 const lastTransactions = ref()
 const expenseSum = ref()
 const incomeSum = ref()
 const router = useRouter();
-const labelArr: Array<any> = []
-const sumArr: Array<any> = []
-const limitArr: Array<any> = []
+const expensesArr = ref()
 
 onMounted(async () => {
     await getAlldata()
@@ -81,41 +78,21 @@ const chartOptions = ref({
     aspectRatio: 1,
 });
 const getAlldata = async () => {
-    await getBudgets()
+    await getChartData()
     await getIncomes()
     await getLastTransactions()
-    incomeSum.value = counter(incomes, 'amount')
-    expenseSum.value = counter(budgets, 'transactions_sum_amount')
-    prepareDataForCharts()
+     incomeSum.value = counter(incomes, 'amount')
+     //expensesArr.value = chartData.value.datasets[0]
+     expenseSum.value = counter(chartData.value.datasets[0], 'data')
+    // prepareDataForCharts()
+}
+const getChartData = async () => {
+    const response = await axios.get(`/api/getBudgetsForHomePage/${userID}`);
+    chartData.value = response.data;
 }
 const getLastTransactions = async () => {
-    const response = await axios.get(`/api/getLastTransactionsByUserId/1`);
+    const response = await axios.get(`/api/getLastTransactionsByUserId/${userID}`);
     lastTransactions.value = response.data;
-}
-const prepareDataForCharts = () => {
-    budgets.value.forEach(budget => {
-        labelArr.push(budget.name)
-        sumArr.push(budget.transactions_sum_amount)
-        limitArr.push(budget.limit)
-    });
-    setDataChart()
-}
-const setDataChart = () => {
-    chartData.value = {
-        labels: labelArr,
-        datasets: [
-            {
-                label: 'Wydane',
-                backgroundColor: ['#41B883'],
-                data: sumArr
-            },
-            {
-                label: 'Zaplanowane',
-                backgroundColor: ['#E46651'],
-                data: limitArr
-            }
-        ]
-    }
 }
 const balance: ComputedRef<number> = computed(() => {
     return incomeSum.value - expenseSum.value
