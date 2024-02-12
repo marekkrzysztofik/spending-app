@@ -85,7 +85,7 @@ import { category } from "@/consts/categoryID";
 
 const { getTransactionsByUserId, transactions } = useTransactionsByUserId();
 onMounted(() => {
-    getTransactionsByUserId(1);
+    getTransactionsByUserId();
     filters.value.category_name.value = category.name
 });
 const filters = ref({

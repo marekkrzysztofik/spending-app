@@ -31,12 +31,13 @@ Route::post('/createOrUpdateCategory', [CategoryController::class, 'createOrUpda
 Route::delete('/deleteCategory/{id}', [CategoryController::class, 'deleteCategory']);
 
 
+
 Route::resource('budgets', BudgetController::class); 
 Route::get('/getBudgetsForHomePage/{id}', [BudgetController::class, 'getBudgetsForHomePage']); 
 Route::get('/getDataForBudgetsComponent/{id}/{month}/{year}', [BudgetController::class, 'getDataForBudgetsComponent']); 
 Route::get('/getBudgetsForCategoriesComponent/{id}', [BudgetController::class, 'getBudgetsForCategoriesComponent']); 
 Route::get('/getDataForNewTransaction/{id}', [BudgetController::class, 'getDataForNewTransaction']); 
-
+Route::get('getCategoriesForAnalytics/{id}/{month}/{year}', [BudgetController::class, 'getCategoriesForAnalytics']);
 
 
 

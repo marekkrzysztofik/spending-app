@@ -1,5 +1,6 @@
 import { ref, Ref } from "vue";
 import axios from "axios";
+import { userID } from "./userID";
 
 interface Transaction {
     id: number;
@@ -16,8 +17,8 @@ function formatDate(inputDate:string) {
   }
 export function useTransactionsByUserId() {
     const transactions: Ref<Array<Transaction>> = ref([]);
-    async function getTransactionsByUserId(id: number) {
-        const response = await axios.get(`/api/getTransactionsJoinedWithCategoriesAndBudgetsByUserId/${id}`);
+    async function getTransactionsByUserId() {
+        const response = await axios.get(`/api/getTransactionsJoinedWithCategoriesAndBudgetsByUserId/${userID}`);
         transactions.value = response.data;
         transactions.value.forEach(el => {
             el.date = formatDate(el.date)

@@ -55,7 +55,7 @@ onMounted(async () => {
   await getBudgets(getMonth(), getYear(), userID);
 });
 const changeDate = async (date: any) => {
-  await getBudgets(getMonth(date), getYear(date), 2)
+  await getBudgets(getMonth(date), getYear(date), userID)
 }
 const selectComponent = async (id: number) => {
   await getBudgets(getMonth(), getYear(), id);

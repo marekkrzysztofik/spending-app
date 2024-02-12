@@ -26,13 +26,17 @@ class BudgetService
   {
     return $this->budgetRepository->getBudgetById($id);
   }
-  public function getDataForBudgetsComponent($id, $month,$year)
+  public function getDataForBudgetsComponent($id, $month, $year)
   {
-    return $this->budgetRepository->getDataForBudgetsComponent($id, $month,$year);
+    return $this->budgetRepository->getDataForBudgetsComponent($id, $month, $year);
   }
   public function getBudgetsForHomePage($id)
   {
     return $this->budgetRepository->getBudgetsForHomePage($id);
+  }
+  public function getCategoriesForAnalytics($id, $month, $year)
+  {
+    return $this->budgetRepository->getCategoriesForAnalytics($id, $month, $year);
   }
   public function deleteBudget($id)
   {
@@ -46,13 +50,13 @@ class BudgetService
     $budget->start_date = $data['start_date'];
     $budget->end_date = $data['end_date'];
     $budget->limit = $data['limit'];
-    $this->budgetRepository->save($budget); 
+    $this->budgetRepository->save($budget);
   }
   public function updateBudget($data, $id)
   {
     $budget = Budget::find($id);
     $budget->name = $data['name'];
     $budget->limit = $data['limit'];
-    $this->budgetRepository->update($budget); 
+    $this->budgetRepository->update($budget);
   }
 }

@@ -65,26 +65,24 @@ const { getIncomes, incomes } = useIncomes();
 const lastTransactions = ref()
 const expenseSum = ref()
 const incomeSum = ref()
-const router = useRouter();
-const expensesArr = ref()
-
-onMounted(async () => {
-    await getAlldata()
-});
 const chartData: any = ref();
 const chartOptions = ref({
     indexAxis: 'y',
     maintainAspectRatio: true,
     aspectRatio: 1,
 });
+onMounted(async () => {
+    await getAlldata()
+});
+const balance: ComputedRef<number> = computed(() => {
+    return incomeSum.value - expenseSum.value
+})
 const getAlldata = async () => {
     await getChartData()
     await getIncomes()
     await getLastTransactions()
-     incomeSum.value = counter(incomes, 'amount')
-     //expensesArr.value = chartData.value.datasets[0]
-     expenseSum.value = counter(chartData.value.datasets[0], 'data')
-    // prepareDataForCharts()
+    expenseSum.value = chartData.value.expenseSum
+    incomeSum.value = counter(incomes.value, 'amount')
 }
 const getChartData = async () => {
     const response = await axios.get(`/api/getBudgetsForHomePage/${userID}`);
@@ -94,19 +92,15 @@ const getLastTransactions = async () => {
     const response = await axios.get(`/api/getLastTransactionsByUserId/${userID}`);
     lastTransactions.value = response.data;
 }
-const balance: ComputedRef<number> = computed(() => {
-    return incomeSum.value - expenseSum.value
-})
-const counter = (array: Ref<Array<any>>, prop: string) => {
+const counter = (array: Array<any>, prop: string) => {
     const arr: Array<number> = []
-    array.value.forEach((el) => {
+    array.forEach((el) => {
         if (el[prop])
             arr.push(parseInt(el[prop]));
     });
     if (arr.length > 0)
-        return arr.reduce((a, b) => a + b);
-    else if (arr.length == 0)
-        return 0;
+        return arr.reduce((a: number, b: number) => a + b);
+    else return 0;
 };
 </script>
 <style scoped>

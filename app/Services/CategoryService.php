@@ -40,17 +40,21 @@ class CategoryService
   {
     return $this->categoryRepository->getCategories();
   }
-  public function createOrUpdateCategory(Request $request)
-    {
-        $data = $request->all();
-        if (array_key_exists("id", $data) && $data['id']) {
-            $this->updateCategory($request, $data["id"]);
-        } else {
-            $this->createCategory($request);
-        }
-    }
-    public function deleteCategory($id)
+  public function getDataForAnalytics($id, $month, $year)
   {
-    $this->categoryRepository->delete($id); 
+    return $this->categoryRepository->getDataForAnalytics($id, $month, $year);
+  }
+  public function createOrUpdateCategory(Request $request)
+  {
+    $data = $request->all();
+    if (array_key_exists("id", $data) && $data['id']) {
+      $this->updateCategory($request, $data["id"]);
+    } else {
+      $this->createCategory($request);
+    }
+  }
+  public function deleteCategory($id)
+  {
+    $this->categoryRepository->delete($id);
   }
 }

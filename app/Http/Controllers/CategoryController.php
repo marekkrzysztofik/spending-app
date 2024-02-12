@@ -39,4 +39,8 @@ class CategoryController extends Controller
     {
       $this->categoryService->deleteCategory($id); 
     }
+    public function getDataForAnalytics($id,$month,$year)
+    {
+        return $this->categoryService->getDataForAnalytics($id,$month,$year);
 } 
+}

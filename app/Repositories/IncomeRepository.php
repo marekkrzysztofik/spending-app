@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Income;
-  
+   
 class IncomeRepository
 {
     protected $income;
@@ -14,6 +14,7 @@ class IncomeRepository
     public function getIncomesByUserId($id, $month)
     {
         return $this->income->where('user_id', '=', $id)->whereMonth('date', '=', $month)->get();
+        
     }
     public function save($income) 
     {

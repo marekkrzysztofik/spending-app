@@ -32,8 +32,12 @@ class BudgetController extends Controller
   {
     return $this->budgetService->getBudgetsForCategoriesComponent($id);
   }
-  public function store(Request $data)
+  public function getCategoriesForAnalytics($id, $month, $year)
   {
+    return $this->budgetService->getCategoriesForAnalytics($id, $month, $year);
+  }
+  public function store(Request $data)
+  { 
     $this->budgetService->createBudget($data);
   }
   public function show($id)
