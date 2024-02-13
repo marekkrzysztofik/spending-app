@@ -26,9 +26,10 @@
 import axios from "axios";
 import { reactive, ref, defineEmits, Ref } from "vue";
 import { useRouter } from "vue-router";
+import { userID } from "@/../utils/userID";
 
 interface BudgetForm {
-    user_id: number;
+    user_id: string | null;
     name: string;
     start_date: string;
     end_date: string;
@@ -40,7 +41,7 @@ const shared: Ref<boolean> = ref(false)
 const emit = defineEmits(['close-modal']);
 const errorMessage: Ref<string> = ref('')
 const budgetForm: BudgetForm = reactive({
-    user_id: 2,
+    user_id: userID,
     name: '',
     start_date: '',
     end_date: '',
@@ -51,7 +52,7 @@ function addMonths(date: Date, months: number) {
     return date;
 }
 const closeModal = () => {
-    emit('close-modal',budgetForm.user_id);
+    emit('close-modal', budgetForm.user_id);
 };
 const transformDate = (date: Date) => {
     const transformedDate = date.toLocaleDateString("af-ZA").replaceAll('/', '-')

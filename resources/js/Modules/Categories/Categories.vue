@@ -1,11 +1,10 @@
 <template>
   <ConfirmDialog />
-  <div class="flex flex-column">
-
-    <ScrollPanel style="height: 80vh" class="p-3">
+  <div class="flex flex-column align-items-center mvt-1">
+    <ScrollPanel style="height: 83vh; width:82vw">
       <div class="grid">
         <div v-for="budget in budgetsWithCategories" class="sidemenu-item" :class=budget.class>
-          <div class="flex align-items-center justify-content-between height m-3">
+          <div class="flex align-items-center justify-content-between v-1">
             <div class="budget-label">
               <h3>{{ budget.name }}</h3>
               <span class="ml-2">{{ budget.categories_sum | 0 }} / {{ budget.limit }} zł</span>
@@ -18,8 +17,8 @@
                 Category</button>
             </div>
           </div>
-          <div class="p-1">
-            <DataTable :value="budget.categories" :scrollable="true" scrollHeight="12rem" size="small" editMode="row"
+          <div class="v-0-1">
+            <DataTable :value="budget.categories" :scrollable="true" scrollHeight="28vh" size="small" editMode="row"
               dataKey="id" v-model:editingRows="editingRows" @row-edit-save="onRowEditSave" class="datatable" >
               <Column field="category_name" header="Nazwa kategori" style="width: 10rem;"
                 class="no-overflow" />
@@ -170,17 +169,14 @@ const confirmDialog = (callback: any, id: any) => {
 .sidemenu-item:hover {
   color: black;
 }
-.width {
-  width: 12rem;
-}
+
 .grid {
   margin: auto;
   display: grid;
-  align-items: center;
-  grid-template-columns: repeat(2, 41vw);
+  grid-template-columns: repeat(2, 40vw);
   grid-template-rows: 1fr;
-  grid-column-gap: 0px;
-  grid-row-gap: 0px;
+  grid-column-gap: 1.5vw;
+  grid-row-gap: 1vw;
 }
 .active {
   background-color: rgba(207, 207, 207) !important;
@@ -193,18 +189,14 @@ const confirmDialog = (callback: any, id: any) => {
 }
 
 .datatable {
-  margin: 0.5rem auto;
   background-color: white;
   border-radius: 10px;
-  min-height: 12rem;
+  min-height: 28vh;
 }
 
 .sidemenu-item {
-  width: 40vw;
-  align-items: center;
   background-color: white;
   color: rgb(95, 95, 95);
-  margin: 0.2rem auto;
   border-radius: 10px;
   transition: color 0.2s ease;
 }

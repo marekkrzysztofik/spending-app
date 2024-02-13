@@ -4,24 +4,21 @@
             <div class="balance-box">
                 <h2>Your balance</h2>
                 <h1>{{ balance }} zł</h1>
-                <p>last month 49 858 zł</p>
             </div>
             <div class="balance-box">
                 <h2>Your Expenses</h2>
                 <h1>{{ expenseSum }} zł</h1>
-                <p>last month 49 858 zł</p>
             </div>
             <div class="balance-box">
                 <h2>Your Incomes</h2>
                 <h1>{{ incomeSum }} zł</h1>
-                <p>last month 49 858 zł</p>
             </div>
         </div>
         <div class="flex justify-content-center container">
             <div class="balance-box">
                 <Chart type="bar" :data="chartData" :options="chartOptions" />
             </div>
-            <div class="balance-box flex flex-column">
+            <div class="balance-box flex flex-column text-center">
                 <h2>Last expenses</h2>
                 <table class="m-2">
                     <tr>
@@ -36,7 +33,7 @@
                     </tr>
                 </table>
             </div>
-            <div class="balance-box flex flex-column ">
+            <div class="balance-box flex flex-column text-center">
                 <h2>Last expenses</h2>
                 <table class="m-2">
                     <tr>
@@ -128,7 +125,6 @@ const counter = (array: Array<any>, prop: string) => {
 
 .table {
     width: 20%;
-    text-align: center;
     max-width: 7rem;
     overflow: hidden;
     text-overflow: ellipsis;

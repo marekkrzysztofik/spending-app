@@ -13,7 +13,7 @@
     </div>
     <ScrollPanel style="width: 100%; height: 70vh">
       <div class="grid">
-        <div class="m-1 item-box">
+        <div class="m-1 item-box text-center">
           <div class="ml-2">
             <h3>Add new budget</h3>
             <div @click="visible = true" class='new-budget button'>
@@ -21,7 +21,7 @@
             </div>
           </div>
         </div>
-        <div @click="link(index)" v-for="(budget, index) in budgets" :key="index" class="m-1 item-box">
+        <div @click="link(index)" v-for="(budget, index) in budgets" :key="index" class="m-1 item-box text-center">
           <div class="ml-2">
             <h3>{{ budget.name }}</h3>
             <Chart type="doughnut" :data="budget" class="chart-width" />
@@ -107,7 +107,6 @@ const link = (id: any) => {
   display: flex;
   align-items: center;
   justify-content: center;
-  text-align: center;
   background-color: white;
   border-radius: 15px;
   transition: transform 0.3s;

@@ -1,8 +1,8 @@
 <template>
     <div class="flex">
-        <nav class="h-screen p-4 bg-white border-right-1 border-400 navbar">
+        <nav class="h-screen border-right-1 border-400 navbar">
             <router-link to="/">
-                <h1 class="primary-heading mb-3">Spending tracker</h1>
+                <h1 class="primary-heading mb-3 text-center">Spending tracker</h1>
             </router-link>
             <div class="sidemenu-item" v-for="(menuItem, index) in menuItems" :key="index">
                 <router-link class="sidemenu-link" :to="menuItem.path">
@@ -63,25 +63,20 @@ const polishDateFormat = () => {
 }
 </script>
 <style scoped>
-li {
-    list-style-type: none;
-}
 
-a {
-    color: black;
-    text-decoration: none;
-}
 
 .top-panel {
     display: flex;
     position: relative;
     align-items: center;
-    height: 5rem;
+    height:10vh;
     width: 85vw;
 }
 
 .navbar {
-    min-width: 15vw;
+    background-color: white;
+    padding: 2.5vh;
+    width: 15vw;
 }
 
 .new-transaction {
@@ -97,7 +92,7 @@ a {
 
 .sidemenu-link {
     color: rgb(153, 153, 153);
-    transition: color 0.2s ease;
+    transition: color 0.3s ease-out;
 }
 
 .sidemenu-item:hover .sidemenu-link {
