@@ -2,13 +2,13 @@
   <div class="m-4">
     <div class="flex justify-content-between option-bar">
       <div>
-        <button @click="selectComponent(2)" class="button">Private</button>
+        <button @click="selectComponent(userID)" class="button">Private</button>
         <button @click="selectComponent(1)" class="button ml-3">Common</button>
       </div>
       <h1 v-if="!budgets.length">No budgets</h1>
       <div class="flex-end">
-        <Calendar @date-select="changeDate(selectedMonth)" v-model="selectedMonth" view="month"
-          dateFormat="mm-yy" placeholder="Wybierz miesiąc" />
+        <Calendar @date-select="changeDate(selectedMonth)" v-model="selectedMonth" view="month" dateFormat="mm-yy"
+          placeholder="Wybierz miesiąc" />
       </div>
     </div>
     <ScrollPanel style="height: 75vh">
@@ -54,7 +54,7 @@ const selectedMonth = ref()
 onMounted(async () => {
   await getBudgets(getMonth(), getYear(), userID);
 });
-const changeDate = async (date: any) => {
+const changeDate = async (date: Date) => {
   await getBudgets(getMonth(date), getYear(date), userID)
 }
 const selectComponent = async (id: number) => {

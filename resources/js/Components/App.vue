@@ -76,7 +76,7 @@ const polishDateFormat = () => {
 .navbar {
     background-color: white;
     padding: 2.5vh;
-    width: 15vw;
+    min-width: 15vw;
 }
 
 .new-transaction {

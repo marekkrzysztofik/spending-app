@@ -29,7 +29,7 @@ import { useRouter } from "vue-router";
 import { userID } from "@/../utils/userID";
 
 interface BudgetForm {
-    user_id: string | null;
+    user_id: number;
     name: string;
     start_date: string;
     end_date: string;
@@ -55,7 +55,7 @@ const closeModal = () => {
     emit('close-modal', budgetForm.user_id);
 };
 const transformDate = (date: Date) => {
-    const transformedDate = date.toLocaleDateString("af-ZA").replaceAll('/', '-')
+    const transformedDate = date.toLocaleDateString("af-ZA").split('/').join('-')
     return transformedDate
 }
 const onSubmit = () => {

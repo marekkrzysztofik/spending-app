@@ -5,7 +5,7 @@
             <h2>Tytuł </h2>
             <input v-model="expenseForm.title" type="text" class="m-3 input" required />
         </div>
-        <div> 
+        <div>
             <h2>Kwota</h2>
             <input v-model.number="expenseForm.amount" placeholder="Price" class="m-3 input" required />
         </div>
@@ -39,14 +39,14 @@ interface expenseForm {
     title: string;
     amount: number;
 }
-const userID= localStorage.getItem('userID')
+const userID = localStorage.getItem('userID')
 const emit = defineEmits(['close-modal']);
 const category = ref();
 const cascadeOptions = ref()
 const errorMessage: Ref<string> = ref('')
 const income: Ref<boolean> = ref(false);
 const date = ref(new Date());
-const expenseForm: any = reactive({ 
+const expenseForm: any = reactive({
     date: new Date(),
     title: '',
     amount: 0,
@@ -68,7 +68,7 @@ const onSubmit = () => {
 
 }
 const manageSave = async () => {
-    const data = date.value.toLocaleDateString("af-ZA").replaceAll('/', '-')
+    const data = date.value.toLocaleDateString("af-ZA").split('/').join('-')
     expenseForm.date = data
     expenseForm.user_id = userID;
     if (income.value) {
