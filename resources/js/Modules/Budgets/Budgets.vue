@@ -7,22 +7,22 @@
       </div>
       <h1 v-if="!budgets.length">No budgets</h1>
       <div class="flex-end">
-        <Calendar @date-select="changeDate(selectedMonth)" class="ml-3" v-model="selectedMonth" view="month"
+        <Calendar @date-select="changeDate(selectedMonth)" v-model="selectedMonth" view="month"
           dateFormat="mm-yy" placeholder="Wybierz miesiąc" />
       </div>
     </div>
-    <ScrollPanel style="width: 100%; height: 70vh">
+    <ScrollPanel style="height: 75vh">
       <div class="grid">
-        <div class="m-1 item-box text-center">
-          <div class="ml-2">
+        <div class="item-box text-center">
+          <div class="">
             <h3>Add new budget</h3>
             <div @click="visible = true" class='new-budget button'>
               <i class="pi pi-plus m-auto" />
             </div>
           </div>
         </div>
-        <div @click="link(index)" v-for="(budget, index) in budgets" :key="index" class="m-1 item-box text-center">
-          <div class="ml-2">
+        <div @click="link(index)" v-for="(budget, index) in budgets" :key="index" class="item-box text-center">
+          <div class="">
             <h3>{{ budget.name }}</h3>
             <Chart type="doughnut" :data="budget" class="chart-width" />
             <span>{{ budget.transactions_sum }} / {{ budget.limit }} zł</span>
@@ -103,7 +103,7 @@ const link = (id: any) => {
 }
 
 .item-box {
-  height: 28vh;
+  height: 30vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -117,12 +117,13 @@ const link = (id: any) => {
 }
 
 .grid {
+  margin: 2vw 0;
   display: grid;
   align-items: center;
   grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(2, 35vh);
-  grid-column-gap: 1rem;
-  grid-row-gap: 1rem;
+  grid-template-rows: repeat(1fr);
+  grid-column-gap: 2vw;
+  grid-row-gap: 2vw;
 }
 
 .option-bar {
