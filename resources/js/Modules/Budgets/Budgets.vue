@@ -1,10 +1,6 @@
 <template>
   <div class="m-4">
     <div class="flex justify-content-between option-bar">
-      <div>
-        <button @click="selectComponent(userID)" class="button">Private</button>
-        <button @click="selectComponent(1)" class="button ml-3">Common</button>
-      </div>
       <h1 v-if="!budgets.length">No budgets</h1>
       <div class="flex-end">
         <Calendar @date-select="changeDate(selectedMonth)" v-model="selectedMonth" view="month" dateFormat="mm-yy"
@@ -44,7 +40,6 @@ import AddNewBudget from "./AddNewBudget.vue";
 import { useDate } from "@/../utils/useDate";
 import { userID } from "@/../utils/userID";
 
-
 const router = useRouter();
 const { getMonth, getYear } = useDate();
 const { getBudgets, budgets } = useBudgets();
@@ -52,38 +47,19 @@ const visible = ref(false)
 const selectedMonth = ref()
 
 onMounted(async () => {
-  await getBudgets(getMonth(), getYear(), userID);
+  await getBudgets(getMonth(), getYear());
 });
 const changeDate = async (date: Date) => {
-  await getBudgets(getMonth(date), getYear(date), userID)
+  await getBudgets(getMonth(date), getYear(date))
 }
-const selectComponent = async (id: number) => {
-  await getBudgets(getMonth(), getYear(), id);
-}
-const closeModal = (id: number) => {
-  selectComponent(id)
+const closeModal = () => {
+  getBudgets(getMonth(), getYear());
   visible.value = false
 }
 const link = (id: any) => {
   budget.id = budgets.value[id].id
   router.push('/categories')
 }
-// const prepareDataForCharts = (array: Ref<Array<Budget>>) => {
-//   chartData.value = array.value.map((item) => {
-//     return {
-//       name: item.name,
-//       sum: item.categories_sum_category_limit,
-//       limit: item.limit,
-//       labels: ['A', 'B',],
-//       datasets:
-//         [
-//         {
-//           data: [item.transactions_sum_amount, item.categories_sum_category_limit],
-//           backgroundColor: ['#E46651', '#41B883']
-//         }],
-//     };
-//   });
-// }
 </script>
 <style scoped>
 .chart-width {
