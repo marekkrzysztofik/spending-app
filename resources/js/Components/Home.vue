@@ -20,7 +20,7 @@
             </div>
             <div class="balance-box flex flex-column text-center">
                 <h2>Last expenses</h2>
-                <table class="m-2">
+                <table class="m-2"> 
                     <tr>
                         <th class="table">Title</th>
                         <th class="table">Amount</th>

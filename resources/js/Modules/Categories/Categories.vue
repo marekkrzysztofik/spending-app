@@ -18,7 +18,7 @@
             </div>
           </div>
           <div class="v-0-1">
-            <DataTable :value="budget.categories" :scrollable="true" scrollHeight="28vh" size="small" editMode="row"
+            <DataTable v-if="budget.categories.length>0" :value="budget.categories" :scrollable="true" scrollHeight="20vh" size="small" editMode="row"
               dataKey="id" v-model:editingRows="editingRows" @row-edit-save="onRowEditSave" class="datatable" >
               <Column field="category_name" header="Nazwa kategori" style="width: 10rem;"
                 class="no-overflow" />
@@ -191,7 +191,7 @@ const confirmDialog = (callback: any, id: any) => {
 .datatable {
   background-color: white;
   border-radius: 10px;
-  min-height: 28vh;
+  min-height: 20vh;
 }
 
 .sidemenu-item {

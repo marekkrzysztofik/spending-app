@@ -79,7 +79,7 @@
 </template>
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import { useTransactionsByUserId } from "@/../utils/useTransactionsByUserId";
+import { useTransactionsByUserId } from "@/../utils/useTransactionsByUserId"; 
 import { FilterMatchMode } from 'primevue/api';
 import { category } from "@/consts/categoryID";
 
