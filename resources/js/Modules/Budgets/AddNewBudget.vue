@@ -52,7 +52,7 @@ function addMonths(date: Date, months: number) {
     return date;
 }
 const closeModal = () => {
-    emit('close-modal', budgetForm.user_id);
+    emit('close-modal');
 };
 const transformDate = (date: Date) => {
     const transformedDate = date.toLocaleDateString("af-ZA").split('/').join('-')
