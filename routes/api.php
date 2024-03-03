@@ -8,7 +8,7 @@ use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\IncomeController;
-use App\Http\Controllers\BudgetShareController; 
+use App\Http\Controllers\BudgetedAmountController; 
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -51,6 +51,7 @@ Route::get('getUsers', [AuthController::class, 'getUsers']);
 Route::post('register', [AuthController::class, 'register']); 
 Route::post('login', [AuthController::class, 'login']);   
 
+Route::resource('budgetedAmounts', BudgetedAmountController::class); 
 
 Route::get('getIncomesByUserId/{id}/{month}', [IncomeController::class, 'getIncomesByUserId']);
 Route::post('createIncome', [IncomeController::class, 'createIncome']); 

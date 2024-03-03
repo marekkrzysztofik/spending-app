@@ -12,4 +12,8 @@ class Category extends Model
     {
         return $this->hasMany(Transaction::class);
     }
+    public function budgeted_amounts()
+    {
+        return $this->hasMany(BudgetedAmount::class);
+    }
 }

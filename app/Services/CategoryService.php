@@ -27,7 +27,6 @@ class CategoryService
     $category = new Category;
     $category->budget_id = $data['budget_id'];
     $category->category_name = $data['category_name'];
-    $category->category_limit = $data['category_limit'];
     $this->categoryRepository->save($category);
   }
   public function updateCategory($data, $id)

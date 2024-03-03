@@ -23,7 +23,7 @@
               <Column field="category_name" header="Nazwa kategori" style="width: 10rem;"
                 class="no-overflow" />
               <Column field="transactions_sum" header="Wydane"/>
-              <Column field="category_limit" header="Zaplanowane"> <template
+              <Column field="amount" header="Zaplanowane"> <template
                   #editor="{ data, field }">
                   <InputText v-model="data[field]" style="width:3rem;padding:0;" />
                 </template>

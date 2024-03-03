@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 
 class BudgetedAmountController extends Controller
 {
+    protected $budgetedAmount;
+    public function __construct()
+    {
+        $this->budgetedAmount = new BudgetedAmount();
+    }
     /**
      * Display a listing of the resource.
      */
@@ -29,15 +34,19 @@ class BudgetedAmountController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $budget = new BudgetedAmount;
+        $budget->category_id = $request['category_id'];
+        $budget->amount = $request['amount'];
+        $budget->date = $request['date'];
+        $budget->save();
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(BudgetedAmount $budgetedAmount)
+    public function show($id)
     {
-        //
+        return $this->budgetedAmount->find($id);
     }
 
     /**
