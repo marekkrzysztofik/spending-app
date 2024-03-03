@@ -22,21 +22,16 @@ class CreateDefaultBudget
      */
     public function handle(UserCreated $event): void
     {
-        $currentDate = date("Y-m-d");
-        $datePlusOneMonth = date('Y-m-d', strtotime('+1 month', strtotime($currentDate)));
-        $this->createBudget($event->userId, 'Housing', $currentDate, $datePlusOneMonth, 1000);
-        $this->createBudget($event->userId, 'Food', $currentDate, $datePlusOneMonth, 1000);
-        $this->createBudget($event->userId, 'Subscriptions', $currentDate, $datePlusOneMonth, 1000);
-        $this->createBudget($event->userId, 'Transport', $currentDate, $datePlusOneMonth, 500);
+        $this->createBudget($event->userId, 'Housing');
+        $this->createBudget($event->userId, 'Food');
+        $this->createBudget($event->userId, 'Subscriptions');
+        $this->createBudget($event->userId, 'Transport');
     }
-    function createBudget($user_id, $name, $start_date, $end_date, $limit = null)
+    function createBudget($user_id, $name)
     {
         Budget::create([
             'user_id' => $user_id,
             'name' => $name,
-            'start_date' => $start_date,
-            'end_date' => $end_date,
-            'limit' => $limit,
         ]);
     }
 }

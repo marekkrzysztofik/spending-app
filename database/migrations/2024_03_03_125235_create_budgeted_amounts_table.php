@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('budgets', function (Blueprint $table) { 
+        Schema::create('budgeted_amounts', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->string('name');
-            $table->timestamps();  
+            $table->unsignedBigInteger('category_id');
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->integer('amount');
+            $table->date('date');
+            $table->timestamps();
         });
     }
 
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('budgets');
+        Schema::dropIfExists('budgeted_amounts');
     }
 };

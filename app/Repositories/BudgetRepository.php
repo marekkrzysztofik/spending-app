@@ -18,8 +18,10 @@ class BudgetRepository
         $this->budget = new Budget();
         $this->transaction = new Transaction();
         $this->category = new Category();
-        $this->currentMonth = date('m');
-        $this->currentYear = date('Y');
+        $this->currentMonth = 2;
+        $this->currentYear = 2024;
+        // $this->currentMonth = date('m');
+        // $this->currentYear = date('Y');
     }
     protected function currentBudgetsWithCategories($id, $currentMonth = null, $currentYear = null)
     {
