@@ -16,7 +16,7 @@ class CreateDefaultBudget
     {
         //
     }
-
+ 
     /**
      * Handle the event.
      */

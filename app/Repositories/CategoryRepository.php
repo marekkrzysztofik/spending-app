@@ -28,6 +28,7 @@ class CategoryRepository
     public function save($category)
     {
       $category->save();
+      event(new \App\Events\CategoryCreated($category->id));
     }
     public function update($category) 
     {

@@ -21,6 +21,9 @@ class EventServiceProvider extends ServiceProvider
         \App\Events\UserCreated::class => [
             \App\Listeners\CreateDefaultBudget::class,
         ],
+        \App\Events\CategoryCreated::class => [
+            \App\Listeners\CreateDefaultBudgetedAmount::class,
+        ],
     ];
 
     /**

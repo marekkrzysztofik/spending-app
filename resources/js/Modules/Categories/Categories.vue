@@ -12,31 +12,35 @@
             <div class="flex">
               <button @click="manageBudgetId(budget.id); editBudgetVisible = true" class="button m-1"><i
                   class="pi pi-pencil" /></button>
-              <button @click="confirmDialog(deleteBudget, budget.id)" class="button m-1"><i class="pi pi-ban" /></button>
+              <button @click="confirmDialog(deleteBudget, budget.id)" class="button m-1"><i
+                  class="pi pi-ban" /></button>
               <button class="button m-1" @click="manageBudgetId(budget.id); newCategoryVisible = true">New
                 Category</button>
             </div>
           </div>
           <div class="v-0-1">
-            <DataTable v-if="budget.categories.length>0" :value="budget.categories" :scrollable="true" scrollHeight="20vh" size="small" editMode="row"
-              dataKey="id" v-model:editingRows="editingRows" @row-edit-save="onRowEditSave" class="datatable" >
-              <Column field="category_name" header="Nazwa kategori" style="width: 10rem;"
-                class="no-overflow" />
-              <Column field="transactions_sum" header="Wydane"/>
-              <Column field="amount" header="Zaplanowane"> <template
-                  #editor="{ data, field }">
+            <DataTable v-if="budget.categories.length > 0" :value="budget.categories" :scrollable="true"
+              scrollHeight="20vh" size="small" editMode="row" dataKey="id" v-model:editingRows="editingRows"
+              @row-edit-save="onRowEditSave" class="datatable">
+              <Column field="category_name" header="Nazwa kategori" style="width: 10rem;" class="no-overflow" />
+              <Column field="transactions_sum" header="Wydane" />
+              <Column field="amount" header="Zaplanowane"> <template #editor="{ data, field }">
                   <InputText v-model="data[field]" style="width:3rem;padding:0;" />
                 </template>
               </Column>
               <Column :rowEditor="true" bodyStyle="text-align:center">
               </Column>
-              <Column><template #body="event">
+              <Column>
+
+                <template #body="event">
                   <button @click="confirmDialog(deleteCategory, event.data.id)" class="btn-icon btn-icon-danger">
                     <i class="pi pi-ban"></i>
                   </button>
                 </template>
               </Column>
-              <Column><template #body="event">
+              <Column>
+
+                <template #body="event">
                   <button @click="getTransactions(event.data.category_name)" class="btn-icon btn-icon-danger">
                     <i class="pi pi-plus"></i>
                   </button>
@@ -55,7 +59,8 @@
       <EditBudget @refresh="getBudgetsWithCategories(); editBudgetVisible = false;" :id="currentBudgetId" />
     </Dialog>
   </div>
-</template> 
+</template>
+
 <script setup lang="ts">
 import axios from "axios";
 import { useBudgets } from "@/../utils/useBudgets";
@@ -91,10 +96,13 @@ onMounted(async () => {
 
 const onRowEditSave = (event: any) => {
   let { newData } = event;
-  saveCategory(newData)
+  saveBudgetedAmount(newData)
   getBudgetsWithCategories()
 };
-
+const saveBudgetedAmount = async (data: any) => {
+  console.log(data)
+  await axios.patch(`/api/budgetedAmounts/${data.id}`, data)
+}
 const getBudgetsWithCategories = async () => {
   const response = await axios.get(`/api/getBudgetsForCategoriesComponent/${userID}`)
   budgetsWithCategories.value = response.data
@@ -165,6 +173,7 @@ const confirmDialog = (callback: any, id: any) => {
   });
 };
 </script>
+
 <style scoped>
 .sidemenu-item:hover {
   color: black;
@@ -178,6 +187,7 @@ const confirmDialog = (callback: any, id: any) => {
   grid-column-gap: 1.5vw;
   grid-row-gap: 1vw;
 }
+
 .active {
   background-color: rgba(207, 207, 207) !important;
   color: black !important;

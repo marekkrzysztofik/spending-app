@@ -60,9 +60,11 @@ class BudgetedAmountController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, BudgetedAmount $budgetedAmount)
+    public function update(Request $request, $id)
     {
-        //
+        $budget = BudgetedAmount::find($id);
+        $budget->amount = $request['amount'];
+        $budget->update();
     }
 
     /**

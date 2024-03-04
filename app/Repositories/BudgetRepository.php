@@ -19,124 +19,77 @@ class BudgetRepository
         $this->budget = new Budget();
         $this->transaction = new Transaction();
         $this->category = new Category();
-        $this->currentMonth = 2;
-        $this->currentYear = 2024;
-        // $this->currentMonth = date('m');
-        // $this->currentYear = date('Y');
+        $this->currentMonth = date('m');
+        $this->currentYear = date('Y');
     }
     protected function currentBudgetsWithCategories($id, $currentMonth = null, $currentYear = null)
     {
         $currentMonth = $currentMonth ?? $this->currentMonth;
         $currentYear = $currentYear ?? $this->currentYear;
-        // $budgets = Budget::with('categories')->where('user_id', '=', $id)->whereMonth('start_date', '=', $currentMonth)->withSum('categories', 'category_limit')->whereYear('start_date', '=', $currentYear)->withSum('transactions', 'amount')->get();
         $budgets = Budget::with('categories')->where('user_id', '=', $id)->get();
+        // $budgets = $this->budget->where('budgets.user_id', '=', $id)->get();
         return $budgets;
     }
     public function getBudgetsForHomePage($id)
     {
-        // $budgets = $this->currentBudgetsWithCategories($id)->toArray();
-        // $chartData = [
-        //     'labels' => array_column($budgets, 'name'),
-        //     'expenseSum' => array_sum(array_column($budgets, 'transactions_sum_amount')),
-        //     'datasets' => [
-        //         [
-        //             'label' => 'Wydane',
-        //             'backgroundColor' => ['#41B883'],
-        //             'data' => array_column($budgets, 'transactions_sum_amount')
-        //         ],
-        //         [
-        //             'label' => 'Zaplanowane',
-        //             'backgroundColor' => ['#E46651'],
-        //             'data' => array_column($budgets, 'limit')
-        //         ]
-        //     ]
-        // ];
-        return $this->budget->where('user_id', '=', $id)->get();
+        $budgets = $this->currentBudgetsWithCategories($id)->toArray();
+        $chartData = [
+            'labels' => array_column($budgets, 'name'),
+            'expenseSum' => array_sum(array_column($budgets, 'transactions_sum_amount')),
+            'datasets' => [
+                [
+                    'label' => 'Wydane',
+                    'backgroundColor' => ['#41B883'],
+                    'data' => array_column($budgets, 'transactions_sum_amount')
+                ],
+                [
+                    'label' => 'Zaplanowane',
+                    'backgroundColor' => ['#E46651'],
+                    'data' => array_column($budgets, 'limit')
+                ]
+            ]
+        ];
+        return $chartData;
     }
-    public function getDataForBudgetsComponent($id, $month, $year)
+    public function getDataForBudgetsComponent($id)
     {
-        // $budgets = $this->currentBudgetsWithCategories($id, $month, $year);
-        // $formattedBudgets = $budgets->map(function ($budget) {
-        //     $transactionsSum = intval($budget['transactions_sum_amount']);
-        //     return [
-        //         'name' => $budget['name'],
-        //         'limit' => $budget['limit'],
-        //         'transactions_sum' => $transactionsSum,
-        //         'labels' => ['Spent', 'Planned'],
-        //         'datasets' => [
-        //             [
-        //                 'data' => [$transactionsSum, $budget['limit']],
-        //                 'backgroundColor' => ['#E46651', '#41B883'],
-        //             ]
-        //         ],
-        //     ];
-        // });
-        // return $formattedBudgets;
-        return $this->budget->where('user_id', '=', $id)->get();
+        $budgets = $this->currentBudgetsWithCategories($id);
+        $formattedBudgets = $budgets->map(function ($budget) {
+            $sum = Category::withSum('transactions', 'amount')->join('budgeted_amounts', 'categories.id', '=', 'budgeted_amounts.category_id')->where('categories.budget_id', '=', $budget->id)->get();
+            return [
+                'name' => $budget['name'],
+                'categories' => $sum,
+            ];
+        });
+        return $formattedBudgets;
     }
     public function getDataForNewTransaction($id)
     {
         $budgets = $this->currentBudgetsWithCategories($id);
-        $formattedBudgets = $budgets->map(function ($budget) {
-            return [
-                'name' => $budget['name'],
-                'categories' => $budget->categories->map(function ($category) {
-                    return
-                        [
-                            'id' => $category['id'],
-                            'budget_id' => $category['budget_id'],
-                            'category_name' => $category['category_name']
-                        ];
-                })->toArray(),
-            ];
-        });
-        return $formattedBudgets;
+        return $budgets;
     }
-    protected function getCategoriesWithBudgetedAmounts($id)
+    protected function getCategoriesWithBudgetedAmounts($id, $currentMonth = null, $currentYear = null)
     {
-       return Category::join('budgeted_amounts','categories.id', '=', 'budgeted_amounts.category_id')->where('categories.budget_id', '=', $id)->select('categories.id','categories.category_name', 'budgeted_amounts.amount','budgeted_amounts.date')->get();
+        $currentMonth = $currentMonth ?? $this->currentMonth;
+        $currentYear = $currentYear ?? $this->currentYear;
+        $categoriesWithBudgetedAmounts = Category::join('budgeted_amounts', 'categories.id', '=', 'budgeted_amounts.category_id')->where('categories.budget_id', '=', $id)->whereMonth('budgeted_amounts.date', '=', $currentMonth)->whereYear('budgeted_amounts.date', '=', $currentYear)->get();
+        return $categoriesWithBudgetedAmounts;
     }
     public function getBudgetsForCategoriesComponent($id)
     {
-        //$budgets = $this->currentBudgetsWithCategories($id);
-       
-        // $budgets = DB::table('categories')
-        //     ->join('budgeted_amounts', 'categories.id', '=', 'budgeted_amounts.category_id')->join('budgets', 'categories.budget_id', '=', 'budgets.id')->where('budgets.user_id', '=', $id)->get();
-       
-            $budgets = $this->budget->get();
+
+        $budgets = $this->budget->where('budgets.user_id', '=', $id)->get();
         $formattedBudgets = $budgets->map(function ($budget) {
-           
             return [
                 'id' => $budget->id,
                 'name' => $budget->name,
-                'categories' => $this->getCategoriesWithBudgetedAmounts($budget->id)
+                'categories' => $this->getCategoriesWithBudgetedAmounts($budget->id),
+                // 's' => $this->getCategoriesWithBudgetedAmounts($budget->id)->sum('transactions_sum_amount')
             ];
         });
         return $formattedBudgets;
     }
-    // public function getBudgetsForCategoriesComponent($id)
-    // {
-    //     $budgets = $this->currentBudgetsWithCategories($id);
-    //     $formattedBudgets = $budgets->map(function ($budget) {
-    //         return [
-    //             'id' => $budget['id'],
-    //             'name' => $budget['name'],
-    //             'user_id' => $budget['user_id'],
-    //             'start_date' => $budget['start_date'],
-    //             'limit' => $budget['limit'],
-    //             'categories_sum' => $budget['transactions_sum_amount'],
-    //             'categories' => $budget->categories->map(function ($category) {
-    //                 return array_merge(
-    //                     $category->toArray(),
-    //                     [
-    //                         'transactions_sum' => $category->transactions->sum('amount')
-    //                     ]
-    //                 );
-    //             })->toArray(),
-    //         ];
-    //     });
-    //     return $formattedBudgets;
-    // }
+
     public function getCategoriesForAnalytics($id, $month, $year)
     {
         $budgets = $this->currentBudgetsWithCategories($id);

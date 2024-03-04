@@ -10,16 +10,16 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class UserCreated
+class CategoryCreated
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-    public $userId;
+    public $categoryId;
     /**
      * Create a new event instance.
      */
-    public function __construct($userId)
+    public function __construct($categoryId)
     {
-        $this->userId = $userId;
+        $this->categoryId = $categoryId;
     }
  
     /**
