@@ -5,7 +5,7 @@
                 <h2>Your balance</h2>
                 <h1>{{ balance }} zł</h1>
             </div>
-            <div class="balance-box">
+            <div class="balance-box"> 
                 <h2>Your Expenses</h2>
                 <h1>{{ expenseSum }} zł</h1>
             </div>

@@ -40,3 +40,4 @@ class TransactionRepository
       return $this->transaction->where('user_id', '=', $id)->orderBy('id', 'desc')->take(10)->get();
     }
 }
+ 
