@@ -25,8 +25,10 @@ class TransactionRepository
   // }
   public function getTransactionsJoinedWithCategoriesAndBudgetsByUserId($id)
   {
+    $currentMonth = date('m');
+        $currentYear = date('Y');
     $joinedTables = DB::table('categories')
-      ->join('transactions', 'categories.id', '=', 'transactions.category_id')->join('budgets', 'categories.budget_id', '=', 'budgets.id')->where('budgets.user_id', '=', $id)->get();
+      ->join('transactions', 'categories.id', '=', 'transactions.category_id')->join('budgets', 'categories.budget_id', '=', 'budgets.id')->where('budgets.user_id', '=', $id)->whereMonth('date', '=', $currentMonth)->whereYear('date', '=', $currentYear)->get();
     return $joinedTables;
   }
   public function getTransactionsByUserId($id, $month)
