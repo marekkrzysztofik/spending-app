@@ -47,9 +47,6 @@ class BudgetService
     $budget = new Budget;
     $budget->user_id = $data['user_id'];
     $budget->name = $data['name'];
-    $budget->start_date = $data['start_date'];
-    $budget->end_date = $data['end_date'];
-    $budget->limit = $data['limit'];
     $this->budgetRepository->save($budget);
   }
   public function updateBudget($data, $id)

@@ -23,9 +23,7 @@ class BudgetRepository
     }
     protected function currentBudgetsWithCategories($id, $currentMonth = null, $currentYear = null)
     {
-        $currentMonth = $currentMonth ?? $this->currentMonth;
-        $currentYear = $currentYear ?? $this->currentYear;
-        $budgets = Budget::with('categories')->where('user_id', '=', $id)->whereMonth('start_date', '=', $currentMonth)->withSum('categories', 'category_limit')->whereYear('start_date', '=', $currentYear)->withSum('transactions', 'amount')->get();
+        $budgets = Budget::with('categories')->where('user_id', '=', $id)->withSum('categories', 'category_limit')->withSum('transactions', 'amount')->get();
         return $budgets;
     }
     public function getBudgetsForHomePage($id)
@@ -54,14 +52,16 @@ class BudgetRepository
         $budgets = $this->currentBudgetsWithCategories($id, $month, $year);
         $formattedBudgets = $budgets->map(function ($budget) {
             $transactionsSum = intval($budget['transactions_sum_amount']);
+            $categoryLimitSum = intval($budget['categories_sum_category_limit']);
             return [
                 'name' => $budget['name'],
                 'limit' => $budget['limit'],
                 'transactions_sum' => $transactionsSum,
+                'category_limit_sum' => $categoryLimitSum,
                 'labels' => ['Spent', 'Planned'],
                 'datasets' => [
                     [
-                        'data' => [$transactionsSum, $budget['limit']],
+                        'data' => [$transactionsSum, $categoryLimitSum],
                         'backgroundColor' => ['#E46651', '#41B883'],
                     ]
                 ],
