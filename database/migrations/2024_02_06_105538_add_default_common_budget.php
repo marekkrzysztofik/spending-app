@@ -9,14 +9,9 @@ return new class extends Migration
 {
     public function up(): void
     {
-        $currentDate = date("Y-m-d");
-        $datePlusOneMonth = date('Y-m-d', strtotime('+1 month', strtotime($currentDate)));
         DB::table('budgets')->insert([
             'user_id' => 1,
             'name' => 'Rent',
-            'start_date' => $currentDate,
-            'end_date' => $datePlusOneMonth,
-            'limit' => 2000,
         ]);
     }
 
