@@ -26,6 +26,10 @@ class TransactionService
     {
         return $this->transactionRepository->getLastTransactionsByUserId($id);
     }
+    public function getDataForHomePage($id)
+    {
+        return $this->transactionRepository->getDataForHomePage($id);
+    }
   public function createTransaction($data)
   {
     $transaction = new Transaction;

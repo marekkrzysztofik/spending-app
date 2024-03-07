@@ -29,12 +29,14 @@ class BudgetRepository
             ->get();
         return $budgets;
     }
+    
     public function getBudgetsForHomePage($id)
     {
         $budgets = $this->currentBudgetsWithCategories($id);
         $currentMonth = $this->currentMonth;
         $s = [
-            'labels' => $budgets->pluck('name')->toArray(),
+            'labels' => $budgets->pluck('name')->toArray(), 
+            'expenseSum' => intval($this->transaction->whereMonth('date', $this->currentMonth)->sum('amount')),
             'datasets' => [
                 [
                     'label' => 'Wydane',
@@ -50,14 +52,13 @@ class BudgetRepository
                     'backgroundColor' => ['#E46651'],
                     'data' => $budgets->pluck('categories_sum_category_limit')->toArray(),
                 ]
-            ]
+                ],
         ];
         return $s;
     }
     public function getDataForBudgetsComponent($id, $month, $year)
     {
-        $budgets = Budget::where('budgets.user_id', '=', $id)->withSum('categories', 'category_limit')
-            ->get();
+        $budgets = $this->currentBudgetsWithCategories($id);
         $formattedBudgets = $budgets->map(function ($budget) {
             $transaction = intval(Transaction::where('transactions.budget_id', '=', $budget->id)->whereMonth('date', $this->currentMonth)->sum('amount'));
             $categoryLimitSum = intval($budget['categories_sum_category_limit']);
@@ -111,7 +112,7 @@ class BudgetRepository
                     return array_merge(
                         $category->toArray(),
                         [
-                            'transactions_sum' => $category->transactions()->whereMonth('date', $currentMonth)->sum('amount')
+                            'transactions_sum' => $category->transactions()->whereMonth('date', $currentMonth)->whereYear('date', $currentYear)->sum('amount')
                         ]
                     );
                 })->toArray(),

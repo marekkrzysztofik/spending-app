@@ -30,5 +30,9 @@ class TransactionController extends Controller
     {
         return $this->transactionService->getLastTransactionsByUserId($id);
     }
+    public function getDataForHomePage($id)
+    {
+        return $this->transactionService->getDataForHomePage($id);
+    }
 }  
-  
+   

@@ -82,7 +82,7 @@ const getAlldata = async () => {
     incomeSum.value = counter(incomes.value, 'amount')
 }
 const getChartData = async () => {
-    const response = await axios.get(`/api/getBudgetsForHomePage/${userID}`);
+    const response = await axios.get(`/api/getDataForHomePage/${userID}`);
     chartData.value = response.data;
 }
 const getLastTransactions = async () => {
