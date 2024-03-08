@@ -24,10 +24,8 @@ class TransactionRepository
   //   $joinedTables = Category::with('transactions')->get();
   //   return $joinedTables;
   // }
-  public function getTransactionsJoinedWithCategoriesAndBudgetsByUserId($id)
+  public function getTransactionsJoinedWithCategoriesAndBudgetsByUserId($id, $currentMonth, $currentYear)
   {
-    $currentMonth = date('m');
-    $currentYear = date('Y');
     $joinedTables = DB::table('categories')
       ->join('transactions', 'categories.id', '=', 'transactions.category_id')->join('budgets', 'categories.budget_id', '=', 'budgets.id')->where('budgets.user_id', '=', $id)->whereMonth('date', '=', $currentMonth)->whereYear('date', '=', $currentYear)->get();
     return $joinedTables;
@@ -39,7 +37,7 @@ class TransactionRepository
   public function getLastTransactionsByUserId($id)
   {
     $transactions = Transaction::where('user_id', '=', $id)->get();
-    $formattedTransactions = $transactions->map(function ($transaction){
+    $formattedTransactions = $transactions->map(function ($transaction) {
       $catName = Category::where('categories.id', '=', $transaction->category_id)->value('categories.category_name');
       return [
         'title' => $transaction['title'],
@@ -69,4 +67,3 @@ class TransactionRepository
     return $result['values'];
   }
 }
- 
