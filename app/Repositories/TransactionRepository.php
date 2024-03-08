@@ -38,7 +38,17 @@ class TransactionRepository
   }
   public function getLastTransactionsByUserId($id)
   {
-    return $this->transaction->where('user_id', '=', $id)->orderBy('id', 'desc')->take(10)->get();
+    $transactions = Transaction::where('user_id', '=', $id)->get();
+    $formattedTransactions = $transactions->map(function ($transaction){
+      $catName = Category::where('categories.id', '=', $transaction->category_id)->value('categories.category_name');
+      return [
+        'title' => $transaction['title'],
+        'date' => $transaction['date'],
+        'amount' => $transaction['amount'],
+        'category_name' => $catName,
+      ];
+    });
+    return $formattedTransactions;
   }
   public function getDataForHomePage($id)
   {
@@ -59,3 +69,4 @@ class TransactionRepository
     return $result['values'];
   }
 }
+ 

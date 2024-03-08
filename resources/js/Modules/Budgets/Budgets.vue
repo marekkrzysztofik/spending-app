@@ -15,7 +15,7 @@
       <div class="grid">
         <div class="item-box text-center">
           <div class=""> 
-            <h3>Add new budget</h3>
+            <h3>Add new budget</h3> 
             <div @click="visible = true" class='new-budget button'>
               <i class="pi pi-plus m-auto" />
             </div>
