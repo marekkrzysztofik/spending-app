@@ -36,7 +36,7 @@ class TransactionRepository
   }
   public function getLastTransactionsByUserId($id)
   {
-    $transactions = Transaction::where('user_id', '=', $id)->get();
+    $transactions = Transaction::where('user_id', '=', $id)->orderBy('id', 'desc')->take(10)->get();
     $formattedTransactions = $transactions->map(function ($transaction) {
       $catName = Category::where('categories.id', '=', $transaction->category_id)->value('categories.category_name');
       return [

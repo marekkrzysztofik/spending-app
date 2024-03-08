@@ -1,11 +1,8 @@
 <template>
     <div class="m-3">
-        <div class="mb-2">
-            <Calendar @date-select="changeDate(selectedMonth)" v-model="selectedMonth" view="month" dateFormat="mm-yy"
-                placeholder="Wybierz miesiąc" />
-        </div>
         <DataTable :value="transactions" paginator :rows="5" :rowsPerPageOptions="[5, 10]" v-model:filters="filters"
-            responsiveLayout="scroll" editMode="row" dataKey="id" filterDisplay="row" class="datatable" scrollable>
+            responsiveLayout="scroll" editMode="row" dataKey="id" filterDisplay="row" class="datatable" scrollable
+            scrollHeight="80vh" size="small">
             <Column header="Nazwa budżetu" filterField="name">
                 <template #body="{ data }">
                     <div class="flex align-items-center gap-2">
@@ -58,25 +55,20 @@
                 </template>
             </Column>
             <Column header="Data" filterField="date" :showFilterMenu="false" style="min-width: 14rem">
+                <template #filter>
+                    <Calendar @date-select="changeDate(selectedMonth)" v-model="selectedMonth" view="month"
+                        dateFormat="mm-yy" placeholder="Wybierz miesiąc" />
+
+                </template>
                 <template #body="{ data }">
+
                     <div class="flex align-items-center gap-2">
                         <span>{{ data.date }}</span>
                     </div>
                 </template>
-                <template #filter="{ filterModel, filterCallback }">
-                    <Dropdown v-model="filterModel.value" @change="filterCallback()" :options="months"
-                        placeholder="Miesiąc" class="p-column-filter" style="width: 8rem">
-                        <template #option="slotProps">
-                            <div class="flex align-items-center gap-2">
-
-                                <span>{{ slotProps.option }}</span>
-                            </div>
-                        </template>
-                    </Dropdown>
-                </template>
             </Column>
             <template #footer>
-                <p>Razem x transakcji w tym miesiącu.</p>
+                <p>Razem {{ transactions.length }} transakcji w tym miesiącu.</p>
             </template>
         </DataTable>
     </div>
@@ -100,6 +92,13 @@ interface Transaction {
 const selectedMonth = ref()
 const transactions: Ref<Array<Transaction>> = ref([]);
 const { getMonth, getYear } = useDate();
+const filters = ref({
+    date: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    title: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    amount: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    name: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    category_name: { value: '', matchMode: FilterMatchMode.CONTAINS },
+});
 onMounted(() => {
     getTransactionsByUserId();
     filters.value.category_name.value = category.name
@@ -119,13 +118,4 @@ async function getTransactionsByUserId(month: any = getMonth(), year: any = getY
 const changeDate = async (date: Date) => {
     await getTransactionsByUserId(getMonth(date), getYear(date))
 }
-const filters = ref({
-    date: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    title: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    amount: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    name: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    category_name: { value: '', matchMode: FilterMatchMode.CONTAINS },
-});
-const months = ref(['01-', '02-', '03-', '04-', '05-', '06-', '07-', '08-', '09-', '10-', '11-', '12-'
-]);
 </script>
