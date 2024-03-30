@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-column justify-content-center mx-2">
-        <div class="flex justify-content-center container">
+        <div class="flex justify-content-center">
             <div class="balance-box">
                 <h2>Your balance</h2>
                 <h1>{{ balance }} zł</h1>
@@ -146,13 +146,13 @@ const counter = (array: Array<any>, prop: string) => {
     }
 }
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 1300px) {
     .container {
-        flex-direction: column;
+       flex-direction: column;
     }
 
     .balance-box {
-        width: 80%;
+        width: 90%;
         background-color: white;
         border-radius: 10px;
         transition: transform 0.3s;

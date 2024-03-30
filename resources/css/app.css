@@ -102,7 +102,7 @@ input {
 }
 
 .btn-icon-danger:hover {
-  background: crimson;
+  background: crimson; 
   color: white;
 }
 
@@ -158,4 +158,10 @@ input {
   position: absolute;
   top: 17%;
   right: 5%;
+}
+
+@media screen and (max-width: 1300px) {
+  body {
+    font-size: 0.7rem;
+  }
 }

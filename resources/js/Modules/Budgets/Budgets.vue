@@ -53,7 +53,7 @@ const selectedMonth = ref()
 
 onMounted(async () => {
   await getBudgets(getMonth(), getYear(), userID);
-});
+}); 
 const changeDate = async (date: Date) => {
   await getBudgets(getMonth(date), getYear(date), userID)
 }

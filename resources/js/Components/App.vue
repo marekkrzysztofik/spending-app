@@ -97,7 +97,7 @@ const polishDateFormat = () => {
 
 .sidemenu-item:hover .sidemenu-link {
     color: black;
-}
+} 
 
 .sidemenu-item:hover {
     background-color: rgba(207, 207, 207);
@@ -109,5 +109,11 @@ const polishDateFormat = () => {
     padding: 0.65rem 1rem;
     border-radius: 10px;
     transition: color 0.2s ease;
+}
+
+@media screen and (max-width: 1300px) {
+   .sidemenu-item {
+    font-size: 0;
+   }
 }
 </style>
