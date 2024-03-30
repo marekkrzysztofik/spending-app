@@ -5,8 +5,9 @@
                 <button @click="setID(0)" class="button mx-2">Login</button>
                 <button @click="setID(1)" class="button mx-2">Register</button>
         </div>
-        <Login v-if="visible" :id="componentID"/>
-    </div>
+        <Login  :id="0"/>
+        <Login  :id="1"/>
+    </div> 
 </template>
 <script setup lang="ts">
 import { ref } from "vue";
@@ -16,6 +17,7 @@ const router = useRouter()
 const componentID = ref()
 const visible = ref(false)
 const setID = (id:number) => {
+    componentID.value = null
     componentID.value=id
     visible.value=true
 }

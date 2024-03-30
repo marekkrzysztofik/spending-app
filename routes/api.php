@@ -40,8 +40,8 @@ Route::get('/getDataForNewTransaction/{id}', [BudgetController::class, 'getDataF
 Route::get('getCategoriesForAnalytics/{id}/{month}/{year}', [BudgetController::class, 'getCategoriesForAnalytics']);
 
 
-
-Route::get('getTransactionsJoinedWithCategoriesAndBudgetsByUserId/{id}', [TransactionController::class,   'getTransactionsJoinedWithCategoriesAndBudgetsByUserId']);
+Route::get('getDataForHomePage/{id}', [TransactionController::class,   'getDataForHomePage']);
+Route::get('getTransactionsJoinedWithCategoriesAndBudgetsByUserId/{id}/{month}/{year}', [TransactionController::class,   'getTransactionsJoinedWithCategoriesAndBudgetsByUserId']);
 Route::get('getTransactionsByUserId/{id}/{month}', [TransactionController::class, 'getTransactionsByUserId']);
 Route::get('getLastTransactionsByUserId/{id}', [TransactionController::class, 'getLastTransactionsByUserId']);
 Route::post('/createTransaction', [TransactionController::class, 'createTransaction']);  

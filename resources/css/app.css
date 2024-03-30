@@ -53,7 +53,9 @@ input {
 .inline {
   display: inline-block; 
 }
-
+.width-85 {
+  width: 82vw;
+}
 .input-grid {
   margin: auto;
   display: grid;
@@ -100,19 +102,12 @@ input {
 }
 
 .btn-icon-danger:hover {
-  background: crimson;
+  background: crimson; 
   color: white;
 }
 
 .p-column-title {
   color: rgb(0, 0, 0);
-}
-
-.datatable td {
-  background-color: white;
-  border: none;
-  border-radius: 5px;
-  padding: 0.2rem;
 }
 
 .no-style-input {
@@ -163,4 +158,10 @@ input {
   position: absolute;
   top: 17%;
   right: 5%;
+}
+
+@media screen and (max-width: 1300px) {
+  body {
+    font-size: 0.7rem;
+  }
 }

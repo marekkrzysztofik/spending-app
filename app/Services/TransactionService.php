@@ -18,13 +18,17 @@ class TransactionService
   {
     return $this->transactionRepository->getTransactionsByUserId($id, $month);
   }
-  public function getTransactionsJoinedWithCategoriesAndBudgetsByUserId($id) 
+  public function getTransactionsJoinedWithCategoriesAndBudgetsByUserId($id,$currentMonth, $currentYear) 
   {
-    return $this->transactionRepository->getTransactionsJoinedWithCategoriesAndBudgetsByUserId($id);
+    return $this->transactionRepository->getTransactionsJoinedWithCategoriesAndBudgetsByUserId($id,$currentMonth, $currentYear);
   }
   public function getLastTransactionsByUserId($id)
     {
         return $this->transactionRepository->getLastTransactionsByUserId($id);
+    }
+    public function getDataForHomePage($id)
+    {
+        return $this->transactionRepository->getDataForHomePage($id);
     }
   public function createTransaction($data)
   {

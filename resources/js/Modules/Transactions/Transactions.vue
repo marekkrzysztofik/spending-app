@@ -1,7 +1,8 @@
 <template>
     <div class="m-3">
         <DataTable :value="transactions" paginator :rows="5" :rowsPerPageOptions="[5, 10]" v-model:filters="filters"
-            responsiveLayout="scroll" editMode="row" dataKey="id" filterDisplay="row" class="datatable" scrollable>
+            responsiveLayout="scroll" editMode="row" dataKey="id" filterDisplay="row" class="datatable" scrollable
+            scrollHeight="80vh" size="small">
             <Column header="Nazwa budżetu" filterField="name">
                 <template #body="{ data }">
                     <div class="flex align-items-center gap-2">
@@ -54,40 +55,43 @@
                 </template>
             </Column>
             <Column header="Data" filterField="date" :showFilterMenu="false" style="min-width: 14rem">
+                <template #filter>
+                    <Calendar @date-select="changeDate(selectedMonth)" v-model="selectedMonth" view="month"
+                        dateFormat="mm-yy" placeholder="Wybierz miesiąc" />
+
+                </template>
                 <template #body="{ data }">
+
                     <div class="flex align-items-center gap-2">
                         <span>{{ data.date }}</span>
                     </div>
                 </template>
-                <template #filter="{ filterModel, filterCallback }">
-                    <Dropdown v-model="filterModel.value" @change="filterCallback()" :options="months" placeholder="Miesiąc"
-                        class="p-column-filter" style="width: 8rem">
-                        <template #option="slotProps">
-                            <div class="flex align-items-center gap-2">
-
-                                <span>{{ slotProps.option }}</span>
-                            </div>
-                        </template>
-                    </Dropdown>
-                </template>
             </Column>
             <template #footer>
-                <p>Razem x transakcji w tym miesiącu.</p>
+                <p>Razem {{ transactions.length }} transakcji w tym miesiącu.</p>
             </template>
         </DataTable>
     </div>
 </template>
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-import { useTransactionsByUserId } from "@/../utils/useTransactionsByUserId"; 
+import { onMounted, ref, Ref } from "vue";
 import { FilterMatchMode } from 'primevue/api';
 import { category } from "@/consts/categoryID";
+import axios from "axios";
+import { userID } from "@/../utils/userID"
+import { useDate } from "@/../utils/useDate";
 
-const { getTransactionsByUserId, transactions } = useTransactionsByUserId();
-onMounted(() => {
-    getTransactionsByUserId();
-    filters.value.category_name.value = category.name
-});
+interface Transaction {
+    id: number;
+    category_name: string;
+    title: string;
+    amount: number;
+    type: number;
+    date: string;
+}
+const selectedMonth = ref()
+const transactions: Ref<Array<Transaction>> = ref([]);
+const { getMonth, getYear } = useDate();
 const filters = ref({
     date: { value: null, matchMode: FilterMatchMode.CONTAINS },
     title: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -95,6 +99,23 @@ const filters = ref({
     name: { value: null, matchMode: FilterMatchMode.CONTAINS },
     category_name: { value: '', matchMode: FilterMatchMode.CONTAINS },
 });
-const months = ref(['01-', '02-', '03-', '04-', '05-', '06-', '07-', '08-', '09-', '10-', '11-', '12-'
-]);
-</script> 
+onMounted(() => {
+    getTransactionsByUserId();
+    filters.value.category_name.value = category.name
+});
+function formatDate(inputDate: string) {
+    const parts = inputDate.split("-");
+    const formattedDate = parts[2] + "-" + parts[1] + "-" + parts[0];
+    return formattedDate;
+}
+async function getTransactionsByUserId(month: any = getMonth(), year: any = getYear()) {
+    const response = await axios.get(`/api/getTransactionsJoinedWithCategoriesAndBudgetsByUserId/${userID}/${month}/${year}`);
+    transactions.value = response.data;
+    transactions.value.forEach(el => {
+        el.date = formatDate(el.date)
+    });
+}
+const changeDate = async (date: Date) => {
+    await getTransactionsByUserId(getMonth(date), getYear(date))
+}
+</script>

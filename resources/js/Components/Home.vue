@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-column justify-content-center mx-2">
-        <div class="flex justify-content-center container">
+        <div class="flex justify-content-center">
             <div class="balance-box">
                 <h2>Your balance</h2>
                 <h1>{{ balance }} zł</h1>
@@ -20,33 +20,23 @@
             </div>
             <div class="balance-box flex flex-column text-center">
                 <h2>Last expenses</h2>
-                <table class="m-2"> 
+                <table class="m-2">
                     <tr>
+                        <th class="table">Category</th>
                         <th class="table">Title</th>
                         <th class="table">Amount</th>
                         <th class="table">Date</th>
                     </tr>
                     <tr v-for="item in lastTransactions">
+                        <td class="table">{{ item.category_name }}</td>
                         <td class="table"><span>{{ item.title }}</span></td>
                         <td class="table">{{ item.amount }} zł</td>
                         <td class="table">{{ item.date }}</td>
                     </tr>
                 </table>
             </div>
-            <div class="balance-box flex flex-column text-center">
-                <h2>Last expenses</h2>
-                <table class="m-2">
-                    <tr>
-                        <th class="table">Title</th>
-                        <th class="table">Amount</th>
-                        <th class="table">Date</th>
-                    </tr>
-                    <tr v-for="item in lastTransactions">
-                        <td class="table"><span>{{ item.title }}</span></td>
-                        <td class="table">{{ item.amount }} zł</td>
-                        <td class="table">{{ item.date }}</td>
-                    </tr>
-                </table>
+            <div class="balance-box flex flex-column justify-content-center align-items-center text-center">
+                <Chart type="doughnut" :data="donutChartData" />
             </div>
         </div>
     </div>
@@ -54,20 +44,37 @@
 <script setup lang="ts">
 import axios from "axios";
 import { onMounted, computed, ref, ComputedRef, Ref } from "vue";
-import { useRouter } from "vue-router";
 import { userID } from "@/../utils/userID";
 import { useIncomes } from "@/../utils/useIncomes";
 
 const { getIncomes, incomes } = useIncomes();
-const lastTransactions = ref()
-const expenseSum = ref()
-const incomeSum = ref()
-const chartData: any = ref();
+const lastTransactions: Ref<any> = ref()
+const expenseSum = ref<number>()
+const incomeSum = ref<number>()
+const chartData = ref();
 const chartOptions = ref({
     indexAxis: 'y',
     maintainAspectRatio: true,
     aspectRatio: 1,
 });
+const donutChartData = ref({
+    labels: [
+        "Expenses",
+        "Incomes"
+    ],
+    datasets: [
+        {
+            data: [
+                expenseSum,
+                incomeSum
+            ],
+            backgroundColor: [
+                "#41B883",
+                "#E46651"
+            ]
+        }
+    ]
+})
 onMounted(async () => {
     await getAlldata()
 });
@@ -124,7 +131,8 @@ const counter = (array: Array<any>, prop: string) => {
 }
 
 .table {
-    width: 20%;
+    margin: 1rem;
+    width: 15%;
     max-width: 7rem;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -138,13 +146,13 @@ const counter = (array: Array<any>, prop: string) => {
     }
 }
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 1300px) {
     .container {
-        flex-direction: column;
+       flex-direction: column;
     }
 
     .balance-box {
-        width: 80%;
+        width: 90%;
         background-color: white;
         border-radius: 10px;
         transition: transform 0.3s;

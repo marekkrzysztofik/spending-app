@@ -22,13 +22,17 @@ class TransactionController extends Controller
     {
         return $this->transactionService->getTransactionsByUserId($id, $month);
     }
-    public function getTransactionsJoinedWithCategoriesAndBudgetsByUserId($id)
+    public function getTransactionsJoinedWithCategoriesAndBudgetsByUserId($id,$currentMonth, $currentYear)
     {
-        return $this->transactionService->getTransactionsJoinedWithCategoriesAndBudgetsByUserId($id);
+        return $this->transactionService->getTransactionsJoinedWithCategoriesAndBudgetsByUserId($id,$currentMonth, $currentYear);
     }
     public function getLastTransactionsByUserId($id)
     {
         return $this->transactionService->getLastTransactionsByUserId($id);
     }
+    public function getDataForHomePage($id)
+    {
+        return $this->transactionService->getDataForHomePage($id);
+    }
 }  
-  
+   

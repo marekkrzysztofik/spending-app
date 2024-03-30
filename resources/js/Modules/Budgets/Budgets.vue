@@ -14,8 +14,8 @@
     <ScrollPanel style="height: 75vh">
       <div class="grid">
         <div class="item-box text-center">
-          <div class="">
-            <h3>Add new budget</h3>
+          <div class=""> 
+            <h3>Add new budget</h3> 
             <div @click="visible = true" class='new-budget button'>
               <i class="pi pi-plus m-auto" />
             </div>
@@ -53,7 +53,7 @@ const selectedMonth = ref()
 
 onMounted(async () => {
   await getBudgets(getMonth(), getYear(), userID);
-});
+}); 
 const changeDate = async (date: Date) => {
   await getBudgets(getMonth(date), getYear(date), userID)
 }
