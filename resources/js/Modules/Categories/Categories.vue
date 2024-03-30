@@ -20,10 +20,10 @@
           <div class="v-0-1">
             <DataTable v-if="budget.categories.length>0" :value="budget.categories" :scrollable="true" scrollHeight="20vh" size="small" editMode="row"
               dataKey="id" v-model:editingRows="editingRows" @row-edit-save="onRowEditSave" class="datatable" >
-              <Column field="category_name" header="Nazwa kategori" style="width: 10rem;"
+              <Column field="category_name" header="Category name" style="width: 10rem;"
                 class="no-overflow" />
-              <Column field="transactions_sum" header="Wydane"/>
-              <Column field="category_limit" header="Zaplanowane"> <template
+              <Column field="transactions_sum" header="Spent"/>
+              <Column field="category_limit" header="Planned"> <template
                   #editor="{ data, field }">
                   <InputText v-model="data[field]" style="width:3rem;padding:0;" />
                 </template>

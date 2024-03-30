@@ -1,14 +1,14 @@
 <template>
   <div class="m-4">
-    <div class="flex justify-content-between option-bar">
+    <div class="flex">
+      <h1 v-if="!budgets.length">No budgets</h1>
+      <div>
+        <Calendar @date-select="changeDate(selectedMonth)" v-model="selectedMonth" view="month" dateFormat="mm-yy"
+          placeholder="Select month" />
+      </div>
       <div>
         <button @click="selectComponent(userID)" class="button">Private</button>
         <button @click="selectComponent(1)" class="button ml-3">Common</button>
-      </div>
-      <h1 v-if="!budgets.length">No budgets</h1>
-      <div class="flex-end">
-        <Calendar @date-select="changeDate(selectedMonth)" v-model="selectedMonth" view="month" dateFormat="mm-yy"
-          placeholder="Wybierz miesiąc" />
       </div>
     </div>
     <ScrollPanel style="height: 75vh">
@@ -126,7 +126,5 @@ const link = (id: any) => {
   grid-row-gap: 2vw;
 }
 
-.option-bar {
-  width: 70vw;
-}
+
 </style>
