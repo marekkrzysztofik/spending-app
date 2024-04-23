@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Listeners;
-
 use App\Events\UserCreated;
 use App\Models\Budget;
 use App\Models\Category;
