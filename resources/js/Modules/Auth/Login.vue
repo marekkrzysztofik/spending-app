@@ -18,7 +18,7 @@
 import { ref, Ref, onMounted } from 'vue';
 import axios from "axios";
 import { useRouter } from 'vue-router';
-import { Column, FormComponent, Form } from '@/types/column';
+import { Column, FormComponent, Form } from '@/types/column'; 
 import { components } from '@/consts/loginComponents'
 import { useToast } from 'primevue/usetoast'
 

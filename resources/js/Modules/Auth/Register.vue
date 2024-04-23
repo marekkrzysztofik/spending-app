@@ -20,7 +20,7 @@ import { useRouter } from 'vue-router';
 import { Column } from '@/types/column';
 
 const errors = ref([]);
-const router = useRouter();
+const router = useRouter(); 
 const registerColumns: Column[] = [
   { name: "name", type: "text", placeholder: "Name" },
   { name: "surname", type: "text", placeholder: "Surname" },
