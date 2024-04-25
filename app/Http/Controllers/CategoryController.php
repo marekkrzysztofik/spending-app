@@ -4,32 +4,20 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\CategoryService;
-
+use App\Models\Category;
 
 class CategoryController extends Controller
 {
     protected $category;
-   private CategoryService $categoryService;
+    private CategoryService $categoryService;
 
     public function __construct(CategoryService $categoryService)
     {
         $this->categoryService = $categoryService;
     }
-    public function createCategory(Request $data)
-    {
-        $this->categoryService->createCategory($data);
-    }
-    public function getCategoryById($id)
-    {
-        return $this->categoryService->getCategoryById($id);
-    }
-    public function getCategoriesByBudgetId($id)
-    {
-        return $this->categoryService->getCategoriesByBudgetId($id);
-    }
     public function getCategories()
     {
-        return $this->categoryService->getCategories();
+        return Category::all();
     }
     public function createOrUpdateCategory(Request $data)
     {
@@ -37,10 +25,11 @@ class CategoryController extends Controller
     }
     public function deleteCategory($id)
     {
-      $this->categoryService->deleteCategory($id); 
+        $category = Category::findOrFail($id);
+        $category->delete();
     }
-    public function getDataForAnalytics($id,$month,$year)
+    public function getDataForAnalytics($id, $month, $year)
     {
-        return $this->categoryService->getDataForAnalytics($id,$month,$year);
-} 
+        return $this->categoryService->getDataForAnalytics($id, $month, $year);
+    }
 }

@@ -26,7 +26,7 @@ class BudgetController extends Controller
   }
   public function getDataForNewTransaction($id)
   {
-    return $this->budgetService->getDataForNewTransaction($id);
+    return $this->budgetService->getDataForNewTransaction($id); 
   }
   public function getBudgetsForCategoriesComponent($id)
   {
@@ -39,10 +39,6 @@ class BudgetController extends Controller
   public function store(Request $data)
   { 
     $this->budgetService->createBudget($data);
-  }
-  public function show($id)
-  {
-    return $this->budgetService->getBudgetById($id);
   }
   public function update(Request $data, $id)
   {

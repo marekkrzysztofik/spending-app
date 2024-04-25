@@ -21,10 +21,8 @@ class BudgetRepository
         $this->currentMonth = date('m');
         $this->currentYear = date('Y');
     }
-    protected function currentBudgetsWithCategories($id, $currentMonth = null, $currentYear = null)
+    protected function currentBudgetsWithCategories($id)
     {
-        $currentMonth = date('m');
-        $currentYear = date('Y');
         $budgets = Budget::with('categories')->where('budgets.user_id', '=', $id)->withSum('categories', 'category_limit')
             ->get();
         return $budgets;
@@ -141,14 +139,6 @@ class BudgetRepository
             ];
         });
         return $formattedBudgets;
-    }
-    // public function getBudgetsByUserId($id, $month, $year)
-    // {
-    //     return $this->budget->where('user_id', '=', $id)->whereMonth('start_date', '=', $month)->whereYear('start_date', '=', $year)->withSum('categories', 'category_limit')->withSum('transactions', 'amount')->get(); 
-    // }
-    public function getBudgetById($id)
-    {
-        return $this->budget->find($id);
     }
     public function save($budget)
     {

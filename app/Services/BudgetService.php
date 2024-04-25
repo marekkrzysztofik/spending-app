@@ -22,11 +22,7 @@ class BudgetService
   {
     return $this->budgetRepository->getDataForNewTransaction($id);
   }
-  public function getBudgetById($id)
-  {
-    return $this->budgetRepository->getBudgetById($id);
-  }
-  public function getDataForBudgetsComponent($id, $month, $year)
+  public function getDataForBudgetsComponent($id, $month, $year) 
   {
     return $this->budgetRepository->getDataForBudgetsComponent($id, $month, $year);
   }

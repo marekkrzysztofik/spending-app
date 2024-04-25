@@ -4,32 +4,23 @@ namespace App\Services;
 
 use App\Repositories\TransactionRepository;
 use App\Models\Transaction;
-use Illuminate\Http\Request;
 
 class TransactionService
 {
-  protected $transactionRepository; 
+  protected $transactionRepository;
 
   public function __construct(TransactionRepository $transactionRepository)
   {
     $this->transactionRepository = $transactionRepository;
   }
-  public function getTransactionsByUserId($id, $month)
+  public function getTransactionsJoinedWithCategoriesAndBudgetsByUserId($id, $currentMonth, $currentYear)
   {
-    return $this->transactionRepository->getTransactionsByUserId($id, $month);
-  }
-  public function getTransactionsJoinedWithCategoriesAndBudgetsByUserId($id,$currentMonth, $currentYear) 
-  {
-    return $this->transactionRepository->getTransactionsJoinedWithCategoriesAndBudgetsByUserId($id,$currentMonth, $currentYear);
+    return $this->transactionRepository->getTransactionsJoinedWithCategoriesAndBudgetsByUserId($id, $currentMonth, $currentYear);
   }
   public function getLastTransactionsByUserId($id)
-    {
-        return $this->transactionRepository->getLastTransactionsByUserId($id);
-    }
-    public function getDataForHomePage($id)
-    {
-        return $this->transactionRepository->getDataForHomePage($id);
-    }
+  {
+    return $this->transactionRepository->getLastTransactionsByUserId($id);
+  }
   public function createTransaction($data)
   {
     $transaction = new Transaction;
@@ -40,6 +31,5 @@ class TransactionService
     $transaction->amount = $data['amount'];
     $transaction->date = $data['date'];
     $this->transactionRepository->save($transaction);
-  } 
+  }
 }
- 

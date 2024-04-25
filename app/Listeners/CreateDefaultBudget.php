@@ -17,7 +17,7 @@ class CreateDefaultBudget
         ];
 
         foreach ($budgetCategoryMap as $budgetName => $categoryData) {
-            $budgetModel = $this->createBudget($event->userId, $budgetName);
+            $budgetModel = $this->createBudget($event->user, $budgetName);
             $this->createCategory($budgetModel->id, $categoryData[0], $categoryData[1]);
         }
     }
