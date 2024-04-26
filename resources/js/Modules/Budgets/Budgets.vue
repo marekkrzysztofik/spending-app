@@ -14,19 +14,19 @@
     <ScrollPanel style="height: 75vh">
       <div class="grid">
         <div class="item-box text-center">
-          <div class=""> 
-            <h3>Add new budget</h3> 
+          <div class="">
+            <h3>Add new budget</h3>
             <div @click="visible = true" class='new-budget button'>
               <i class="pi pi-plus m-auto" />
             </div>
           </div>
         </div>
-        <div @click="link(index)" v-for="(budget, index) in budgets" :key="index" class="item-box text-center">
+        <div @click="link(index)" v-for="(budget, index) in chartData" :key="index" class="item-box text-center">
           <div class="">
             <h3>{{ budget.name }}</h3>
             <Chart type="doughnut" :data="budget" class="chart-width" />
-            <span>{{ budget.transactions_sum }} / {{ budget.category_limit_sum }} zł</span>
-          </div> 
+            <span>{{ budget.expenseSum }} / {{ budget.categorySum }} zł</span>
+          </div>
         </div>
       </div>
     </ScrollPanel>
@@ -37,23 +37,24 @@
 </template>
 <script setup lang="ts">
 import { useBudgets } from "@/../utils/useBudgets";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, Ref } from "vue";
 import { useRouter } from "vue-router";
 import { budget } from "@/consts/budgetID"
 import AddNewBudget from "./AddNewBudget.vue";
 import { useDate } from "@/../utils/useDate";
 import { userID } from "@/../utils/userID";
 
-
 const router = useRouter();
 const { getMonth, getYear } = useDate();
 const { getBudgets, budgets } = useBudgets();
 const visible = ref(false)
 const selectedMonth = ref()
+const chartData = ref()
 
 onMounted(async () => {
   await getBudgets(getMonth(), getYear(), userID);
-}); 
+  prepareDataForCharts()
+});
 const changeDate = async (date: Date) => {
   await getBudgets(getMonth(date), getYear(date), userID)
 }
@@ -68,7 +69,23 @@ const link = (id: any) => {
   budget.id = budgets.value[id].id
   router.push('/categories')
 }
-
+const prepareDataForCharts = () => {
+  chartData.value = budgets.value.map((item) => {
+    return {
+      name: item.name,
+      categorySum: item.category_limit_sum,
+      expenseSum: item.transactions_sum,
+      labels: ['Spent', 'Planned',],
+      datasets:
+        [
+          {
+            data: [item.transactions_sum, item.category_limit_sum],
+            backgroundColor: ['#E46651', '#41B883']
+          }],
+    };
+  });
+  console.log(chartData.value)
+}
 </script>
 <style scoped>
 .chart-width {
@@ -110,6 +127,4 @@ const link = (id: any) => {
   grid-column-gap: 2vw;
   grid-row-gap: 2vw;
 }
-
-
 </style>

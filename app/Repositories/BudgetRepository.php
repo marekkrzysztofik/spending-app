@@ -52,17 +52,8 @@ class BudgetRepository
             $categoryLimitSum = intval($budget['categories_sum_category_limit']);
             return [
                 'name' => $budget['name'],
-                'limit' => $budget['limit'],
                 'transactions_sum' => $transaction,
                 'category_limit_sum' => $categoryLimitSum,
-
-                'labels' => ['Planned', 'Spent',],
-                'datasets' => [
-                    [
-                        'data' => [$categoryLimitSum, $transaction,],
-                        'backgroundColor' => ['#41B883', '#E46651',],
-                    ]
-                ],
             ];
         });
         return $formattedBudgets;
