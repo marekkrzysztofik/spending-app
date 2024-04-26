@@ -32,27 +32,17 @@ class BudgetRepository
     {
         $budgets = $this->currentBudgetsWithCategories($id);
         $currentMonth = $this->currentMonth;
-        $s = [
-            'labels' => $budgets->pluck('name')->toArray(),
+        $homepageData = [
+            'budgetNames' => $budgets->pluck('name')->toArray(),
             'expenseSum' => intval($this->transaction->whereMonth('date', $this->currentMonth)->sum('amount')),
-            'datasets' => [
-                [
-                    'label' => 'Wydane',
-                    'backgroundColor' => ['#41B883'],
-                    'data' => $budgets->map(function ($budget) use ($currentMonth) {
-                        return $budget->transactions()
-                            ->whereMonth('date', $currentMonth)
-                            ->sum('amount') ?? 0;
-                    })->toArray(),
-                ],
-                [
-                    'label' => 'Zaplanowane',
-                    'backgroundColor' => ['#E46651'],
-                    'data' => $budgets->pluck('categories_sum_category_limit')->toArray(),
-                ]
-            ],
+            'expensesByBudget' => $budgets->map(function ($budget) use ($currentMonth) {
+                return $budget->transactions()
+                    ->whereMonth('date', $currentMonth)
+                    ->sum('amount') ?? 0;
+            })->toArray(),
+            'plannedLimit' => $budgets->pluck('categories_sum_category_limit')->toArray(),
         ];
-        return $s;
+        return $homepageData;
     }
     public function getDataForBudgetsComponent($id, $month, $year)
     {

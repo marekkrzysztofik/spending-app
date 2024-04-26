@@ -48,6 +48,12 @@ import { userID } from "@/../utils/userID";
 import { useIncomes } from "@/../utils/useIncomes";
 
 const { getIncomes, incomes } = useIncomes();
+interface HomeData {
+    expenseSum: number,
+    budgetNames: string[],
+    expensesByBudget: number[],
+    plannedLimit: number[]
+}
 const lastTransactions: Ref<any> = ref()
 const expenseSum = ref<number>()
 const incomeSum = ref<number>()
@@ -79,18 +85,19 @@ onMounted(async () => {
     await getAlldata()
 });
 const balance: ComputedRef<number> = computed(() => {
-    return incomeSum.value - expenseSum.value
+    return incomeSum?.value ?? 0 - expenseSum?.value ?? 0;
 })
 const getAlldata = async () => {
     await getChartData()
     await getIncomes()
     await getLastTransactions()
-    expenseSum.value = chartData.value.expenseSum
+    expenseSum.value = chartData.value.expenseSum;
     incomeSum.value = counter(incomes.value, 'amount')
 }
 const getChartData = async () => {
     const response = await axios.get(`/api/getBudgetsForHomePage/${userID}`);
-    chartData.value = response.data;
+    prepareDataForCharts(response.data);
+
 }
 const getLastTransactions = async () => {
     const response = await axios.get(`/api/getLastTransactionsByUserId/${userID}`);
@@ -106,6 +113,24 @@ const counter = (array: Array<any>, prop: string) => {
         return arr.reduce((a: number, b: number) => a + b);
     else return 0;
 };
+const prepareDataForCharts = (item: HomeData) => {
+    chartData.value = {
+        expenseSum: item.expenseSum,
+        labels: item.budgetNames,
+        datasets:
+            [
+                {
+                    label: 'Spent',
+                    backgroundColor: ['#41B883'],
+                    data: item.expensesByBudget
+                },
+                {
+                    label: 'Planned',
+                    backgroundColor: ['#E46651'],
+                    data: item.plannedLimit
+                }],
+    };
+}
 </script>
 <style scoped>
 .balance-box {
@@ -148,7 +173,7 @@ const counter = (array: Array<any>, prop: string) => {
 
 @media screen and (max-width: 1300px) {
     .container {
-       flex-direction: column;
+        flex-direction: column;
     }
 
     .balance-box {

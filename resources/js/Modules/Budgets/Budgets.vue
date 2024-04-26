@@ -68,22 +68,7 @@ const link = (id: any) => {
   budget.id = budgets.value[id].id
   router.push('/categories')
 }
-// const prepareDataForCharts = (array: Ref<Array<Budget>>) => {
-//   chartData.value = array.value.map((item) => {
-//     return {
-//       name: item.name,
-//       sum: item.categories_sum_category_limit,
-//       limit: item.limit,
-//       labels: ['A', 'B',],
-//       datasets:
-//         [
-//         {
-//           data: [item.transactions_sum_amount, item.categories_sum_category_limit],
-//           backgroundColor: ['#E46651', '#41B883']
-//         }],
-//     };
-//   });
-// }
+
 </script>
 <style scoped>
 .chart-width {
