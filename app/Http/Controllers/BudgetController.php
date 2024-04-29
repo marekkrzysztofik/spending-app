@@ -12,7 +12,7 @@ class BudgetController extends Controller
   protected $budget;
   private BudgetService $budgetService;
 
-  public function __construct(BudgetService $budgetService)
+  public function __construct(BudgetService $budgetService) 
   {
     $this->budgetService = $budgetService;
   }

@@ -59,7 +59,7 @@ const login = async (data: Form, path: string = 'login') => {
     await axios.post(`/api/${path}`, data)
         .then(response => {
             const loginResponse = response.data;
-            if (loginResponse.success) {
+            if (loginResponse.success) { 
                 localStorage.setItem("token", loginResponse.data.token);
                 localStorage.setItem("userID", loginResponse.data.id);
                 router.push("/home");

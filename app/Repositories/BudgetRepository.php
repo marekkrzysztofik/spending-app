@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\Budget;
 use App\Models\Transaction;
 use App\Models\Category;
+use Illuminate\Support\Facades\Log;
 
 class BudgetRepository
 {
@@ -21,25 +22,36 @@ class BudgetRepository
         $this->currentMonth = date('m');
         $this->currentYear = date('Y');
     }
-    protected function currentBudgetsWithCategories($id)
+    protected function currentBudgetsWithCategories($userId)
     {
-        $budgets = Budget::with('categories')->where('budgets.user_id', '=', $id)->withSum('categories', 'category_limit')
-            ->get();
-        return $budgets;
-    }
+        try {
+            $budgets = Budget::with('categories')
+                ->where('user_id', '=', $userId)
+                ->withSum('categories', 'category_limit')
+                ->get();
 
+            return $budgets;
+        } catch (\Exception $e) {
+
+            Log::error('Error fetching budgets with categories: ' . $e->getMessage());
+            return [];
+        }
+    }
+    protected function getExpensesByBudget($budgets)
+    {
+        return $budgets->map(function ($budget) {
+            return $budget->transactions()
+                ->whereMonth('date', $this->currentMonth)
+                ->sum('amount') ?? 0;
+        })->toArray();
+    }
     public function getBudgetsForHomePage($id)
     {
         $budgets = $this->currentBudgetsWithCategories($id);
-        $currentMonth = $this->currentMonth;
         $homepageData = [
             'budgetNames' => $budgets->pluck('name')->toArray(),
             'expenseSum' => intval($this->transaction->whereMonth('date', $this->currentMonth)->sum('amount')),
-            'expensesByBudget' => $budgets->map(function ($budget) use ($currentMonth) {
-                return $budget->transactions()
-                    ->whereMonth('date', $currentMonth)
-                    ->sum('amount') ?? 0;
-            })->toArray(),
+            'expensesByBudget' => $this->getExpensesByBudget($budgets),
             'plannedLimit' => $budgets->pluck('categories_sum_category_limit')->toArray(),
         ];
         return $homepageData;
@@ -48,12 +60,11 @@ class BudgetRepository
     {
         $budgets = $this->currentBudgetsWithCategories($id);
         $formattedBudgets = $budgets->map(function ($budget) use ($month, $year) {
-            $transaction = intval(Transaction::where('transactions.budget_id', '=', $budget->id)->whereMonth('date', $month)->whereYear('date', $year)->sum('amount'));
-            $categoryLimitSum = intval($budget['categories_sum_category_limit']);
+            $transactionSum = intval(Transaction::where('transactions.budget_id', '=', $budget->id)->whereMonth('date', $month)->whereYear('date', $year)->sum('amount'));
             return [
                 'name' => $budget['name'],
-                'transactions_sum' => $transaction,
-                'category_limit_sum' => $categoryLimitSum,
+                'transactions_sum' => $transactionSum,
+                'category_limit_sum' => intval($budget['categories_sum_category_limit']),
             ];
         });
         return $formattedBudgets;
