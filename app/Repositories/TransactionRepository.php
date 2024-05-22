@@ -5,7 +5,6 @@ namespace App\Repositories;
 use Illuminate\Support\Facades\DB;
 use App\Models\Transaction;
 use App\Models\Category;
-use Carbon\Carbon;
 
 class TransactionRepository
 {
@@ -14,56 +13,35 @@ class TransactionRepository
   {
     $this->transaction = new Transaction();
   }
-
   public function save($transaction)
   {
     $transaction->save();
   }
-  // public function getTransactionsJoinedWithCategoriesAndBudgetsByUserId($id)
-  // {
-  //   $joinedTables = Category::with('transactions')->get();
-  //   return $joinedTables;
-  // }
-  public function getTransactionsJoinedWithCategoriesAndBudgetsByUserId($id, $currentMonth, $currentYear)
+  public function getTransactionsJoinedWithCategoriesAndBudgetsByUserId($userID, $month, $year)
   {
     $joinedTables = DB::table('categories')
-      ->join('transactions', 'categories.id', '=', 'transactions.category_id')->join('budgets', 'categories.budget_id', '=', 'budgets.id')->where('budgets.user_id', '=', $id)->whereMonth('date', '=', $currentMonth)->whereYear('date', '=', $currentYear)->get();
+      ->join('transactions', 'categories.id', '=', 'transactions.category_id')->join('budgets', 'categories.budget_id', '=', 'budgets.id')->where('budgets.user_id', '=', $userID)->whereMonth('date', '=', $month)->whereYear('date', '=', $year)->get();
     return $joinedTables;
   }
-  public function getTransactionsByUserId($id, $month)
+  public function getLastTransactionsByUserId($userId)
   {
-    return $this->transaction->where('user_id', '=', $id)->whereMonth('date', '=', $month)->get();
-  }
-  public function getLastTransactionsByUserId($id)
-  {
-    $transactions = Transaction::where('user_id', '=', $id)->orderBy('id', 'desc')->take(10)->get();
-    $formattedTransactions = $transactions->map(function ($transaction) {
-      $catName = Category::where('categories.id', '=', $transaction->category_id)->value('categories.category_name');
+    $transactions = Transaction::where('user_id', $userId)
+      ->orderByDesc('id')
+      ->take(10)
+      ->get();
+
+    $categoryIds = $transactions->pluck('category_id')->unique()->toArray();
+    $categories = Category::whereIn('id', $categoryIds)->pluck('category_name', 'id');
+
+    $formattedTransactions = $transactions->map(function ($transaction) use ($categories) {
+      $categoryName = $categories[$transaction->category_id] ?? 'Unknown';
       return [
-        'title' => $transaction['title'],
-        'date' => $transaction['date'],
-        'amount' => $transaction['amount'],
-        'category_name' => $catName,
+        'title' => $transaction->title,
+        'date' => $transaction->date,
+        'amount' => $transaction->amount,
+        'category_name' => $categoryName,
       ];
     });
-    return $formattedTransactions;
-  }
-  public function getDataForHomePage($id)
-  {
-    $currentYear = date('Y');
-    $transactions = $this->transaction->where('user_id', '=', $id)->whereYear('date', '=', $currentYear)->get();
-    $result = [
-      'months' => [],
-      'values' => [],
-    ];
-    for ($month = 1; $month <= 12; $month++) {
-      $result['months'][] = Carbon::create(null, $month)->format('m');
-      $result['values'][] = 0;
-    }
-    foreach ($transactions as $transaction) {
-      $monthYear = Carbon::parse($transaction->date)->format('m');
-      $result['values'][array_search($monthYear, $result['months'])] += $transaction->amount;
-    }
-    return $result['values'];
+    return $formattedTransactions->toArray();
   }
 }

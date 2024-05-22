@@ -5,23 +5,21 @@ namespace App\Http\Controllers;
 use App\Models\Income;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Services\IncomeService;
 
 class IncomeController extends Controller
 {
-    protected $income;
-   private IncomeService $incomeService;
-
-    public function __construct(IncomeService $incomeService)
-    {
-        $this->incomeService = $incomeService;
-    }
-    public function createIncome(Request $data)
-    {
-        $this->incomeService->createIncome($data);
-    }
-    public function getIncomesByUserId($id, $month)
+  public function createIncome(Request $data)
   {
-    return $this->incomeService->getIncomesByUserId($id, $month);
+    $income = new Income;
+    $income->user_id = $data['user_id'];
+    $income->title = $data['title'];
+    $income->date = $data['date'];
+    $income->amount = $data['amount'];
+    $income->save();
+  }
+  public function getIncomesByUserId($id, $month)
+  {
+    return Income::where('user_id', '=', $id)->whereMonth('date', '=', $month)->get();
   }
 }
+ 

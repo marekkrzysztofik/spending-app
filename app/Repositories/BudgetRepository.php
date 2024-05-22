@@ -5,10 +5,11 @@ namespace App\Repositories;
 use App\Models\Budget;
 use App\Models\Transaction;
 use App\Models\Category;
+use Illuminate\Support\Facades\Log;
 
 class BudgetRepository
 {
-    protected $budget;
+    protected $budget; 
     protected $transaction;
     protected $category;
     protected $currentMonth;
@@ -21,67 +22,56 @@ class BudgetRepository
         $this->currentMonth = date('m');
         $this->currentYear = date('Y');
     }
-    protected function currentBudgetsWithCategories($id, $currentMonth = null, $currentYear = null)
+    protected function currentBudgetsWithCategories($userId)
     {
-        $currentMonth = date('m');
-        $currentYear = date('Y');
-        $budgets = Budget::with('categories')->where('budgets.user_id', '=', $id)->withSum('categories', 'category_limit')
-            ->get();
-        return $budgets;
-    }
+        try {
+            $budgets = Budget::with('categories')
+                ->where('user_id', '=', $userId)
+                ->withSum('categories', 'category_limit')
+                ->get(); 
 
-    public function getBudgetsForHomePage($id)
-    {
-        $budgets = $this->currentBudgetsWithCategories($id);
-        $currentMonth = $this->currentMonth;
-        $s = [
-            'labels' => $budgets->pluck('name')->toArray(),
-            'expenseSum' => intval($this->transaction->whereMonth('date', $this->currentMonth)->sum('amount')),
-            'datasets' => [
-                [
-                    'label' => 'Wydane',
-                    'backgroundColor' => ['#41B883'],
-                    'data' => $budgets->map(function ($budget) use ($currentMonth) {
-                        return $budget->transactions()
-                            ->whereMonth('date', $currentMonth)
-                            ->sum('amount') ?? 0;
-                    })->toArray(),
-                ],
-                [
-                    'label' => 'Zaplanowane',
-                    'backgroundColor' => ['#E46651'],
-                    'data' => $budgets->pluck('categories_sum_category_limit')->toArray(),
-                ]
-            ],
-        ];
-        return $s;
+            return $budgets;
+        } catch (\Exception $e) {
+
+            Log::error('Error fetching budgets with categories: ' . $e->getMessage());
+            return [];
+        }
     }
-    public function getDataForBudgetsComponent($id, $month, $year)
+    protected function getExpensesByBudget($budgets)
     {
-        $budgets = $this->currentBudgetsWithCategories($id);
+        return $budgets->map(function ($budget) {
+            return $budget->transactions()
+                ->whereMonth('date', $this->currentMonth)
+                ->sum('amount') ?? 0;
+        })->toArray();
+    }
+    public function getBudgetsForHomePage($userID)
+    { 
+        $budgets = $this->currentBudgetsWithCategories($userID);
+        $homepageData = [
+            'budgetNames' => $budgets->pluck('name')->toArray(),
+            'expenseSum' => intval($this->transaction->whereMonth('date', $this->currentMonth)->sum('amount')),
+            'expensesByBudget' => $this->getExpensesByBudget($budgets),
+            'plannedLimit' => $budgets->pluck('categories_sum_category_limit')->toArray(),
+        ];
+        return $homepageData;
+    }
+    public function getDataForBudgetsComponent($userID, $month, $year)
+    {
+        $budgets = $this->currentBudgetsWithCategories($userID);
         $formattedBudgets = $budgets->map(function ($budget) use ($month, $year) {
-            $transaction = intval(Transaction::where('transactions.budget_id', '=', $budget->id)->whereMonth('date', $month)->whereYear('date', $year)->sum('amount'));
-            $categoryLimitSum = intval($budget['categories_sum_category_limit']);
+            $transactionSum = intval(Transaction::where('transactions.budget_id', '=', $budget->id)->whereMonth('date', $month)->whereYear('date', $year)->sum('amount'));
             return [
                 'name' => $budget['name'],
-                'limit' => $budget['limit'],
-                'transactions_sum' => $transaction,
-                'category_limit_sum' => $categoryLimitSum,
-
-                'labels' => ['Planned', 'Spent',],
-                'datasets' => [
-                    [
-                        'data' => [$categoryLimitSum, $transaction,],
-                        'backgroundColor' => ['#41B883', '#E46651',],
-                    ]
-                ],
+                'transactions_sum' => $transactionSum,
+                'category_limit_sum' => intval($budget['categories_sum_category_limit']),
             ];
         });
         return $formattedBudgets;
     }
-    public function getDataForNewTransaction($id)
+    public function getDataForNewTransaction($userID)
     {
-        $budgets = $this->currentBudgetsWithCategories($id);
+        $budgets = $this->currentBudgetsWithCategories($userID);
         $formattedBudgets = $budgets->map(function ($budget) {
             return [
                 'name' => $budget['name'],
@@ -97,9 +87,9 @@ class BudgetRepository
         });
         return $formattedBudgets;
     }
-    public function getBudgetsForCategoriesComponent($id)
+    public function getBudgetsForCategoriesComponent($userID)
     {
-        $budgets = $this->currentBudgetsWithCategories($id);
+        $budgets = $this->currentBudgetsWithCategories($userID);
         $formattedBudgets = $budgets->map(function ($budget) {
             return [
                 'id' => $budget['id'],
@@ -120,9 +110,9 @@ class BudgetRepository
         });
         return $formattedBudgets;
     }
-    public function getCategoriesForAnalytics($id, $month, $year)
+    public function getCategoriesForAnalytics($userID, $month, $year)
     {
-        $budgets = $this->currentBudgetsWithCategories($id);
+        $budgets = $this->currentBudgetsWithCategories($userID);
         $formattedBudgets = $budgets->map(function ($budget) {
             return [
                 'id' => $budget['id'],
@@ -141,14 +131,6 @@ class BudgetRepository
             ];
         });
         return $formattedBudgets;
-    }
-    // public function getBudgetsByUserId($id, $month, $year)
-    // {
-    //     return $this->budget->where('user_id', '=', $id)->whereMonth('start_date', '=', $month)->whereYear('start_date', '=', $year)->withSum('categories', 'category_limit')->withSum('transactions', 'amount')->get(); 
-    // }
-    public function getBudgetById($id)
-    {
-        return $this->budget->find($id);
     }
     public function save($budget)
     {

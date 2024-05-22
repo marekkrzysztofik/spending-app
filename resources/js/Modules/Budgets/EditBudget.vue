@@ -10,7 +10,7 @@
                 <h4 class="m-auto">Limit</h4>
                 <input v-model.number="budgetForm.limit" type="number" class="m-3 input" required />
             </div>
-            <button type="submit" class="button m-3">Save</button>
+            <button type="submit" class=" button m-3">Save</button>
         </form>
     </div>
 </template> 

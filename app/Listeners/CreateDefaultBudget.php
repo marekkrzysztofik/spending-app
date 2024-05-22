@@ -1,40 +1,29 @@
 <?php
 
 namespace App\Listeners;
-
 use App\Events\UserCreated;
 use App\Models\Budget;
 use App\Models\Category;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 
 class CreateDefaultBudget
 {
-    /**
-     * Create the event listener.
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
-     * Handle the event.
-     */
     public function handle(UserCreated $event): void
     {
-        $this->createBudget($event->userId, 'Housing');
-        $this->createBudget($event->userId, 'Food');
-        $this->createBudget($event->userId, 'Subscriptions');
-        $this->createBudget($event->userId, 'Transport');
-        $this->createCategory(1, 'Rent', 500);
-        $this->createCategory(2, 'Groceries', 500);
-        $this->createCategory(3, 'Streamings', 500);
-        $this->createCategory(4, 'Fuel', 500);
+        $budgetCategoryMap = [
+            'Housing' => ['Rent', 500],
+            'Food' => ['Groceries', 500],
+            'Subscriptions' => ['Streamings', 500],
+            'Transport' => ['Fuel', 500]
+        ];
+
+        foreach ($budgetCategoryMap as $budgetName => $categoryData) {
+            $budgetModel = $this->createBudget($event->user, $budgetName);
+            $this->createCategory($budgetModel->id, $categoryData[0], $categoryData[1]);
+        }
     }
     function createBudget($user_id, $name,)
     {
-        Budget::create([
+        return Budget::create([
             'user_id' => $user_id,
             'name' => $name,
         ]);

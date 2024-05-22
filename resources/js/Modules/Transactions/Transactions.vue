@@ -3,62 +3,61 @@
         <DataTable :value="transactions" paginator :rows="5" :rowsPerPageOptions="[5, 10]" v-model:filters="filters"
             responsiveLayout="scroll" editMode="row" dataKey="id" filterDisplay="row" class="datatable" scrollable
             scrollHeight="80vh" size="small">
-            <Column header="Nazwa budżetu" filterField="name">
+            <Column header="Budget Name" filterField="name">
                 <template #body="{ data }">
                     <div class="flex align-items-center gap-2">
                         <span>{{ data.name }}</span>
                     </div>
                 </template>
                 <template #filter="{ filterModel, filterCallback }">
-                    <InputText v-model="filterModel.value" @input="filterCallback()" placeholder="Nazwa"
+                    <InputText v-model="filterModel.value" @input="filterCallback()" placeholder="Name"
                         class="p-column-filter" style="width: 8rem">
 
                     </InputText>
                 </template>
             </Column>
-            <Column header="Nazwa kategori" filterField="category_name">
+            <Column header="Category Name" filterField="category_name">
                 <template #body="{ data }">
                     <div class="flex align-items-center gap-2">
                         <span>{{ data.category_name }}</span>
                     </div>
                 </template>
                 <template #filter="{ filterModel, filterCallback }">
-                    <InputText v-model="filterModel.value" @input="filterCallback()" placeholder="Nazwa"
+                    <InputText v-model="filterModel.value" @input="filterCallback()" placeholder="Name"
                         class="p-column-filter" style="width: 8rem">
 
                     </InputText>
                 </template>
             </Column>
-            <Column header="Tytuł transakcji" filterField="title">
+            <Column header="Title" filterField="title">
                 <template #body="{ data }">
                     <div class="flex align-items-center gap-2">
                         <span>{{ data.title }}</span>
                     </div>
                 </template>
                 <template #filter="{ filterModel, filterCallback }">
-                    <InputText v-model="filterModel.value" @input="filterCallback()" placeholder="Tytuł"
+                    <InputText v-model="filterModel.value" @input="filterCallback()" placeholder="Title"
                         class="p-column-filter" style="width: 8rem">
 
                     </InputText>
                 </template>
             </Column>
-            <Column header="Kwota" filterField="amount" style="text-align:right">
+            <Column header="Amount" filterField="amount" style="text-align:right">
                 <template #body="{ data }">
                     <div class="flex align-items-center gap-2">
                         <span>{{ data.amount }}</span>
                     </div>
                 </template>
                 <template #filter="{ filterModel, filterCallback }">
-                    <InputText v-model="filterModel.value" type="number" @input="filterCallback()" placeholder="Kwota"
-                        class="p-column-filter" style="width: 8rem">
+                    <InputText v-model="filterModel.value" type="number" @input="filterCallback()"
+                        class="p-column-filter" style="width: 4rem">
                     </InputText>
                 </template>
             </Column>
-            <Column header="Data" filterField="date" :showFilterMenu="false" style="min-width: 14rem">
+            <Column header="Date" filterField="date" :showFilterMenu="false" style="min-width: 14rem">
                 <template #filter>
                     <Calendar @date-select="changeDate(selectedMonth)" v-model="selectedMonth" view="month"
-                        dateFormat="mm-yy" placeholder="Wybierz miesiąc" />
-
+                        dateFormat="mm-yy" />
                 </template>
                 <template #body="{ data }">
 

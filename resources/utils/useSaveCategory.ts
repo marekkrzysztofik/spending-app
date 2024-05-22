@@ -1,6 +1,5 @@
 import { reactive } from "vue";
 import axios from "axios";
-import { budget } from "@/consts/budgetID";
 
 export function useSaveCategory() {
     interface Category {

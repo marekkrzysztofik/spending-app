@@ -19,7 +19,7 @@
             <h2 class="m-2">Udostępnij</h2>
         </div>
         <button class="w-min m-3 button" type="submit">Save</button>
-    </form>
+    </form> 
 </template> 
  
 <script setup lang="ts">
