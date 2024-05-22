@@ -17,24 +17,31 @@ class TransactionRepository
   {
     $transaction->save();
   }
-  public function getTransactionsJoinedWithCategoriesAndBudgetsByUserId($id, $currentMonth, $currentYear)
+  public function getTransactionsJoinedWithCategoriesAndBudgetsByUserId($userID, $month, $year)
   {
     $joinedTables = DB::table('categories')
-      ->join('transactions', 'categories.id', '=', 'transactions.category_id')->join('budgets', 'categories.budget_id', '=', 'budgets.id')->where('budgets.user_id', '=', $id)->whereMonth('date', '=', $currentMonth)->whereYear('date', '=', $currentYear)->get();
+      ->join('transactions', 'categories.id', '=', 'transactions.category_id')->join('budgets', 'categories.budget_id', '=', 'budgets.id')->where('budgets.user_id', '=', $userID)->whereMonth('date', '=', $month)->whereYear('date', '=', $year)->get();
     return $joinedTables;
   }
-  public function getLastTransactionsByUserId($id)
+  public function getLastTransactionsByUserId($userId)
   {
-    $transactions = Transaction::where('user_id', '=', $id)->orderBy('id', 'desc')->take(10)->get();
-    $formattedTransactions = $transactions->map(function ($transaction) {
-      $catName = Category::where('categories.id', '=', $transaction->category_id)->value('categories.category_name');
+    $transactions = Transaction::where('user_id', $userId)
+      ->orderByDesc('id')
+      ->take(10)
+      ->get();
+
+    $categoryIds = $transactions->pluck('category_id')->unique()->toArray();
+    $categories = Category::whereIn('id', $categoryIds)->pluck('category_name', 'id');
+
+    $formattedTransactions = $transactions->map(function ($transaction) use ($categories) {
+      $categoryName = $categories[$transaction->category_id] ?? 'Unknown';
       return [
-        'title' => $transaction['title'],
-        'date' => $transaction['date'],
-        'amount' => $transaction['amount'],
-        'category_name' => $catName,
+        'title' => $transaction->title,
+        'date' => $transaction->date,
+        'amount' => $transaction->amount,
+        'category_name' => $categoryName,
       ];
     });
-    return $formattedTransactions;
+    return $formattedTransactions->toArray();
   }
 }

@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Log;
 
 class BudgetRepository
 {
-    protected $budget;
+    protected $budget; 
     protected $transaction;
     protected $category;
     protected $currentMonth;
@@ -28,7 +28,7 @@ class BudgetRepository
             $budgets = Budget::with('categories')
                 ->where('user_id', '=', $userId)
                 ->withSum('categories', 'category_limit')
-                ->get();
+                ->get(); 
 
             return $budgets;
         } catch (\Exception $e) {
@@ -45,9 +45,9 @@ class BudgetRepository
                 ->sum('amount') ?? 0;
         })->toArray();
     }
-    public function getBudgetsForHomePage($id)
-    {
-        $budgets = $this->currentBudgetsWithCategories($id);
+    public function getBudgetsForHomePage($userID)
+    { 
+        $budgets = $this->currentBudgetsWithCategories($userID);
         $homepageData = [
             'budgetNames' => $budgets->pluck('name')->toArray(),
             'expenseSum' => intval($this->transaction->whereMonth('date', $this->currentMonth)->sum('amount')),
@@ -56,9 +56,9 @@ class BudgetRepository
         ];
         return $homepageData;
     }
-    public function getDataForBudgetsComponent($id, $month, $year)
+    public function getDataForBudgetsComponent($userID, $month, $year)
     {
-        $budgets = $this->currentBudgetsWithCategories($id);
+        $budgets = $this->currentBudgetsWithCategories($userID);
         $formattedBudgets = $budgets->map(function ($budget) use ($month, $year) {
             $transactionSum = intval(Transaction::where('transactions.budget_id', '=', $budget->id)->whereMonth('date', $month)->whereYear('date', $year)->sum('amount'));
             return [
@@ -69,9 +69,9 @@ class BudgetRepository
         });
         return $formattedBudgets;
     }
-    public function getDataForNewTransaction($id)
+    public function getDataForNewTransaction($userID)
     {
-        $budgets = $this->currentBudgetsWithCategories($id);
+        $budgets = $this->currentBudgetsWithCategories($userID);
         $formattedBudgets = $budgets->map(function ($budget) {
             return [
                 'name' => $budget['name'],
@@ -87,9 +87,9 @@ class BudgetRepository
         });
         return $formattedBudgets;
     }
-    public function getBudgetsForCategoriesComponent($id)
+    public function getBudgetsForCategoriesComponent($userID)
     {
-        $budgets = $this->currentBudgetsWithCategories($id);
+        $budgets = $this->currentBudgetsWithCategories($userID);
         $formattedBudgets = $budgets->map(function ($budget) {
             return [
                 'id' => $budget['id'],
@@ -110,9 +110,9 @@ class BudgetRepository
         });
         return $formattedBudgets;
     }
-    public function getCategoriesForAnalytics($id, $month, $year)
+    public function getCategoriesForAnalytics($userID, $month, $year)
     {
-        $budgets = $this->currentBudgetsWithCategories($id);
+        $budgets = $this->currentBudgetsWithCategories($userID);
         $formattedBudgets = $budgets->map(function ($budget) {
             return [
                 'id' => $budget['id'],

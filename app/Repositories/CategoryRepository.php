@@ -14,9 +14,9 @@ class CategoryRepository
   {
     $category->update();
   }
-  public function getDataForAnalytics($id, $month, $year)
+  public function getDataForAnalytics($userID, $month, $year)
   {
-    $budgets = Budget::with('categories')->where('user_id', '=', $id)->whereMonth('start_date', '=', $month)->whereYear('start_date', '=', $year)->withSum('categories', 'category_limit')->withSum('transactions', 'amount')->get();
+    $budgets = Budget::with('categories')->where('user_id', '=', $userID)->whereMonth('start_date', '=', $month)->whereYear('start_date', '=', $year)->withSum('categories', 'category_limit')->withSum('transactions', 'amount')->get();
     $formattedBudgets = $budgets->map(function ($budget) {
       return [
         'id' => $budget['id'],

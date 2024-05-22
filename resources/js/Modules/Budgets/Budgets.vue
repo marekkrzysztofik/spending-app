@@ -6,10 +6,6 @@
         <Calendar @date-select="changeDate(selectedMonth)" v-model="selectedMonth" view="month" dateFormat="mm-yy"
           placeholder="Select month" />
       </div>
-      <div>
-        <button @click="selectComponent(userID)" class="button">Private</button>
-        <button @click="selectComponent(1)" class="button ml-3">Common</button>
-      </div>
     </div>
     <ScrollPanel style="height: 75vh">
       <div class="grid">
@@ -52,23 +48,21 @@ const selectedMonth = ref()
 const chartData = ref()
 
 onMounted(async () => {
-  await getBudgets(getMonth(), getYear(), userID);
+  await getBudgets(getMonth(), getYear());
   prepareDataForCharts()
 });
 const changeDate = async (date: Date) => {
-  await getBudgets(getMonth(date), getYear(date), userID)
-}
-const selectComponent = async (id: number) => {
-  await getBudgets(getMonth(), getYear(), id);
+  await getBudgets(getMonth(date), getYear(date))
+  prepareDataForCharts()
 }
 const closeModal = (id: number) => {
-  selectComponent(id)
   visible.value = false
 }
 const link = (id: any) => {
   budget.id = budgets.value[id].id
   router.push('/categories')
 }
+
 const prepareDataForCharts = () => {
   chartData.value = budgets.value.map((item) => {
     return {

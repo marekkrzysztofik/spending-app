@@ -7,10 +7,9 @@ const { getMonth, getYear } = useDate();
 const userID = localStorage.getItem('userID')
 export function useBudgets() {
     const budgets: Ref<Array<Budget>> = ref([]);
-    async function getBudgets(month: any = getMonth(), year: any = getYear(), id: any = userID) {
-        const response = await axios.get(`/api/getDataForBudgetsComponent/${id}/${month}/${year}`);
+    async function getBudgets(month: any = getMonth(), year: any = getYear()) {
+        const response = await axios.get(`/api/getDataForBudgetsComponent/${userID}/${month}/${year}`);
         budgets.value = response.data;
     }
     return { getBudgets, budgets };
 }
-   
