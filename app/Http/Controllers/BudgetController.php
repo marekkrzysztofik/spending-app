@@ -30,7 +30,7 @@ class BudgetController extends Controller
   }
   public function getBudgetsForCategoriesComponent($userID)
   {
-    return $this->budgetService->getBudgetsForCategoriesComponent($userID);
+    return $this->budgetService->getBudgetsForCategoriesComponent($userID); 
   }
   public function getCategoriesForAnalytics($userID, $month, $year)
   {

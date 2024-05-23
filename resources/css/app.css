@@ -65,6 +65,15 @@ input {
   grid-column-gap: 0px;
   grid-row-gap: 0px;
 }
+.chart-grid {
+  margin: auto;
+  display: grid;
+  align-items: center;
+  grid-template-columns: repeat(4, 25%);
+  grid-template-rows: 1fr;
+  grid-column-gap: 0px;
+  grid-row-gap: 2rem;
+}
 .input {
   font-size: 1rem;
   border: 0.1rem solid rgba(182, 187, 196, 0.3);

@@ -25,4 +25,8 @@ class TransactionController extends Controller
     {
         return $this->transactionService->getLastTransactionsByUserId($id);
     }
+    public function getWeeklyExpenses($id, $month, $year)
+    {
+        return $this->transactionService->getWeeklyExpenses($id, $month, $year);
+    }
 }

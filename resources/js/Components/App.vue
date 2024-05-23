@@ -43,6 +43,7 @@ const menuItems = [
     { path: "/categories", label: "Categories", icon: 'pi pi-th-large mr-2' },
     { path: "/transactions", label: "Transactions", icon: 'pi pi-wallet mr-2' },
     { path: "/analytics", label: "Analytics", icon: 'pi pi-database mr-2' },
+    { path: "/expenses", label: "Expenses", icon: 'pi pi-database mr-2' },
     { path: "/login", label: "Log in", icon: 'pi pi-user mr-2' },
 ] 
 onMounted(() => {

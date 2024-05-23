@@ -44,4 +44,26 @@ class TransactionRepository
     });
     return $formattedTransactions->toArray();
   }
+  public function getWeeklyExpenses($userID, $month, $year)
+  {
+    $dailyExpenses = Transaction::where('user_id', $userID)
+        ->whereMonth('date', $month)
+        ->whereYear('date', $year)
+        ->selectRaw('DATE_FORMAT(date, "%e.%m") as date_formatted, SUM(amount) as total')
+        ->groupBy('date_formatted')
+        ->pluck('total', 'date_formatted')
+        ->toArray();
+
+    $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+    $monthDates = [];
+    $monthlyExpenses = [];
+    for ($day = 1; $day <= $daysInMonth; $day++) {
+        $date = date('j.m', strtotime("$year-$month-$day"));
+        $monthDates[] = $date;
+        $total = $dailyExpenses[$date] ?? 0;
+        $monthlyExpenses[] = $total;
+    }
+
+    return ['labels'=> $monthDates, 'expenses'=>$monthlyExpenses];
+  }
 }

@@ -32,6 +32,7 @@ Route::delete('/deleteCategory/{id}', [CategoryController::class, 'deleteCategor
 
 
 Route::get('getTransactionsJoinedWithCategoriesAndBudgetsByUserId/{userID}/{month}/{year}', [TransactionController::class,   'getTransactionsJoinedWithCategoriesAndBudgetsByUserId']);
+Route::get('getWeeklyExpenses/{userID}/{month}/{year}', [TransactionController::class,   'getWeeklyExpenses']);
 Route::get('getLastTransactionsByUserId/{userID}', [TransactionController::class, 'getLastTransactionsByUserId']);
 Route::post('/createTransaction', [TransactionController::class, 'createTransaction']);
 

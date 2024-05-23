@@ -1,5 +1,6 @@
 <template>
   <ConfirmDialog />
+  <Toast/>
   <div class="flex flex-column align-items-center mvt-1">
     <ScrollPanel style="height: 83vh; width:82vw">
       <div class="grid">
@@ -7,7 +8,9 @@
           <div class="flex align-items-center justify-content-between v-1">
             <div class="budget-label">
               <h3>{{ budget.name }}</h3>
-              <span class="ml-2">{{ budget.categories_sum | 0 }} / {{ budget.limit }} zł</span>
+              <span class="ml-2">{{ budget.categories_sum | 0 }} / {{ budget.categories.reduce((sum:any, category:any) => {
+                return sum + category.category_limit;
+            }, 0) }} zł</span>
             </div>
             <div class="flex">
               <button @click="manageBudgetId(budget.id); editBudgetVisible = true" class="button m-1"><i
@@ -96,8 +99,8 @@ const onRowEditSave = (event: any) => {
 const getBudgetsWithCategories = async () => {
   const response = await axios.get(`/api/getBudgetsForCategoriesComponent/${userID}`)
   budgetsWithCategories.value = response.data
-  console.log(budgetsWithCategories.value)
 }
+
 const getTransactions = (name: string) => {
   category.name = name
   router.push('/transactions')
@@ -135,7 +138,7 @@ const manageModal = (budget: any, id: any) => {
 }
 const confirmDialog = (callback: any, id: any) => {
   confirm.require({
-    message: "Do you want to delete this competitor?",
+    message: "Do you want to delete this record?",
     header: "Delete Confirmation",
     icon: "pi pi-info-circle",
     acceptClass: "p-button-danger",
@@ -143,7 +146,7 @@ const confirmDialog = (callback: any, id: any) => {
       toast.add({
         severity: "info",
         summary: "Confirmed",
-        detail: "Budget deleted",
+        detail: "Record deleted",
         life: 3000,
       });
       callback(id);

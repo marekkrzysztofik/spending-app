@@ -155,7 +155,7 @@ const prepareDataForCharts = (item: HomeData) => {
 }
 
 .table {
-    margin: 1rem;
+    height: 2.5rem;
     width: 15%;
     max-width: 7rem;
     overflow: hidden;

@@ -21,6 +21,10 @@ class TransactionService
   {
     return $this->transactionRepository->getLastTransactionsByUserId($userID);
   }
+  public function getWeeklyExpenses($id, $month, $year)
+  {
+      return $this->transactionRepository->getWeeklyExpenses($id, $month, $year);
+  }
   public function createTransaction($data)
   {
     $transaction = new Transaction;

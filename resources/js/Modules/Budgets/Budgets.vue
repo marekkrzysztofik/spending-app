@@ -47,16 +47,20 @@ const visible = ref(false)
 const selectedMonth = ref()
 const chartData = ref()
 
-onMounted(async () => {
-  await getBudgets(getMonth(), getYear());
-  prepareDataForCharts()
+onMounted( () => {
+   prepareData()
 });
 const changeDate = async (date: Date) => {
   await getBudgets(getMonth(date), getYear(date))
   prepareDataForCharts()
 }
-const closeModal = (id: number) => {
+const prepareData = async () => {
+  await getBudgets(getMonth(), getYear());
+  prepareDataForCharts()
+}
+const closeModal = () => {
   visible.value = false
+  prepareData()
 }
 const link = (id: any) => {
   budget.id = budgets.value[id].id
