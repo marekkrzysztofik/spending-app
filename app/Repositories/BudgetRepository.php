@@ -110,7 +110,7 @@ class BudgetRepository
         });
         return $formattedBudgets;
     }
-    public function getCategoriesForAnalytics($userID, $month, $year)
+    public function getCategoriesForAnalytics($userID, $month, $year) 
     {
         $budgets = $this->currentBudgetsWithCategories($userID);
         $formattedBudgets = $budgets->map(function ($budget) {
@@ -118,8 +118,6 @@ class BudgetRepository
                 'id' => $budget['id'],
                 'name' => $budget['name'],
                 'user_id' => $budget['user_id'],
-                'start_date' => $budget['start_date'],
-                'limit' => $budget['limit'],
                 'labels' => $budget->categories->map(function ($category) {
                     return
                         $category['category_name'];

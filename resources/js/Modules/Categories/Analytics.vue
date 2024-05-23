@@ -16,7 +16,7 @@ const { getBudgets, budgets } = useBudgets();
 const { getMonth, getYear } = useDate()
 
 const budgetsWithCategories = ref()
-const chartData = ref();
+const chartData = ref(); 
 const chartOptions = ref();
 onMounted(async () => {
     await getBudgetsWithCategories()

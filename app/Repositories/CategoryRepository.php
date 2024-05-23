@@ -8,7 +8,7 @@ class CategoryRepository
 {
   public function save($category)
   {
-    $category->save();
+    $category->save(); 
   }
   public function update($category)
   {

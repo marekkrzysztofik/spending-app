@@ -85,19 +85,18 @@ onMounted(async () => {
     await getAlldata()
 });
 const balance: ComputedRef<number> = computed(() => {
-    return incomeSum?.value ?? 0 - expenseSum?.value ?? 0;
+    return (incomeSum?.value ?? 0) - (expenseSum?.value ?? 0);
 })
 const getAlldata = async () => {
     await getChartData()
     await getIncomes()
     await getLastTransactions()
-    expenseSum.value = chartData.value.expenseSum;
     incomeSum.value = counter(incomes.value, 'amount')
 }
 const getChartData = async () => {
     const response = await axios.get(`/api/getBudgetsForHomePage/${userID}`);
+    expenseSum.value = response.data.expenseSum;
     prepareDataForCharts(response.data);
-
 }
 const getLastTransactions = async () => {
     const response = await axios.get(`/api/getLastTransactionsByUserId/${userID}`);
