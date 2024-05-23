@@ -48,7 +48,6 @@ class BudgetService
   {
     $budget = Budget::find($id);
     $budget->name = $data['name'];
-    $budget->limit = $data['limit'];
     $this->budgetRepository->update($budget);
   }
 }

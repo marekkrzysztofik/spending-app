@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Log;
 
 class BudgetRepository
 {
-    protected $budget; 
+    protected $budget;
     protected $transaction;
     protected $category;
     protected $currentMonth;
@@ -28,7 +28,7 @@ class BudgetRepository
             $budgets = Budget::with('categories')
                 ->where('user_id', '=', $userId)
                 ->withSum('categories', 'category_limit')
-                ->get(); 
+                ->get();
 
             return $budgets;
         } catch (\Exception $e) {
@@ -46,7 +46,7 @@ class BudgetRepository
         })->toArray();
     }
     public function getBudgetsForHomePage($userID)
-    { 
+    {
         $budgets = $this->currentBudgetsWithCategories($userID);
         $homepageData = [
             'budgetNames' => $budgets->pluck('name')->toArray(),
@@ -87,7 +87,7 @@ class BudgetRepository
         });
         return $formattedBudgets;
     }
-    public function getBudgetsForCategoriesComponent($userID)
+    public function getBudgetsForCategoriesComponent($userID) 
     {
         $budgets = $this->currentBudgetsWithCategories($userID);
         $formattedBudgets = $budgets->map(function ($budget) {
@@ -95,7 +95,9 @@ class BudgetRepository
                 'id' => $budget['id'],
                 'name' => $budget['name'],
                 'user_id' => $budget['user_id'],
-                'categories_sum' => $budget['transactions_sum_amount'],
+                'categories_sum' => $budget->transactions()
+                    ->whereMonth('date', $this->currentMonth)
+                    ->sum('amount') ?? 0,
                 'categories' => $budget->categories->map(function ($category) {
                     $currentMonth = date('m');
                     $currentYear = date('Y');
@@ -113,23 +115,24 @@ class BudgetRepository
     public function getCategoriesForAnalytics($userID, $month, $year)
     {
         $budgets = $this->currentBudgetsWithCategories($userID);
-        $formattedBudgets = $budgets->map(function ($budget) {
+        $formattedBudgets = $budgets->map(function ($budget) use ($month, $year) {
+            $categories = $budget->categories->map(function ($category) use ($month, $year) {
+                $filteredTransactions = $category->transactions->filter(function ($transaction) use ($month, $year) {
+                    $transactionDate = \Carbon\Carbon::parse($transaction->date);
+                    return $transactionDate->format('m') == $month && $transactionDate->format('Y') == $year;
+                });
+                return [
+                    'category_name' => $category['category_name'],
+                    'transactions_sum' => $filteredTransactions->sum('amount')
+                ];
+            });
             return [
-                'id' => $budget['id'],
                 'name' => $budget['name'],
-                'user_id' => $budget['user_id'],
-                'start_date' => $budget['start_date'],
-                'limit' => $budget['limit'],
-                'labels' => $budget->categories->map(function ($category) {
-                    return
-                        $category['category_name'];
-                }),
-                'categories_sum' => $budget->categories->map(function ($category) {
-                    return
-                        $category->transactions->sum('amount');
-                }),
+                'labels' => $categories->pluck('category_name'),
+                'categories_sum' => $categories->pluck('transactions_sum')
             ];
         });
+
         return $formattedBudgets;
     }
     public function save($budget)
