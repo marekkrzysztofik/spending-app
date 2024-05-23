@@ -123,13 +123,13 @@ class BudgetRepository
                 });
                 return [
                     'category_name' => $category['category_name'],
-                    'transactions_sum' => $filteredTransactions->sum('amount')
+                    'transactions_sum' => $filteredTransactions->sum('amount') 
                 ];
             });
             return [
                 'name' => $budget['name'],
                 'labels' => $categories->pluck('category_name'),
-                'categories_sum' => $categories->pluck('transactions_sum')
+                'categories_sum' => $categories->pluck('transactions_sum') 
             ];
         });
 

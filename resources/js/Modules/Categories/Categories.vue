@@ -8,8 +8,8 @@
           <div class="flex align-items-center justify-content-between v-1">
             <div class="budget-label">
               <h3>{{ budget.name }}</h3>
-              <span class="ml-2">{{ budget.categories_sum | 0 }} / {{ budget.categories.reduce((sum:any, category:any) => {
-                return sum + category.category_limit;
+              <span class="ml-2">{{ budget.categories_sum }} / {{ budget.categories.reduce((sum:any, category:any) => {
+                return sum + Number(category.category_limit);
             }, 0) }} zł</span>
             </div>
             <div class="flex">
