@@ -14,14 +14,6 @@ class CategoryService
   {
     $this->categoryRepository = $categoryRepository;
   }
-  public function getCategoryById($id)
-  {
-    return $this->categoryRepository->getCategoryById($id);
-  }
-  public function getCategoriesByBudgetId($id)
-  {
-    return $this->categoryRepository->getCategoriesByBudgetId($id);
-  }
   public function createCategory($data)
   {
     $category = new Category;
@@ -32,13 +24,9 @@ class CategoryService
   }
   public function updateCategory($data, $id)
   {
-    $category = $this->categoryRepository->getCategoryById($id);
+    $category = Category::findOrFail($id);
     $category->category_limit = $data['category_limit'];
     $this->categoryRepository->update($category);
-  }
-  public function getCategories()
-  {
-    return $this->categoryRepository->getCategories();
   }
   public function getDataForAnalytics($id, $month, $year)
   {
@@ -52,9 +40,5 @@ class CategoryService
     } else {
       $this->createCategory($request);
     }
-  }
-  public function deleteCategory($id)
-  {
-    $this->categoryRepository->delete($id);
   }
 }

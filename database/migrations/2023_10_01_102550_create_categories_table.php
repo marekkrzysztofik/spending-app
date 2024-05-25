@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
- 
+
 return new class extends Migration
 {
     /**
@@ -16,9 +16,9 @@ return new class extends Migration
             $table->unsignedBigInteger('budget_id');
             $table->foreign('budget_id')->references('id')->on('budgets')->onDelete('cascade');
             $table->string('category_name');
-            $table->integer('category_limit');
+            $table->decimal('category_limit', 10, 2);
             $table->timestamps();
-        }); 
+        });
     }
 
     /**

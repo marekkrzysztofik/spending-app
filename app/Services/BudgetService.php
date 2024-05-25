@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Repositories\BudgetRepository;
 use App\Models\Budget;
-use Illuminate\Http\Request;
 
 class BudgetService
 {
@@ -14,29 +13,25 @@ class BudgetService
   {
     $this->budgetRepository = $budgetRepository;
   }
-  public function getBudgetsForCategoriesComponent($id)
-  {
-    return $this->budgetRepository->getBudgetsForCategoriesComponent($id);
+  public function getBudgetsForCategoriesComponent($userID)
+  { 
+    return $this->budgetRepository->getBudgetsForCategoriesComponent($userID);
   }
-  public function getDataForNewTransaction($id)
+  public function getDataForNewTransaction($userID)
   {
-    return $this->budgetRepository->getDataForNewTransaction($id);
+    return $this->budgetRepository->getDataForNewTransaction($userID);
   }
-  public function getBudgetById($id)
+  public function getDataForBudgetsComponent($userID, $month, $year) 
   {
-    return $this->budgetRepository->getBudgetById($id);
+    return $this->budgetRepository->getDataForBudgetsComponent($userID, $month, $year);
   }
-  public function getDataForBudgetsComponent($id, $month, $year)
+  public function getBudgetsForHomePage($userID)
   {
-    return $this->budgetRepository->getDataForBudgetsComponent($id, $month, $year);
+    return $this->budgetRepository->getBudgetsForHomePage($userID);
   }
-  public function getBudgetsForHomePage($id)
+  public function getCategoriesForAnalytics($userID, $month, $year)
   {
-    return $this->budgetRepository->getBudgetsForHomePage($id);
-  }
-  public function getCategoriesForAnalytics($id, $month, $year)
-  {
-    return $this->budgetRepository->getCategoriesForAnalytics($id, $month, $year);
+    return $this->budgetRepository->getCategoriesForAnalytics($userID, $month, $year);
   }
   public function deleteBudget($id)
   {
@@ -47,16 +42,12 @@ class BudgetService
     $budget = new Budget;
     $budget->user_id = $data['user_id'];
     $budget->name = $data['name'];
-    $budget->start_date = $data['start_date'];
-    $budget->end_date = $data['end_date'];
-    $budget->limit = $data['limit'];
     $this->budgetRepository->save($budget);
   }
   public function updateBudget($data, $id)
   {
     $budget = Budget::find($id);
     $budget->name = $data['name'];
-    $budget->limit = $data['limit'];
     $this->budgetRepository->update($budget);
   }
 }

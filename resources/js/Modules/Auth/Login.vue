@@ -13,12 +13,12 @@
         </p>
     </div>
 </template>
-  
+   
 <script setup lang="ts">
 import { ref, Ref, onMounted } from 'vue';
 import axios from "axios";
 import { useRouter } from 'vue-router';
-import { Column, FormComponent, Form } from '@/types/column';
+import { Column, FormComponent, Form } from '@/types/column'; 
 import { components } from '@/consts/loginComponents'
 import { useToast } from 'primevue/usetoast'
 
@@ -39,7 +39,6 @@ const component: Ref<FormComponent> = ref({
 
 onMounted(() => {
     component.value = components[props.id]
-    console.log(component.value)
 });
 const submit = (event: Event) => {
     const target: HTMLFormElement = event.target as HTMLFormElement;
@@ -52,14 +51,13 @@ const submit = (event: Event) => {
         c_password: form.c_password as string,
     };
     const apiName = component.value?.apiName
-    console.log(formData, apiName)
     login(formData, apiName);
 };
 const login = async (data: Form, path: string = 'login') => {
     await axios.post(`/api/${path}`, data)
         .then(response => {
             const loginResponse = response.data;
-            if (loginResponse.success) {
+            if (loginResponse.success) { 
                 localStorage.setItem("token", loginResponse.data.token);
                 localStorage.setItem("userID", loginResponse.data.id);
                 router.push("/home");

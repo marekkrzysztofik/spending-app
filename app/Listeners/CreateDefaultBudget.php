@@ -1,42 +1,39 @@
 <?php
 
 namespace App\Listeners;
-
 use App\Events\UserCreated;
 use App\Models\Budget;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
+use App\Models\Category;
 
 class CreateDefaultBudget
 {
-    /**
-     * Create the event listener.
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
-     * Handle the event.
-     */
     public function handle(UserCreated $event): void
     {
-        $currentDate = date("Y-m-d");
-        $datePlusOneMonth = date('Y-m-d', strtotime('+1 month', strtotime($currentDate)));
-        $this->createBudget($event->userId, 'Housing', $currentDate, $datePlusOneMonth, 1000);
-        $this->createBudget($event->userId, 'Food', $currentDate, $datePlusOneMonth, 1000);
-        $this->createBudget($event->userId, 'Subscriptions', $currentDate, $datePlusOneMonth, 1000);
-        $this->createBudget($event->userId, 'Transport', $currentDate, $datePlusOneMonth, 500);
+        $budgetCategoryMap = [
+            'Housing' => ['Rent', 500],
+            'Food' => ['Groceries', 500],
+            'Subscriptions' => ['Streamings', 500],
+            'Transport' => ['Fuel', 500]
+        ];
+
+        foreach ($budgetCategoryMap as $budgetName => $categoryData) {
+            $budgetModel = $this->createBudget($event->user, $budgetName);
+            $this->createCategory($budgetModel->id, $categoryData[0], $categoryData[1]);
+        }
     }
-    function createBudget($user_id, $name, $start_date, $end_date, $limit = null)
+    function createBudget($user_id, $name,)
     {
-        Budget::create([
+        return Budget::create([
             'user_id' => $user_id,
             'name' => $name,
-            'start_date' => $start_date,
-            'end_date' => $end_date,
-            'limit' => $limit,
+        ]);
+    }
+    function createCategory($budget_id, $name, $limit)
+    {
+        Category::create([
+            'budget_id' => $budget_id,
+            'category_name' => $name,
+            'category_limit' => $limit
         ]);
     }
 }

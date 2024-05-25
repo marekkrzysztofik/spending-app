@@ -8,6 +8,7 @@ import Budgets from '@/Modules/Budgets/Budgets.vue'
 import Categories from "@/Modules/Categories/Categories.vue"
 import EditBudget from '@/Modules/Budgets/EditBudget.vue'
 import Analytics from "@/Modules/Categories/Analytics.vue"
+import Expenses from "@/Modules/Transactions/Expenses.vue";
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -62,6 +63,14 @@ const routes: Array<RouteRecordRaw> = [
         path: "/transactions",
         component: Transactions,
         name: "Transactions",
+        meta: {
+            requiresAuth: true,
+        },
+    },
+    {
+        path: "/expenses",
+        component: Expenses,
+        name: "Expenses",
         meta: {
             requiresAuth: true,
         },
