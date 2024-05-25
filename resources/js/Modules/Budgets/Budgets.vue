@@ -82,7 +82,6 @@ const prepareDataForCharts = () => {
           }],
     };
   });
-  console.log(chartData.value)
 }
 </script>
 <style scoped>

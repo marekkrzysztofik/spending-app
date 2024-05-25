@@ -67,7 +67,7 @@
                 </template>
             </Column>
             <template #footer>
-                <p>Razem {{ transactions.length }} transakcji w tym miesiącu.</p>
+                <p> {{ transactions.length }} transactions this month.</p>
             </template>
         </DataTable>
     </div>
