@@ -47,7 +47,7 @@ const visible = ref(false)
 const selectedMonth = ref()
 const chartData = ref()
 
-onMounted( () => {
+onMounted(() => {
    prepareData()
 });
 const changeDate = async (date: Date) => {
