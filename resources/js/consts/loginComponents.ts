@@ -6,7 +6,6 @@ export const components: FormComponent[] = [{
         [
             { name: "email", type: "email", placeholder: "Email" },
             { name: "password", type: "password", placeholder: "Password" },
-            { name: "c_password", type: "password", placeholder: "Confirm Password" }
         ],
         apiName:'login'
 },

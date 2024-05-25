@@ -29,7 +29,6 @@ onMounted(() => {
 const getCategoriesForAnalytics = async (month:number, year:number) => {
     const response = await axios.get(`/api/getCategoriesForAnalytics/${userID}/${month}/${year}`)
     const budgetsWithCategories = response.data
-    console.log(budgetsWithCategories)
     setChartData(budgetsWithCategories)
 }
 const setChartData = (arr: Array<any>) => {

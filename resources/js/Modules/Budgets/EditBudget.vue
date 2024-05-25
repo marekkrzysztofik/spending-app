@@ -1,14 +1,10 @@
 <template>
     <div class="flex flex-column m-20-auto br-radius-15">
         <form @submit.prevent="onSubmit" class="m-auto">
-            <h2 class="center">Edytuj Budget</h2>
+            <h2 class="center">Edit Budget</h2>
             <div class="flex">
-                <h4 class="m-auto">Nazwa</h4>
+                <h4 class="m-auto">Name</h4>
                 <input v-model="budgetForm.name" type="text" class="m-3 input" required />
-            </div>
-            <div class="flex">
-                <h4 class="m-auto">Limit</h4>
-                <input v-model.number="budgetForm.limit" type="number" class="m-3 input" required />
             </div>
             <button type="submit" class=" button m-3">Save</button>
         </form>
@@ -28,7 +24,6 @@ const props = defineProps({
 const emit = defineEmits(['refresh']);
 const budgetForm: Ref<BudgetForm> = ref({
     name: '',
-    limit: 0
 })
 onMounted(async () => {
     getSingleBudget()

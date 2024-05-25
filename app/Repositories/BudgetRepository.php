@@ -50,7 +50,7 @@ class BudgetRepository
         $budgets = $this->currentBudgetsWithCategories($userID);
         $homepageData = [
             'budgetNames' => $budgets->pluck('name')->toArray(),
-            'expenseSum' => intval($this->transaction->whereMonth('date', $this->currentMonth)->sum('amount')),
+            'expenseSum' => $this->transaction->whereMonth('date', $this->currentMonth)->sum('amount'),
             'expensesByBudget' => $this->getExpensesByBudget($budgets),
             'plannedLimit' => $budgets->pluck('categories_sum_category_limit')->toArray(),
         ];
@@ -123,13 +123,13 @@ class BudgetRepository
                 });
                 return [
                     'category_name' => $category['category_name'],
-                    'transactions_sum' => $filteredTransactions->sum('amount')
+                    'transactions_sum' => $filteredTransactions->sum('amount') 
                 ];
             });
             return [
                 'name' => $budget['name'],
                 'labels' => $categories->pluck('category_name'),
-                'categories_sum' => $categories->pluck('transactions_sum')
+                'categories_sum' => $categories->pluck('transactions_sum') 
             ];
         });
 

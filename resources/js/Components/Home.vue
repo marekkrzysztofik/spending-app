@@ -94,7 +94,7 @@ const getAlldata = async () => {
     incomeSum.value = counter(incomes.value, 'amount')
 }
 const getChartData = async () => {
-    const response = await axios.get(`/api/getBudgetsForHomePage/${userID}`);
+    const response = await axios.get(`/api/getBudgetsForHomePage/${userID}`); 
     expenseSum.value = response.data.expenseSum;
     prepareDataForCharts(response.data);
 }
@@ -106,7 +106,7 @@ const counter = (array: Array<any>, prop: string) => {
     const arr: Array<number> = []
     array.forEach((el) => {
         if (el[prop])
-            arr.push(parseInt(el[prop]));
+            arr.push(parseFloat(el[prop]));
     });
     if (arr.length > 0)
         return arr.reduce((a: number, b: number) => a + b);

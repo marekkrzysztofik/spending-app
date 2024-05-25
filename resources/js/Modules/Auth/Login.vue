@@ -39,7 +39,6 @@ const component: Ref<FormComponent> = ref({
 
 onMounted(() => {
     component.value = components[props.id]
-    console.log(component.value)
 });
 const submit = (event: Event) => {
     const target: HTMLFormElement = event.target as HTMLFormElement;
@@ -52,7 +51,6 @@ const submit = (event: Event) => {
         c_password: form.c_password as string,
     };
     const apiName = component.value?.apiName
-    console.log(formData, apiName)
     login(formData, apiName);
 };
 const login = async (data: Form, path: string = 'login') => {

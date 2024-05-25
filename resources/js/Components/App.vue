@@ -38,12 +38,12 @@ const componentKey = ref(0)
 const router = useRouter();
 const route = useRoute()
 const menuItems = [
-    { path: "/home", label: "Home", icon: 'pi pi-th-large mr-2' },
+    { path: "/home", label: "Home", icon: 'pi pi-bars mr-2' },
     { path: "/budgets", label: "Budgets", icon: 'pi pi-dollar mr-2' },
     { path: "/categories", label: "Categories", icon: 'pi pi-th-large mr-2' },
-    { path: "/transactions", label: "Transactions", icon: 'pi pi-wallet mr-2' },
+    { path: "/transactions", label: "Transactions", icon: 'pi pi-book mr-2' },
     { path: "/analytics", label: "Analytics", icon: 'pi pi-database mr-2' },
-    { path: "/expenses", label: "Expenses", icon: 'pi pi-database mr-2' },
+    { path: "/expenses", label: "Expenses", icon: 'pi pi-wallet mr-2' },
     { path: "/login", label: "Log in", icon: 'pi pi-user mr-2' },
 ] 
 onMounted(() => {

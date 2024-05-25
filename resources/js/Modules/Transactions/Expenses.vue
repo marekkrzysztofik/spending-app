@@ -33,7 +33,6 @@ onMounted(() => {
 const getCategoriesForAnalytics = async (month: number, year: number) => {
     const response = await axios.get(`/api/getWeeklyExpenses/${userID}/${month}/${year}`)
     const budgetsWithCategories = response.data
-    console.log(budgetsWithCategories)
     chartData.value = setChartData(budgetsWithCategories)
 }
 const setChartData = (dailyExpenses: any) => {
